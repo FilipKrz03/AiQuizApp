@@ -10,13 +10,12 @@ namespace Domain.Entities
     public sealed class Quiz : Entity
     {
         public string Title { get; private set; } = string.Empty;
-        public List<Question> Questions { get; private set; } = [];
+        public List<Question> Questions { get;  set; } = [];
 
-        public Quiz(Guid id, string title, List<Question> questions)
+        public Quiz(Guid id, string title)
         : base(id)
         {
             Title = title;
-            Questions = questions;
         }
     }
 }
