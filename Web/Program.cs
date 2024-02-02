@@ -10,7 +10,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services
     .AddApplication()
-    .AddInfrastructure();
+    .AddInfrastructure(builder.Configuration);
 
 builder.Host.UseSerilog((context, configuration) =>
     configuration.ReadFrom.Configuration(context.Configuration));
@@ -33,7 +33,7 @@ app.UseBlazorFrameworkFiles();
 
 app.UseStaticFiles();
 
-app.UseRouting(); // ??
+app.UseRouting();
 
 app.UseAuthorization();
 
