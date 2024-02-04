@@ -14,13 +14,13 @@ using System.Threading.Tasks;
 
 namespace Application.Services
 {
-    public class BaseQuizesCreator : BackgroundService
+    public class BaseQuizesManager : BackgroundService
     {
-        private readonly ILogger<BaseQuizesCreator> _logger;
+        private readonly ILogger<BaseQuizesManager> _logger;
         private readonly IServiceProvider _serviceProvider;
 
-        public BaseQuizesCreator( 
-            ILogger<BaseQuizesCreator> logger , 
+        public BaseQuizesManager( 
+            ILogger<BaseQuizesManager> logger , 
             IServiceProvider serviceProvider
             )
         {

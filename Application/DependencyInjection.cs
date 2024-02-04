@@ -15,7 +15,7 @@ namespace Application
             services.AddMediatR(configuration =>
                 configuration.RegisterServicesFromAssembly(typeof(DependencyInjection).Assembly));
 
-            services.AddHostedService<BaseQuizesCreator>();
+            services.AddHostedService<BaseQuizesManager>();
 
             return services;
         }
