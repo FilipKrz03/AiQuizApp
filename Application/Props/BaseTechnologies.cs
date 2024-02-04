@@ -20,6 +20,7 @@ namespace Application.Props
             yield return "React";
             yield return "Kotlin";
             yield return "SQL";
+            yield return "API";
         }
     }
 }
