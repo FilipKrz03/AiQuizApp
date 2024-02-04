@@ -27,6 +27,13 @@ namespace Infrastructure.DbContexts
                 value => ProperAnswerNumber.Create(value)!
                 );
 
+            modelBuilder.Entity<Quiz>()
+                .Property(p => p.AdvanceNumber)
+                .HasConversion(
+                 AdvanceNumber => AdvanceNumber.Number,
+                 value => AdvanceNumber.Create(value)!
+                 );
+
             base.OnModelCreating(modelBuilder);
         }
     }
