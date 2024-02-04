@@ -1,4 +1,7 @@
-﻿using Infrastructure.DbContexts;
+﻿using Domain.Entities;
+using Infrastructure.DbContexts;
+using Infrastructure.Interfaces;
+using Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,6 +19,10 @@ namespace Infrastructure
         {
             services.AddDbContext<QuizApplicationDbContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddScoped<IRepository<Quiz>, Repository<Quiz>>();
+            services.AddScoped<IRepository<Answer>, Repository<Answer>>();
+            services.AddScoped<IRepository<Question>, Repository<Question>>();
 
             return services;
         }
