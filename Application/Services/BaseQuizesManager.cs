@@ -55,7 +55,7 @@ namespace Application.Services
 
                 foreach (var technology in baseTechnologiesWithNoQuizes)
                 {
-                    var quiz = await quizesCreator.Create(technology, DrawAdvanceNumber(), null);
+                    var quiz = await quizesCreator.CreateAsync(technology, DrawAdvanceNumber(), null);
 
                     if (quiz != null)
                     {

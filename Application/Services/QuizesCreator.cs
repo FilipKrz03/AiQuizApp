@@ -31,7 +31,7 @@ namespace Application.Services
             _aiQuestionToQuizConverter = aiQuestionToQuizConverter;
         }
 
-        public async Task<Quiz?> Create(string technologyName, AdvanceNumber advanceNumber , string? quizTitle)
+        public async Task<Quiz?> CreateAsync(string technologyName, AdvanceNumber advanceNumber , string? quizTitle)
         {
             var openAiService = new OpenAIService(new OpenAiOptions()
             {

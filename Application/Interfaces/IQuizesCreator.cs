@@ -10,6 +10,10 @@ namespace Application.Interfaces
 {
     public interface IQuizesCreator
     {
-        Task<Quiz?> Create(string technologyName , AdvanceNumber advanceNumber , string? quizTitle);
+        Task<Quiz?> CreateAsync(
+            string technologyName ,
+            AdvanceNumber advanceNumber ,
+            string? quizTitle
+            );
     }
 }
