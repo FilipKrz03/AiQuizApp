@@ -1,5 +1,7 @@
-﻿using Application.Props;
+﻿using Application.Interfaces;
+using Application.Props;
 using Domain.Entities;
+using Domain.ValueObjects;
 using Infrastructure.DbContexts;
 using Infrastructure.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -32,6 +34,7 @@ namespace Application.Services
         {
             var scope = _serviceProvider.CreateScope();
             var quizRepository = scope.ServiceProvider.GetRequiredService<IRepository<Quiz>>();
+            var quizesCreator = scope.ServiceProvider.GetRequiredService<IQuizesCreator>();
 
             var allQuizesTechnologies =
                 await quizRepository.Query()
@@ -44,7 +47,17 @@ namespace Application.Services
                 .Where(t => !allQuizesTechnologies.Contains(t))
                 .ToList();
 
-            // Todo
+            foreach(var technology in baseTechnologiesWithNoQuizes)
+            {
+                await quizesCreator.Create(technology , DrawAdvanceNumber());
+            }
+        }
+
+        private AdvanceNumber DrawAdvanceNumber()
+        {
+            Random random = new();
+
+            return AdvanceNumber.Create(random.Next(0, 10))!;
         }
     }
 }

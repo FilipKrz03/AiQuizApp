@@ -54,7 +54,7 @@ namespace Application.Services
             {
                 var questions = JsonConvert.DeserializeObject<IEnumerable<QuestionAiResponseDto>>(body);
 
-                _logger.LogInformation("Succes !");
+                // Todo
             }
             catch(Exception ex)
             {
