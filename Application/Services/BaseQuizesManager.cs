@@ -21,8 +21,8 @@ namespace Application.Services
         private readonly ILogger<BaseQuizesManager> _logger;
         private readonly IServiceProvider _serviceProvider;
 
-        public BaseQuizesManager( 
-            ILogger<BaseQuizesManager> logger , 
+        public BaseQuizesManager(
+            ILogger<BaseQuizesManager> logger,
             IServiceProvider serviceProvider
             )
         {
@@ -32,24 +32,39 @@ namespace Application.Services
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            var scope = _serviceProvider.CreateScope();
-            var quizRepository = scope.ServiceProvider.GetRequiredService<IRepository<Quiz>>();
-            var quizesCreator = scope.ServiceProvider.GetRequiredService<IQuizesCreator>();
-
-            var allQuizesTechnologies =
-                await quizRepository.Query()
-                .Select(e => e.TechnologyName)
-                .Distinct()
-                .ToListAsync();
-
-            var baseTechnologiesWithNoQuizes =
-                BaseTechnologies.Get()
-                .Where(t => !allQuizesTechnologies.Contains(t))
-                .ToList();
-
-            foreach(var technology in baseTechnologiesWithNoQuizes)
+            using IServiceScope scope = _serviceProvider.CreateScope();
             {
-                await quizesCreator.Create(technology , DrawAdvanceNumber() , null);
+                var quizRepository = scope.ServiceProvider.GetRequiredService<IRepository<Quiz>>();
+                var quizesCreator = scope.ServiceProvider.GetRequiredService<IQuizesCreator>();
+
+                var allQuizesTechnologies =
+                    await quizRepository.Query()
+                    .Select(e => e.TechnologyName)
+                    .Distinct()
+                    .ToListAsync(cancellationToken: stoppingToken);
+
+                var baseTechnologiesWithNoQuizes =
+                    BaseTechnologies.Get()
+                    .Where(t => !allQuizesTechnologies.Contains(t))
+                    .ToList();
+
+                _logger.LogInformation(
+                    "BaseQuizesManager - {count} base quizes will be created",
+                    baseTechnologiesWithNoQuizes.Count
+                    );
+
+                foreach (var technology in baseTechnologiesWithNoQuizes)
+                {
+                    var quiz = await quizesCreator.Create(technology, DrawAdvanceNumber(), null);
+
+                    if (quiz != null)
+                    {
+                        quizRepository.Insert(quiz);
+                        await quizRepository.SaveChangesAsync();
+                    }
+
+                    _logger.LogInformation("BaseQuizesManager - new base quize added to db");
+                }
             }
         }
 

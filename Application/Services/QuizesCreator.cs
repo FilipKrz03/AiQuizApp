@@ -13,6 +13,7 @@ using Application.Interfaces;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Application.Dto;
+using Domain.Entities;
 
 namespace Application.Services
 {
@@ -30,7 +31,7 @@ namespace Application.Services
             _aiQuestionToQuizConverter = aiQuestionToQuizConverter;
         }
 
-        public async Task Create(string technologyName, AdvanceNumber advanceNumber , string? quizTitle)
+        public async Task<Quiz?> Create(string technologyName, AdvanceNumber advanceNumber , string? quizTitle)
         {
             var openAiService = new OpenAIService(new OpenAiOptions()
             {
@@ -52,7 +53,7 @@ namespace Application.Services
             if (body == null)
             {
                 _logger.LogWarning("Quizes creator - body of Ai response is null !");
-                return;
+                return null;
             }
 
             try
@@ -61,11 +62,12 @@ namespace Application.Services
 
                 var quiz = _aiQuestionToQuizConverter.Convert(questions!, technologyName, advanceNumber , quizTitle);
 
-                _logger.LogInformation("Succes !");
+                return quiz;
             }
             catch (Exception ex)
             {
                 _logger.LogError("Quizes creator - {ex}", ex);
+                return null;
             }
         }
     }

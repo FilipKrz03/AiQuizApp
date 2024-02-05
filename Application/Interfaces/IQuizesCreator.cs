@@ -1,4 +1,5 @@
-﻿using Domain.ValueObjects;
+﻿using Domain.Entities;
+using Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,6 @@ namespace Application.Interfaces
 {
     public interface IQuizesCreator
     {
-        Task Create(string technologyName , AdvanceNumber advanceNumber , string? quizTitle);
+        Task<Quiz?> Create(string technologyName , AdvanceNumber advanceNumber , string? quizTitle);
     }
 }
