@@ -1,12 +1,14 @@
 using Application;
 using Infrastructure;
 using Serilog;
+using Web.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddTransient<ExceptionHandlingMiddleware>();
 
 builder.Services
     .AddApplication()
@@ -24,6 +26,8 @@ if (app.Environment.IsDevelopment())
 
     app.UseWebAssemblyDebugging();
 }
+
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.UseSerilogRequestLogging();
 
