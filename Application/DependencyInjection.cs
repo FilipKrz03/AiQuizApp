@@ -1,4 +1,5 @@
-﻿using Application.Services;
+﻿using Application.Interfaces;
+using Application.Services;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,8 @@ namespace Application
                 configuration.RegisterServicesFromAssembly(typeof(DependencyInjection).Assembly));
 
             services.AddHostedService<BaseQuizesManager>();
+
+            services.AddTransient<IQuizesCreator, QuizesCreator>();
 
             return services;
         }
