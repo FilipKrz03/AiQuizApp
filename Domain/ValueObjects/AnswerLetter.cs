@@ -14,7 +14,7 @@ namespace Domain.ValueObjects
 
         public static AnswerLetter? Create(char letter)
         {
-            if(letter != 'a' || letter != 'b' || letter != 'c' || letter != 'd')
+            if(letter != 'a' && letter != 'b' && letter != 'c' && letter != 'd')
             {
                 return null;
             }
