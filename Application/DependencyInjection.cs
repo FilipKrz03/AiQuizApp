@@ -1,6 +1,7 @@
 ﻿using Application.Interfaces;
 using Application.Services;
 using Microsoft.Extensions.DependencyInjection;
+using AutoMapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,7 @@ namespace Application
         {
             services.AddMediatR(configuration =>
                 configuration.RegisterServicesFromAssembly(typeof(DependencyInjection).Assembly));
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             services.AddHostedService<BaseQuizesManager>();
             services.AddTransient<IQuizesCreator, QuizesCreator>();
