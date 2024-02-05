@@ -12,7 +12,7 @@ namespace Domain.Entities
     public sealed class Question : Entity
     {
         public string Content { get; private set; } = string.Empty;
-        public ProperAnswerNumber ProperAnswerNumber { get; private set; } = null!;
+        public AnswerLetter ProperAnswerLetter { get; private set; } = null!;
         public List<Answer> Answers { get; set; } = [];
 
         [ForeignKey("QuizId")]
@@ -20,11 +20,11 @@ namespace Domain.Entities
         public Guid QuizId { get; set; }
 
         public Question
-            (Guid id, string content, ProperAnswerNumber properAnswerNumber)
+            (Guid id, string content, AnswerLetter properAnswerLetter)
             : base(id)
         {
             Content = content;
-            ProperAnswerNumber = properAnswerNumber;
+            ProperAnswerLetter = properAnswerLetter;
         }
     }
 }

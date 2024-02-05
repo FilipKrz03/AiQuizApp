@@ -21,10 +21,10 @@ namespace Infrastructure.DbContexts
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Question>()
-                .Property(p => p.ProperAnswerNumber)
+                .Property(p => p.ProperAnswerLetter)
                 .HasConversion(
-                ProperAnswerNumber => ProperAnswerNumber.Number,
-                value => ProperAnswerNumber.Create(value)!
+                ProperAnswerLetter => ProperAnswerLetter.Letter,
+                value => AnswerLetter.Create(value)!
                 );
 
             modelBuilder.Entity<Quiz>()
@@ -33,6 +33,13 @@ namespace Infrastructure.DbContexts
                  AdvanceNumber => AdvanceNumber.Number,
                  value => AdvanceNumber.Create(value)!
                  );
+
+            modelBuilder.Entity<Answer>()
+                .Property(p => p.AnswerLetter)
+                .HasConversion(
+                 AnswerLetter => AnswerLetter.Letter,
+                 value => AnswerLetter.Create(value)!
+                );
 
             base.OnModelCreating(modelBuilder);
         }
