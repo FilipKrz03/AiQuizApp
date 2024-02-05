@@ -17,9 +17,11 @@ namespace Application.Services
         public AiQuestionsToQuizConverter(ILogger<AiQuestionsToQuizConverter> logger) => _logger = logger;
 
         public Quiz Convert
-            (IEnumerable<QuestionAiResponseDto> response, string quizTitle, string technologyName, AdvanceNumber advanceNumber)
+            (IEnumerable<QuestionAiResponseDto> response, string technologyName, AdvanceNumber advanceNumber , string? quizTitle)
         {
             var quizId = Guid.NewGuid();
+
+            quizTitle ??= technologyName + " - " + "Level: " + advanceNumber.Number + "/10";
 
             Quiz quiz = new(quizId, quizTitle, technologyName, advanceNumber)
             {
@@ -33,19 +35,21 @@ namespace Application.Services
         {
             foreach (var question in questions)
             {
-                var answerLetter = AnswerLetter.Create(question.CharOfProperAnswer);
+                var properAnswerLetter = AnswerLetter.Create(question.CharOfProperAnswer);
 
-                if (answerLetter != null)
+                if (properAnswerLetter != null)
                 {
-                    var answers = question.Answers;
-
                     var questionId = Guid.NewGuid();
 
-                    yield return new Question(questionId, question.QuestionContent, answerLetter)
+                    yield return new Question(questionId, question.QuestionContent, properAnswerLetter)
                     {
                         QuizId = quizId,
-                        Answers = GetAnswers(answers, questionId).ToList()
+                        Answers = GetAnswers(question.Answers, questionId).ToList()
                     };
+                }
+                else
+                {
+                    _logger.LogWarning("AiQuestionsConverter - not recognized proper answer letter");
                 }
             }
         }

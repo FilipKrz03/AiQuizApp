@@ -19,13 +19,18 @@ namespace Application.Services
     public class QuizesCreator : IQuizesCreator
     {
         private readonly ILogger<QuizesCreator> _logger;
+        private readonly IAiQuestionsToQuizConverter _aiQuestionToQuizConverter;
 
-        public QuizesCreator(ILogger<QuizesCreator> logger)
+        public QuizesCreator(
+            ILogger<QuizesCreator> logger,
+            IAiQuestionsToQuizConverter aiQuestionToQuizConverter
+            )
         {
             _logger = logger;
+            _aiQuestionToQuizConverter = aiQuestionToQuizConverter;
         }
 
-        public async Task Create(string technologyName, AdvanceNumber advanceNumber)
+        public async Task Create(string technologyName, AdvanceNumber advanceNumber , string? quizTitle)
         {
             var openAiService = new OpenAIService(new OpenAiOptions()
             {
@@ -44,7 +49,7 @@ namespace Application.Services
 
             var body = completionResult.Choices.First().Message.Content;
 
-            if(body == null)
+            if (body == null)
             {
                 _logger.LogWarning("Quizes creator - body of Ai response is null !");
                 return;
@@ -54,9 +59,11 @@ namespace Application.Services
             {
                 var questions = JsonConvert.DeserializeObject<IEnumerable<QuestionAiResponseDto>>(body);
 
-                // Todo
+                var quiz = _aiQuestionToQuizConverter.Convert(questions!, technologyName, advanceNumber , quizTitle);
+
+                _logger.LogInformation("Succes !");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _logger.LogError("Quizes creator - {ex}", ex);
             }

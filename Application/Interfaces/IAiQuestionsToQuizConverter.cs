@@ -13,9 +13,9 @@ namespace Application.Interfaces
     {
         Quiz Convert(
             IEnumerable<QuestionAiResponseDto> response,
-            string quizTitle,
             string technologyName,
-            AdvanceNumber advanceNumber
+            AdvanceNumber advanceNumber ,
+            string? quizTitle
             );
     }
 }

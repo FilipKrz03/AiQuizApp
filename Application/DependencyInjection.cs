@@ -17,8 +17,8 @@ namespace Application
                 configuration.RegisterServicesFromAssembly(typeof(DependencyInjection).Assembly));
 
             services.AddHostedService<BaseQuizesManager>();
-
             services.AddTransient<IQuizesCreator, QuizesCreator>();
+            services.AddScoped<IAiQuestionsToQuizConverter, AiQuestionsToQuizConverter>();
 
             return services;
         }

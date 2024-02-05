@@ -49,7 +49,7 @@ namespace Application.Services
 
             foreach(var technology in baseTechnologiesWithNoQuizes)
             {
-                await quizesCreator.Create(technology , DrawAdvanceNumber());
+                await quizesCreator.Create(technology , DrawAdvanceNumber() , null);
             }
         }
 

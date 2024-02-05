@@ -9,6 +9,6 @@ namespace Application.Interfaces
 {
     public interface IQuizesCreator
     {
-        Task Create(string technologyName , AdvanceNumber advanceNumber);
+        Task Create(string technologyName , AdvanceNumber advanceNumber , string? quizTitle);
     }
 }
