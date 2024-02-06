@@ -61,9 +61,9 @@ namespace Application.Services
                     {
                         quizRepository.Insert(quiz);
                         await quizRepository.SaveChangesAsync();
-                    }
 
-                    _logger.LogInformation("BaseQuizesManager - new base quize added to db");
+                        _logger.LogInformation("BaseQuizesManager - new base quize added to db");
+                    }
                 }
             }
         }
