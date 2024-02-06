@@ -40,7 +40,7 @@ namespace UnitTests.Common
             internal AsyncQueryProvider(IQueryProvider inner) => this.inner = inner;
             public IQueryable CreateQuery(Expression expression) => new AsyncQueryable<TEntity>(expression);
             public IQueryable<TElement> CreateQuery<TElement>(Expression expression) => new AsyncQueryable<TElement>(expression);
-            public object Execute(Expression expression) => inner.Execute(expression);
+            public object Execute(Expression expression) => inner.Execute(expression)!;
             public TResult Execute<TResult>(Expression expression) => inner.Execute<TResult>(expression);
             public IAsyncEnumerable<TResult> ExecuteAsync<TResult>(Expression expression) => new AsyncQueryable<TResult>(expression);
             TResult IAsyncQueryProvider.ExecuteAsync<TResult>(Expression expression, CancellationToken cancellationToken) => Execute<TResult>(expression);
