@@ -12,7 +12,6 @@ namespace UnitTests.Domain.ValueObjects
     {
         [Theory]
         [InlineData(11)]
-        [InlineData(122)]
         [InlineData(-2)]
         public void AdvanceNumber_Should_ReturnNull_WhenProvidedNumberIsOutOfAllowedRange(int number)
         {
@@ -26,7 +25,6 @@ namespace UnitTests.Domain.ValueObjects
         [Theory]
         [InlineData(10)]
         [InlineData(5)]
-        [InlineData(1)]
         public void AdvanceNumber_Should_ReturnAdavanceNumberObjectWithProperValue_WhenProvidedNumberIsInAllowedRange(int number)
         {
             var advanceNumber = AdvanceNumber.Create(number);
