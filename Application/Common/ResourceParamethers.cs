@@ -18,7 +18,7 @@ namespace Application.Common
                 pageSize = value > maxPageSize ? maxPageSize : value;
             }
         }
-        public int PageNumber { get; set; }
+        public int PageNumber { get; set; } = 1;
 
         public string? SearchQuery {  get; set; }   
         public string? SortColumn { get; set; }

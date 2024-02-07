@@ -35,8 +35,8 @@ namespace Application.Cqrs.Quiz.Query.GetQuizes
             {
                 query = query.Where(x =>
                 x.Title.Contains(request.ResourceParamethers.SearchQuery) ||
-                x.TechnologyName.Contains(request.ResourceParamethers.SearchQuery)
-                //x.Questions.Any(q => q.Content.Contains(request.ResourceParamethers.SearchQuery))
+                x.TechnologyName.Contains(request.ResourceParamethers.SearchQuery) || 
+                x.Questions.Any(q => q.Content.Contains(request.ResourceParamethers.SearchQuery))
                 );
             }
 
