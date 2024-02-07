@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Services
 {
-    public class Repository<T> : IRepository<T> where T : Entity
+    public class Repository<T>(
+        QuizApplicationDbContext context
+        ) : IRepository<T> where T : Entity
     {
-        private readonly QuizApplicationDbContext _context;
-
-        public Repository(QuizApplicationDbContext context) => _context = context;
+        private readonly QuizApplicationDbContext _context = context;
 
         public IQueryable<T> Query()
         {

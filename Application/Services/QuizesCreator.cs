@@ -17,19 +17,13 @@ using Domain.Entities;
 
 namespace Application.Services
 {
-    public class QuizesCreator : IQuizesCreator
+    public class QuizesCreator(
+        ILogger<QuizesCreator> logger,
+        IAiQuestionsToQuizConverter aiQuestionToQuizConverter
+            ) : IQuizesCreator
     {
-        private readonly ILogger<QuizesCreator> _logger;
-        private readonly IAiQuestionsToQuizConverter _aiQuestionToQuizConverter;
-
-        public QuizesCreator(
-            ILogger<QuizesCreator> logger,
-            IAiQuestionsToQuizConverter aiQuestionToQuizConverter
-            )
-        {
-            _logger = logger;
-            _aiQuestionToQuizConverter = aiQuestionToQuizConverter;
-        }
+        private readonly ILogger<QuizesCreator> _logger = logger;
+        private readonly IAiQuestionsToQuizConverter _aiQuestionToQuizConverter = aiQuestionToQuizConverter;
 
         public async Task<Quiz?> CreateAsync(string technologyName, AdvanceNumber advanceNumber , string? quizTitle)
         {

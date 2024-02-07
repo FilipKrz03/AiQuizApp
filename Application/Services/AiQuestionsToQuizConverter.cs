@@ -10,11 +10,10 @@ using System.Threading.Tasks;
 
 namespace Application.Services
 {
-    public class AiQuestionsToQuizConverter : IAiQuestionsToQuizConverter
+    public sealed class AiQuestionsToQuizConverter
+        (ILogger<AiQuestionsToQuizConverter> logger) : IAiQuestionsToQuizConverter
     {
-        private readonly ILogger<AiQuestionsToQuizConverter> _logger;
-
-        public AiQuestionsToQuizConverter(ILogger<AiQuestionsToQuizConverter> logger) => _logger = logger;
+        private readonly ILogger<AiQuestionsToQuizConverter> _logger = logger;
 
         public Quiz Convert
             (IEnumerable<QuestionAiResponseDto> response, string technologyName, AdvanceNumber advanceNumber , string? quizTitle)

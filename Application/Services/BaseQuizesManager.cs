@@ -16,19 +16,13 @@ using System.Threading.Tasks;
 
 namespace Application.Services
 {
-    public class BaseQuizesManager : BackgroundService
+    public sealed class BaseQuizesManager(
+        ILogger<BaseQuizesManager> logger,
+        IServiceProvider serviceProvider
+            ) : BackgroundService
     {
-        private readonly ILogger<BaseQuizesManager> _logger;
-        private readonly IServiceProvider _serviceProvider;
-
-        public BaseQuizesManager(
-            ILogger<BaseQuizesManager> logger,
-            IServiceProvider serviceProvider
-            )
-        {
-            _logger = logger;
-            _serviceProvider = serviceProvider;
-        }
+        private readonly ILogger<BaseQuizesManager> _logger = logger;
+        private readonly IServiceProvider _serviceProvider = serviceProvider;
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {

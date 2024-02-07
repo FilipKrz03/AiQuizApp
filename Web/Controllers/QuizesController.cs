@@ -10,11 +10,9 @@ namespace Web.Controllers
 {
     [Route("api/quizes")]
     [ApiController]
-    public class QuizesController : ControllerBase
+    public sealed class QuizesController(IMediator mediator) : ControllerBase
     {
-        private readonly IMediator _mediator;
-
-        public QuizesController(IMediator mediator) => _mediator = mediator;
+        private readonly IMediator _mediator = mediator;
 
         [HttpGet("{quizId}")]
         public async Task<ActionResult<QuizDetailResponseDto>> GetQuizDetails(Guid quizId)

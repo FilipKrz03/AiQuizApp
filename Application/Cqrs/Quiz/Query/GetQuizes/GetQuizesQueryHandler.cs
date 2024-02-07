@@ -13,19 +13,13 @@ using System.Threading.Tasks;
 
 namespace Application.Cqrs.Quiz.Query.GetQuizes
 {
-    public sealed class GetQuizesQueryHandler : IRequestHandler<GetQuizesQuery, PagedList<QuizBasicResponseDto>>
+    public sealed class GetQuizesQueryHandler(
+        IRepository<Domain.Entities.Quiz> quizRepository,
+        IMapper mapper
+            ) : IRequestHandler<GetQuizesQuery, PagedList<QuizBasicResponseDto>>
     {
-        private readonly IRepository<Domain.Entities.Quiz> _quizRepository;
-        private readonly IMapper _mapper;
-
-        public GetQuizesQueryHandler(
-            IRepository<Domain.Entities.Quiz> quizRepository,
-            IMapper mapper
-            )
-        {
-            _quizRepository = quizRepository;
-            _mapper = mapper;
-        }
+        private readonly IRepository<Domain.Entities.Quiz> _quizRepository = quizRepository;
+        private readonly IMapper _mapper = mapper;
 
         public async Task<PagedList<QuizBasicResponseDto>> Handle(GetQuizesQuery request, CancellationToken cancellationToken)
         {

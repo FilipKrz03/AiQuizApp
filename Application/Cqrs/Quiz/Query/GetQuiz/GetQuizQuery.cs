@@ -8,13 +8,7 @@ using System.Threading.Tasks;
 
 namespace Application.Cqrs.Quiz.Query.GetQuiz
 {
-    public class GetQuizQuery : IRequest<QuizDetailResponseDto>
+    public sealed record GetQuizQuery(Guid Id) : IRequest<QuizDetailResponseDto>
     {
-        public Guid Id { get; init; }
-
-        public GetQuizQuery(Guid id)
-        {
-            Id = id;
-        }
     }
 }
