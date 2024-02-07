@@ -19,6 +19,8 @@ namespace Application.Common
             }
         }
         public int PageNumber { get; set; }
+
+        public string? SearchQuery {  get; set; }   
         public string? SortColumn { get; set; }
         public string SortOrder { get; set; } = "asc";
     }

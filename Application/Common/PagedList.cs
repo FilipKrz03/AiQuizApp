@@ -18,7 +18,7 @@ namespace Application.Common
         public bool HasPrevious => PageNumber > 1;
         public bool HasNext => PageNumber < TotalPages;
 
-        private PagedList(List<T> items, int pageSize, int pageNumber, int totalCount)
+        public PagedList(List<T> items, int pageSize, int pageNumber, int totalCount)
         {
             PageSize = pageSize;
             PageNumber = pageNumber;
