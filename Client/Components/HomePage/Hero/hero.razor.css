@@ -1,7 +1,7 @@
 ﻿.hero {
   width: 60%;
   margin: 0 auto;
-  min-height: 70vh;
+  min-height: 60vh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -31,6 +31,15 @@ h1:focus {
   animation-timing-function: ease-in-out;
 }
 
+.buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 40px;
+  animation-name: appear;
+  animation-duration: 0.55s;
+  animation-timing-function: ease-in-out;
+}
+
 @keyframes fallFromUp {
   from {
     transform: translateY(-80px);
@@ -51,6 +60,15 @@ h1:focus {
   }
 }
 
+@keyframes appearButtons {
+  from {
+    transform: translateY(-40px);
+  }
+  to {
+    transform: translateY(0px);
+  }
+}
+
 @media screen and (max-width: 900px) {
   h1 {
     font-size: 45px;
@@ -58,19 +76,20 @@ h1:focus {
   .hero_desc {
     font-size: 20px;
   }
-  .hero{
+  .hero {
     gap: 20px;
+    margin-top: 30px;
   }
 }
 
 @media screen and (max-width: 450px) {
-    h1 {
-      font-size: 38px;
-    }
-    .hero_desc {
-      font-size: 16px;
-    }
-    .hero{
-      gap: 15px;
-    }
+  h1 {
+    font-size: 38px;
   }
+  .hero_desc {
+    font-size: 16px;
+  }
+  .hero {
+    gap: 15px;
+  }
+}

@@ -1,0 +1,12 @@
+﻿<button class="btn @(Secondary == true ? "secondary" : "")">
+	@Content
+</button>
+
+@code {
+	[Parameter]
+	public string Content { get; set; } = null!;
+
+	[Parameter]
+	public bool Secondary { get; set; } = false;
+}
+
