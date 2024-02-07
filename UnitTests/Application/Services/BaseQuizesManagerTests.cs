@@ -9,14 +9,8 @@ using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.EntityFrameworkCore.SqlServer.Query.Internal;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using MockQueryable.Moq;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
-using UnitTests.Common;
 
 namespace UnitTests.Application.Services
 {
@@ -73,7 +67,7 @@ namespace UnitTests.Application.Services
             var expectedTimesCall = BaseTechnologies.Get().Count();
 
             _quizRepositoryMock.Setup(x => x.Query())
-                 .Returns(quizes.AsAsyncQueryable());
+                 .Returns(quizes.BuildMock());
 
             await _baseQuizesManager.StartAsync(default);
 
