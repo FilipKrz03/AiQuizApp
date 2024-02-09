@@ -1,0 +1,15 @@
+﻿@using Newtonsoft.Json;
+@page "/quizes"
+
+
+<h3>Quizes</h3>
+
+@code {
+	[Inject]
+	public IQuizDataService _quizDataService { get; set; } = null!;
+
+	protected override async Task OnInitializedAsync()
+	{
+		var result = await _quizDataService.GetQuizes();
+	}
+}
