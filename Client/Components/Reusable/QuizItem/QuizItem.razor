@@ -1,0 +1,9 @@
+﻿<div class="item">
+	<h3>@Quiz.Title</h3>
+	<p>Advance number : @Quiz.AdvanceNumber / 10</p>
+</div>
+
+@code {
+	[Parameter]
+	public QuizBasicResponseDto Quiz { get; set; } = null!;
+}

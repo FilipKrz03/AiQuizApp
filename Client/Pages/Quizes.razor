@@ -1,15 +1,22 @@
-﻿@using Newtonsoft.Json;
+﻿@using Client.Components.Reusable.QuizesContainer
+
 @page "/quizes"
 
 
 <h3>Quizes</h3>
 
+<QuizesContainer Quizes=BaseQuizes />
+
 @code {
 	[Inject]
 	public IQuizDataService _quizDataService { get; set; } = null!;
 
+	public IEnumerable<QuizBasicResponseDto> BaseQuizes { get; set; } = [];
+
 	protected override async Task OnInitializedAsync()
 	{
 		var result = await _quizDataService.GetQuizes();
+
+		BaseQuizes = result;
 	}
 }

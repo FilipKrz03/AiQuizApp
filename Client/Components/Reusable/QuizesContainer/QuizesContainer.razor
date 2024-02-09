@@ -1,0 +1,13 @@
+﻿@using Client.Components.Reusable.QuizItem
+
+<div class="container">
+	@foreach(var quiz in Quizes)
+	{
+		<QuizItem Quiz=quiz />
+	}
+</div>
+
+@code {
+	[Parameter]
+	public IEnumerable<QuizBasicResponseDto> Quizes { get; set; } = null!;
+}
