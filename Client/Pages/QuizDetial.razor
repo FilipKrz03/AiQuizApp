@@ -1,0 +1,9 @@
+﻿@page "/quizes/{QuizId}"
+
+
+<h3>QuizDetialPage : @QuizId</h3>
+
+@code {
+	[Parameter]
+	public string QuizId { get; set; } = null!;
+}
