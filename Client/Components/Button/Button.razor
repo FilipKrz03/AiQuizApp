@@ -1,0 +1,22 @@
+﻿<button
+	@onclick="OnClickCallback"
+	class="btn @(Secondary == true ? "secondary" : "")"
+	type='@(IsSubmit == true ? "submit" : "button")'
+	>
+	@Content
+</button>
+
+@code {
+	[Parameter]
+	public string Content { get; set; } = null!;
+
+	[Parameter]
+	public bool Secondary { get; set; } = false;
+
+	[Parameter]
+	public bool IsSubmit { get; set; } = false;
+
+	[Parameter]
+	public EventCallback OnClickCallback { get; set; }
+}
+
