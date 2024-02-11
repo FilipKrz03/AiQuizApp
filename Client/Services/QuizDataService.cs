@@ -17,5 +17,17 @@ namespace Client.Services
 
 			return data!;
 		}
+
+		public async Task<QuizDetailResponseDto> GetQuizDetailAsync(string quizId)
+		{
+			Guid quizIdAsGuid = Guid.Parse(quizId);
+
+			var result = await _httpClient.GetAsync($"api/quizes/{quizIdAsGuid}");
+
+			var data = JsonConvert.DeserializeObject<QuizDetailResponseDto>
+				(await result.Content.ReadAsStringAsync());
+
+			return data!;
+		}
 	}
 }

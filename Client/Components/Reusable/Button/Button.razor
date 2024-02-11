@@ -1,4 +1,7 @@
-﻿<button class="btn @(Secondary == true ? "secondary" : "")">
+﻿<button
+	class="btn @(Secondary == true ? "secondary" : "")"
+	type='@(IsSubmit == true ? "submit" : "button")'
+	>
 	@Content
 </button>
 
@@ -8,5 +11,8 @@
 
 	[Parameter]
 	public bool Secondary { get; set; } = false;
+
+	[Parameter]
+	public bool IsSubmit { get; set; } = false;
 }
 

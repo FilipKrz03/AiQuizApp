@@ -1,9 +1,25 @@
 ﻿@page "/quizes/{QuizId}"
 
+@using Client.Components.QuizDetailPage.QuizDetailContainer
 
-<h3>QuizDetialPage : @QuizId</h3>
+@if (Quiz != null)
+{
+	<QuizDetailContainer Quiz="Quiz" />
+}
 
 @code {
+	[Inject]
+	public IQuizDataService _quizDataService { get; set; } = null!;
+
 	[Parameter]
 	public string QuizId { get; set; } = null!;
+
+	public QuizDetailResponseDto? Quiz { get; set; }
+
+	protected override async Task OnInitializedAsync()
+	{
+		var quiz = await _quizDataService.GetQuizDetailAsync(QuizId);
+
+		Quiz = quiz;
+	}
 }

@@ -1,0 +1,45 @@
+﻿@using Client.Components.QuizDetailPage.QuizQuestion
+
+	<div class="container">
+		<h1>@Quiz.Title</h1>
+		<form @onsubmit="HandleSubmit">
+			@foreach (var question in Quiz.Questions)
+			{
+				<QuizQuestion Question="question" OnAnswerChange="HandleQuizAnswerChange" />
+			}
+			<Button IsSubmit=true Content="Sprawdź" />
+		</form>
+	</div>
+
+@code {
+	[Parameter]
+	public string QuizId { get; set; } = null!;
+
+	[Parameter]
+	public QuizDetailResponseDto Quiz { get; set; } = null!;
+
+	public Dictionary<Guid, Guid> QuestionAnswerDictionary { get; set; } = [];
+
+	protected override Task OnInitializedAsync()
+	{
+		foreach (var question in Quiz.Questions)
+		{
+			QuestionAnswerDictionary.Add(question.Id, question.Answers.First().Id);
+		}
+
+		return Task.CompletedTask;
+	}
+
+	private void HandleQuizAnswerChange(OnQuestionAnswerChangeEventData eventData)
+	{
+		QuestionAnswerDictionary[eventData.QuestionId] = eventData.AnswerId;
+	}
+
+	private void HandleSubmit()
+	{
+		foreach (var kvp in QuestionAnswerDictionary)
+		{
+			Console.WriteLine($"QuestionId : {kvp.Key} , AnswerId : {kvp.Value}");
+		}
+	}
+}
