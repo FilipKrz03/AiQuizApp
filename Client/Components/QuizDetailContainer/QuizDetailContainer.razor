@@ -7,10 +7,12 @@
 		{
 			<QuizQuestion @ref="questionRef" Question="question" OnAnswerChange="HandleQuizAnswerChange" />
 		}
-		<Button IsSubmit=true Content="Sprawdź" />
-		<Button Content="Restart" OnClickCallback=HandleRestart/>
+		<div class="buttons">
+			<Button IsSubmit=true Content="Sprawdź" />
+			<Button Content="Restart" OnClickCallback=HandleRestart />
+		</div>
 	</form>
-	@if(ShowAnswers)
+	@if (ShowAnswers)
 	{
 		<p>Total Score : @TotalScore / @Quiz.Questions.Count() </p>
 	}

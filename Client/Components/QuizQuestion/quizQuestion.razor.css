@@ -1,7 +1,14 @@
-﻿.proper{
-    color:green;
+﻿p{
+    font-size: 18px;
+    font-weight: bolder;
+}
+
+.proper{
+    background-color: #6a994e;
+    color: white;
 }
 
 .bad{
-    color:red;
+    background-color:#d90429;
+    color: white;
 }
