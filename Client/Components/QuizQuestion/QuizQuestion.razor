@@ -1,0 +1,77 @@
+﻿<div class="question">
+	<p>@Question.Content</p>
+	@foreach (var answerItem in Question.Answers.Select((value, i) => new { i, value }))
+	{
+		<div class="answer">
+			<input 
+				   type="radio"
+				   name="@Question.Id" 
+				   disabled=@(ShowAnswer)
+				   checked="@(answerItem.value.AnswerLetter == CheckedAnswerLetter)"
+				   @onchange="(() => AnswerChange(new OnQuestionAnswerChangeEventData(Question.Id , answerItem.value.Id) , answerItem.value.AnswerLetter))" 
+				   />
+			<label
+				class="
+				label
+                @(answerItem.value.AnswerLetter == ProperAnswerLetter && ShowAnswer ? "proper" : "")
+				@((answerItem.value.AnswerLetter != ProperAnswerLetter && ShowAnswer) && answerItem.value.AnswerLetter == CheckedAnswerLetter ? "bad" : "")"
+			>
+				@answerItem.value.Content
+			</label>
+		</div>
+	}
+</div>
+
+@code {
+	[Parameter]
+	public EventCallback<OnQuestionAnswerChangeEventData> OnAnswerChange { get; set; }
+
+	[Parameter]
+	public QuestionResponseDto Question { get; set; } = null!;
+
+	public char CheckedAnswerLetter { get; set; }
+
+	public char ProperAnswerLetter { get; set; }
+
+	public bool ShowAnswer { get; set; } = false;
+
+	public bool UserSelectedProperAnswer { get; set; } = false;
+
+	protected override void OnInitialized()
+	{
+		CheckedAnswerLetter = Question.Answers.First().AnswerLetter;
+
+		ProperAnswerLetter = Question.Answers
+		.Where(a => a.AnswerLetter == Question.ProperAnswerLetter)
+		.Select(x => x.AnswerLetter)
+		.Single();
+	}
+
+	public void AnswerChange(OnQuestionAnswerChangeEventData eventData , char answerLetter)
+	{
+		CheckedAnswerLetter = answerLetter;
+
+		OnAnswerChange.InvokeAsync(eventData);
+	}
+
+	public void ValidateQuestionAnswer()
+	{
+		if (CheckedAnswerLetter == ProperAnswerLetter)
+		{
+			ShowAnswer = true;
+			UserSelectedProperAnswer = true;
+		}
+		else
+		{
+			ShowAnswer = true;
+			UserSelectedProperAnswer = false;
+		}
+	}
+
+	public void RestartAnswersState()
+	{
+		ShowAnswer = false;
+		UserSelectedProperAnswer = false;
+		CheckedAnswerLetter = Question.Answers.First().AnswerLetter;
+	}
+}

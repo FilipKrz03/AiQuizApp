@@ -1,0 +1,83 @@
+﻿@using Client.Components.QuizQuestion
+
+<div class="container">
+	<h1>@Quiz.Title</h1>
+	<form @onsubmit="HandleSubmit">
+		@foreach (var question in Quiz.Questions)
+		{
+			<QuizQuestion @ref="questionRef" Question="question" OnAnswerChange="HandleQuizAnswerChange" />
+		}
+		<Button IsSubmit=true Content="Sprawdź" />
+		<Button Content="Restart" OnClickCallback=HandleRestart/>
+	</form>
+	@if(ShowAnswers)
+	{
+		<p>Total Score : @TotalScore / @Quiz.Questions.Count() </p>
+	}
+</div>
+
+@code {
+	[Parameter]
+	public string QuizId { get; set; } = null!;
+
+	[Parameter]
+	public QuizDetailResponseDto Quiz { get; set; } = null!;
+
+	public Dictionary<Guid, Guid> QuestionAnswerDictionary { get; set; } = [];
+
+	private List<QuizQuestion> questionsComponents = [];
+	private QuizQuestion questionRef { set => questionsComponents.Add(value); }
+
+	public bool ShowAnswers { get; set; } = false;
+	public int TotalScore { get; set; } = 0;
+
+	protected override Task OnInitializedAsync()
+	{
+		foreach (var question in Quiz.Questions)
+		{
+			QuestionAnswerDictionary.Add(question.Id, question.Answers.First().Id);
+		}
+
+		return Task.CompletedTask;
+	}
+
+	private void HandleQuizAnswerChange(OnQuestionAnswerChangeEventData eventData)
+	{
+		QuestionAnswerDictionary[eventData.QuestionId] = eventData.AnswerId;
+	}
+
+	private void HandleSubmit()
+	{
+		TotalScore = 0;
+
+		foreach (var questionComponent in questionsComponents)
+		{
+			questionComponent.ValidateQuestionAnswer();
+		}
+
+		foreach (var kvp in QuestionAnswerDictionary)
+		{
+			var question = Quiz.Questions
+			.Where(q => q.Id == kvp.Key)
+			.Single();
+
+			var answer = question.Answers
+			.Where(a => a.Id == kvp.Value)
+			.Single();
+
+			if (question.ProperAnswerLetter == answer.AnswerLetter) TotalScore++;
+		}
+
+		ShowAnswers = true;
+	}
+
+	private void HandleRestart()
+	{
+		ShowAnswers = false;
+
+		foreach (var questionComponent in questionsComponents)
+		{
+			questionComponent.RestartAnswersState();
+		}
+	}
+}

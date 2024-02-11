@@ -13,7 +13,8 @@ namespace Application.Profiles
     {
         public QuestionProfile()
         {
-            CreateMap<Question, QuestionResponseDto>();
+            CreateMap<Question, QuestionResponseDto>()
+                .ForMember(src => src.ProperAnswerLetter, opt => opt.MapFrom(x => x.ProperAnswerLetter.Letter));
         }
     }
 }
