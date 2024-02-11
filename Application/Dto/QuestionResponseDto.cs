@@ -8,6 +8,7 @@ namespace Application.Dto
 {
     public class QuestionResponseDto
     {
+        public Guid Id { get; set; }    
         public string Content { get; set; } = string.Empty;
         public IEnumerable<AnswerResponseDto> Answers { get; set; } = [];
     }
