@@ -2,9 +2,10 @@
 
 namespace Client.Services
 {
-	public interface IQuizDataService
+	public interface IDataService
 	{
 		Task<IEnumerable<QuizBasicResponseDto>> GetQuizes();
 		Task<QuizDetailResponseDto> GetQuizDetailAsync(string quizId);
+		Task<System.Net.HttpStatusCode> RegisterAsync(string email, string password);
 	}
 }

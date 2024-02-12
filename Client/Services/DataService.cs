@@ -1,10 +1,11 @@
 ﻿using Client.Pages;
 using Newtonsoft.Json;
 using Application.Dto;
+using System.Net.Http.Json;
 
 namespace Client.Services
 {
-	public class QuizDataService(HttpClient httpClient) : IQuizDataService
+	public class DataService(HttpClient httpClient) : IDataService
 	{
 		private readonly HttpClient _httpClient = httpClient;
 
@@ -28,6 +29,19 @@ namespace Client.Services
 				(await result.Content.ReadAsStringAsync());
 
 			return data!;
+		}
+
+		public async Task<System.Net.HttpStatusCode> RegisterAsync(string email , string password)
+		{
+			var body = new
+			{
+				email,
+				password
+			};
+
+			var request = await _httpClient.PostAsJsonAsync("/api/register", body);
+
+			return request.StatusCode;
 		}
 	}
 }

@@ -1,0 +1,32 @@
+﻿<h2>Witamy !</h2>
+<EditForm Model="@registerModel" OnValidSubmit="HandleValidSubmit" >
+	<div class="input">
+		<label>Email</label>
+		<InputText @bind-Value="registerModel.Email" />
+	</div>
+	<div class="input">
+		<label>Password</label>
+		<InputText @bind-Value="registerModel.Password" />
+	</div>
+</EditForm>
+
+@code {
+	[Inject]
+	public IDataService _dataService { get; set; } = null!;
+
+	RegisterModel registerModel = new();
+
+	private async Task HandleValidSubmit()
+	{
+		var result = await _dataService.RegisterAsync(registerModel.Email, registerModel.Password);
+
+		if(result == System.Net.HttpStatusCode.OK)
+		{
+			// Todo
+		}
+		else
+		{
+			// Todo
+		}
+	}
+}
