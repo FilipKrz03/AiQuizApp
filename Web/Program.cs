@@ -1,5 +1,8 @@
 using Application;
+using Domain.Entities;
 using Infrastructure;
+using Infrastructure.DbContexts;
+using Microsoft.AspNetCore.Identity;
 using Serilog;
 using Web.Middleware;
 
@@ -14,6 +17,12 @@ builder.Services
     .AddApplication()
     .AddInfrastructure(builder.Configuration);
 
+builder.Services.AddAuthentication().AddBearerToken(IdentityConstants.BearerScheme);
+builder.Services.AddAuthorizationBuilder();
+builder.Services.AddIdentityCore<User>()
+    .AddEntityFrameworkStores<QuizApplicationDbContext>()
+    .AddApiEndpoints();
+
 //builder.Host.UseSerilog((context, configuration) =>
 //    configuration.ReadFrom.Configuration(context.Configuration));
 
@@ -26,6 +35,9 @@ if (app.Environment.IsDevelopment())
 
     app.UseWebAssemblyDebugging();
 }
+
+var group = app.MapGroup(prefix: "api");
+group.MapIdentityApi<User>();
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
