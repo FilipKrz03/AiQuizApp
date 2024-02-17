@@ -19,7 +19,14 @@ builder.Services
 
 builder.Services.AddAuthentication().AddBearerToken(IdentityConstants.BearerScheme);
 builder.Services.AddAuthorizationBuilder();
-builder.Services.AddIdentityCore<User>()
+builder.Services.AddIdentityCore<User>(cfg =>
+{
+    cfg.Password.RequireNonAlphanumeric = false;
+    cfg.Password.RequireLowercase = true;
+    cfg.Password.RequireUppercase = true;
+    cfg.Password.RequireDigit = true;
+    cfg.Password.RequiredLength = 6;
+})
     .AddEntityFrameworkStores<QuizApplicationDbContext>()
     .AddApiEndpoints();
 
