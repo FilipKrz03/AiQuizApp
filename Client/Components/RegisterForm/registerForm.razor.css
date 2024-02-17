@@ -45,6 +45,16 @@ h1 {
   border: 2px solid #219ebc;
 }
 
+.register-failure {
+    color: #c1121f;
+    font-size: 20px;
+}
+
+.register-succes{
+    color: #6a994e; 
+    font-size: 20px;
+}
+
 @keyframes appear-left {
   from {
     transform: translateX(-100px);

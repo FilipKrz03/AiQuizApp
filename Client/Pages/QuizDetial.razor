@@ -2,10 +2,15 @@
 
 @using Client.Components.QuizDetailContainer
 
-@if (Quiz != null)
+@if (Quiz != null && !IsLoading)
 {
 	<QuizDetailContainer Quiz="Quiz" />
 }
+@if(IsLoading)
+{
+	<Loading />
+}
+
 
 @code {
 	[Inject]
@@ -14,12 +19,15 @@
 	[Parameter]
 	public string QuizId { get; set; } = null!;
 
+	public bool IsLoading { get; set; } = true;
+
 	public QuizDetailResponseDto? Quiz { get; set; }
 
 	protected override async Task OnInitializedAsync()
 	{
 		var quiz = await _quizDataService.GetQuizDetailAsync(QuizId);
-
 		Quiz = quiz;
+
+		IsLoading = false;
 	}
 }

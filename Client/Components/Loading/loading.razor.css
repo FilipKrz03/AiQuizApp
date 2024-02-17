@@ -1,0 +1,56 @@
+﻿.body {
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    width: 100vw;
+    display: grid;
+    place-content: center;
+    background-color: rgba(106, 106, 106, 0.338);
+}
+
+@keyframes ldio-dfwvx714ak4 {
+    0% {
+        transform: translate(-50%,-50%) rotate(0deg);
+    }
+
+    100% {
+        transform: translate(-50%,-50%) rotate(360deg);
+    }
+}
+
+.ldio-dfwvx714ak4 div {
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    border: 20px solid #93dbe9;
+    border-top-color: transparent;
+    border-radius: 50%;
+}
+
+.ldio-dfwvx714ak4 div {
+    animation: ldio-dfwvx714ak4 1s linear infinite;
+    top: 100px;
+    left: 100px
+}
+
+.loadingio-spinner-rolling-tq5m0olmoub {
+    width: 200px;
+    height: 200px;
+    display: inline-block;
+    overflow: hidden;
+}
+
+.ldio-dfwvx714ak4 {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform: translateZ(0) scale(1);
+    backface-visibility: hidden;
+    transform-origin: 0 0; 
+}
+
+  .ldio-dfwvx714ak4 div {
+        box-sizing: content-box;
+    }
+
