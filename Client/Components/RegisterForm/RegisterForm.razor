@@ -1,18 +1,32 @@
-﻿<h2>Witamy !</h2>
-<EditForm Model="@registerModel" OnValidSubmit="HandleValidSubmit" >
-	<div class="input">
-		<label>Email</label>
-		<InputText @bind-Value="registerModel.Email" />
-	</div>
-	<div class="input">
-		<label>Password</label>
-		<InputText @bind-Value="registerModel.Password" />
-	</div>
-</EditForm>
+﻿<div class="container">
+	<h1>Witamy !</h1>
+	<EditForm Model="@registerModel" OnValidSubmit="HandleValidSubmit" class="form">
+		<div class="input">
+			<label>Email</label>
+			<InputText @bind-Value="registerModel.Email" />
+		</div>
+		<div class="input">
+			<label>Hasło</label>
+			<InputText type="password" @bind-Value="registerModel.Password" />
+		</div>
+		<Button IsSubmit=true Content="Zarejstruj się !" />
+	</EditForm>
+</div>
+@if (SuccesfullRegister)
+{
+	<p class="register-succes">Account created !</p>
+}
+@if (FailureRegister)
+{
+	<p class="register-failure">Provided email already exist</p>
+}
 
 @code {
 	[Inject]
 	public IDataService _dataService { get; set; } = null!;
+
+	public bool SuccesfullRegister { get; set; } = false;
+	public bool FailureRegister { get; set; } = false;
 
 	RegisterModel registerModel = new();
 
@@ -20,13 +34,15 @@
 	{
 		var result = await _dataService.RegisterAsync(registerModel.Email, registerModel.Password);
 
-		if(result == System.Net.HttpStatusCode.OK)
+		if (result == System.Net.HttpStatusCode.OK)
 		{
-			// Todo
+			SuccesfullRegister = true;
+			FailureRegister = false;
 		}
 		else
 		{
-			// Todo
+			FailureRegister = true;
+			SuccesfullRegister = false;
 		}
 	}
 }
