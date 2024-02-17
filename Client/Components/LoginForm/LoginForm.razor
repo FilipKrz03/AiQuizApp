@@ -1,0 +1,35 @@
+﻿<div class="container">
+	<h1>Witamy ponownie !</h1>
+	<EditForm Model="@loginModel" OnValidSubmit="HandleValidSubmit" class="form">
+		<DataAnnotationsValidator />
+		<div class="input">
+			<label>Email</label>
+			<InputText @bind-Value="loginModel.Email" />
+		</div>
+		<div class="input">
+			<label>Hasło</label>
+			<InputText type="password" @bind-Value="loginModel.Password" />
+		</div>
+		<ValidationSummary />
+		<Button IsSubmit=true Content="Zaloguj się !" />
+	</EditForm>
+</div>
+@if (IsLoading)
+{
+	<Loading />
+}
+
+
+@code {
+	[Inject]
+	public IDataService _dataService { get; set; } = null!;
+
+	public bool IsLoading { get; set; } = false;
+
+	LoginModel loginModel = new();
+
+	private async Task HandleValidSubmit()
+	{
+		// Todo
+	}
+}
