@@ -25,7 +25,7 @@
   gap: 10px;
 }
 
-.nav-links a {
+::deep .nav-links a {
   text-decoration: none;
   padding: 10px 15px;
   transition: background-color 0.3s;
@@ -33,7 +33,7 @@
   font-size: 20px;
 }
 
-.nav-links a:hover {
+::deep .nav-links a:hover {
   color:#212529;
 }
 
@@ -53,12 +53,12 @@
   }
 }
 
-.nav-links a.active {
+::deep .nav-links a.active {
   background-color: #212529;
   color: white;
 }
 
-.nav-links a.active::after {
+::deep .nav-links a.active::after {
   content: "";
   display: block;
   width: 0;
@@ -67,7 +67,7 @@
   transition: width 0.3s;
 }
 
-.nav-links a.active:hover::after {
+::deep .nav-links a.active:hover::after {
   width: 100%;
 }
 
