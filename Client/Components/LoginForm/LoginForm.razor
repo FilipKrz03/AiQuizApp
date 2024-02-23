@@ -18,18 +18,39 @@
 {
 	<Loading />
 }
-
+@if(LoginFailed)
+{
+	<p class="login-error">Failed to log in</p>
+}
 
 @code {
 	[Inject]
 	public IDataService _dataService { get; set; } = null!;
 
+	[Inject]
+	public NavigationManager NavigationManager { get; set; } = null!;
+
 	public bool IsLoading { get; set; } = false;
+	public bool LoginFailed { get; set; } = false;
 
 	LoginModel loginModel = new();
 
 	private async Task HandleValidSubmit()
 	{
-		// Todo
+		LoginFailed = false;
+		IsLoading = true;
+
+		var authSucces = await _dataService.LoginAsync(loginModel.Email, loginModel.Password);
+
+		IsLoading = false;
+
+		if(authSucces)
+		{
+			NavigationManager.NavigateTo("/dashboard");
+		}
+		else
+		{
+			LoginFailed = true;
+		}
 	}
 }
