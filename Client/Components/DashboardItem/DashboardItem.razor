@@ -1,6 +1,6 @@
 ﻿@inject NavigationManager NavigationManager;
 
-<div class="item" @onclick=Redirect>
+<div class="item" @onclick=HandleClick>
 	<img src="@ImgSrc" class="img" />
 	<h2>@Content</h2>
 </div>
@@ -13,10 +13,23 @@
 	public string Content { get; set; } = null!;
 
 	[Parameter]
-	public string Link { get; set; } = null!;
+	public string? Link { get; set; } = null;
+
+	[Parameter]
+	public bool SeperateCallback { get; set; } = false;
+
+	[Parameter]
+	public EventCallback OnClickCallback { get; set; }
 
 	private void Redirect()
 	{
-		NavigationManager.NavigateTo(Link);
+		if (Link != null) NavigationManager.NavigateTo(Link);
+	}
+
+	private void HandleClick()
+	{
+		if (SeperateCallback) OnClickCallback.InvokeAsync();
+
+		if (SeperateCallback == false && Link != null) Redirect();
 	}
 }

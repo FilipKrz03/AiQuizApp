@@ -1,0 +1,31 @@
+﻿.wrapper{
+    min-height: 75vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width:90%;
+    margin: 0 auto;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: repeat(4, 280px);
+    justify-content: space-between;
+    width:100%
+}
+
+@media screen and (max-width: 1430px) {
+    .container {
+        margin-top: 50px;
+        grid-template-columns: repeat(2, 280px);
+        row-gap: 75px;
+        justify-content: space-evenly;
+    }
+}
+
+@media screen and (max-width: 630px) {
+    .container {
+        margin-top: 20px;
+        grid-template-columns: repeat(1,280px);
+    }
+}
