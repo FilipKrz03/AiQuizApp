@@ -1,0 +1,22 @@
+﻿@inject NavigationManager NavigationManager;
+
+<div class="item" @onclick=Redirect>
+	<img src="@ImgSrc" class="img" />
+	<h2>@Content</h2>
+</div>
+
+@code {
+	[Parameter]
+	public string ImgSrc { get; set; } = null!;
+
+	[Parameter]
+	public string Content { get; set; } = null!;
+
+	[Parameter]
+	public string Link { get; set; } = null!;
+
+	private void Redirect()
+	{
+		NavigationManager.NavigateTo(Link);
+	}
+}
