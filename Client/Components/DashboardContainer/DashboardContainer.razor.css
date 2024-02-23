@@ -1,8 +1,10 @@
 ﻿.wrapper{
-    min-height: 75vh;
+    min-height: 70vh;
     display: flex;
     justify-content: center;
     align-items: center;
+    gap:40px;
+    flex-direction:column;
     width:90%;
     margin: 0 auto;
 }
@@ -23,9 +25,13 @@
     }
 }
 
-@media screen and (max-width: 630px) {
+@media screen and (max-width: 700px) {
     .container {
         margin-top: 20px;
         grid-template-columns: repeat(1,280px);
+    }
+
+    h1{
+        font-size:25px;
     }
 }

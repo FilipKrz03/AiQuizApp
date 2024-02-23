@@ -2,8 +2,10 @@
 
 @inject NavigationManager NavigationManager;
 @inject CustomAuthStateProvider CustomAuthStateProvider;
+@inject AuthenticationStateProvider AuthenticationStateProvider;
 
 <div class="wrapper">
+	<h1>Cześć @Username !</h1>
 	<div class="container">
 		<DashboardItem Content="Twoje algorytmy" Link="/dashboard/algorithems" ImgSrc="AI2.svg" />
 		<DashboardItem Content="Twoje quizy" Link="/dashboard/quizes" ImgSrc="AI.svg" />
@@ -13,6 +15,16 @@
 </div>
 
 @code {
+
+	public string Username { get; set; } = string.Empty;
+
+	protected override async Task OnInitializedAsync()
+	{
+		var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+
+		Username = authState.User?.Identity?.Name ?? "Nie możemy znależć twojej nazwy";
+	}
+
 	private async Task HandleLogout()
 	{
 		await CustomAuthStateProvider.LogOutAsync();
