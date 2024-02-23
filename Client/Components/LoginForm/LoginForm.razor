@@ -12,15 +12,15 @@
 		</div>
 		<ValidationSummary />
 		<Button IsSubmit=true Content="Zaloguj się !" />
+		@if (LoginFailed)
+		{
+			<p class="login-error">Failed to log in check your email and password !</p>
+		}
 	</EditForm>
 </div>
 @if (IsLoading)
 {
 	<Loading />
-}
-@if(LoginFailed)
-{
-	<p class="login-error">Failed to log in</p>
 }
 
 @code {
