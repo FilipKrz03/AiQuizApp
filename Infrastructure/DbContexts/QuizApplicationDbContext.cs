@@ -15,6 +15,7 @@ namespace Infrastructure.DbContexts
         public DbSet<Quiz> Quizzes { get; set; }
         public DbSet<Question> Questions { get; set; }
         public DbSet<Answer> Answers { get; set; }
+        public DbSet<UserOwnQuiz> UserOwnQuizzes { get; set; }
 
         public QuizApplicationDbContext(DbContextOptions<QuizApplicationDbContext> options)
             : base(options) { }
@@ -35,7 +36,14 @@ namespace Infrastructure.DbContexts
                  value => AdvanceNumber.Create(value)!
                  );
 
-            modelBuilder.Entity<Answer>()
+			modelBuilder.Entity<UserOwnQuiz>()
+			   .Property(p => p.AdvanceNumber)
+			   .HasConversion(
+				AdvanceNumber => AdvanceNumber.Number,
+				value => AdvanceNumber.Create(value)!
+				);
+
+			modelBuilder.Entity<Answer>()
                 .Property(p => p.AnswerLetter)
                 .HasConversion(
                  AnswerLetter => AnswerLetter.Letter,

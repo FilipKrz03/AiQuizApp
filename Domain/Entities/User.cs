@@ -9,6 +9,6 @@ namespace Domain.Entities
 {
 	public sealed class User : IdentityUser
 	{
-		public List<Quiz> Quizzes { get; set; } = [];
+		public List<UserOwnQuiz> UserQuizzes { get; set; } = [];
 	}
 }

@@ -33,7 +33,6 @@ namespace Application.Services
 
                 var allQuizesTechnologies =
                     await quizRepository.Query()
-                    .Where(e => e.UserId == null)
                     .Select(e => e.TechnologyName)
                     .Distinct()
                     .ToListAsync(cancellationToken: stoppingToken);

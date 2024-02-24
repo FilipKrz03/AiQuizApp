@@ -9,24 +9,19 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
-	public sealed class Quiz : Entity
+	public class Quiz : Entity
 	{
 		public string Title { get; private set; } = string.Empty;
 		public string TechnologyName { get; private set; } = string.Empty;
 		public AdvanceNumber AdvanceNumber { get; private set; }
 		public List<Question> Questions { get; set; } = [];
 
-		[ForeignKey("UserId")]
-		public string? UserId { get; set; }
-		public User? User { get; set; }
-
-		public Quiz(Guid id, string title, string technologyName, AdvanceNumber advanceNumber, string? userId = null)
+		public Quiz(Guid id, string title, string technologyName, AdvanceNumber advanceNumber)
 		: base(id)
 		{
 			Title = title;
 			TechnologyName = technologyName;
 			AdvanceNumber = advanceNumber;
-			UserId = userId;
 		}
 	}
 }
