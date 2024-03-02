@@ -2,6 +2,7 @@
 using AutoMapper;
 using Azure.Core;
 using Domain.Entities;
+using Domain.Exceptions;
 using Domain.ValueObjects;
 using Infrastructure.Interfaces;
 using MediatR;
@@ -16,17 +17,24 @@ using System.Threading.Tasks;
 namespace Application.Cqrs.UserQuiz.Command.CreateAiQuiz
 {
 	public sealed class CreateAiQuizCommandHandler(
-		IServiceProvider serviceProvider
+		IServiceProvider serviceProvider,
+		IUserRepository userRepository
 		)
-		: IRequestHandler<CreateAiQuizCommand , string>
+		: IRequestHandler<CreateAiQuizCommand, string>
 	{
 		private readonly IServiceProvider _serviceProvider = serviceProvider;
+		private readonly IUserRepository _userRepository = userRepository;
 
-		public Task<string> Handle(CreateAiQuizCommand request, CancellationToken cancellationToken)
+		public async Task<string> Handle(CreateAiQuizCommand request, CancellationToken cancellationToken)
 		{
+			if(!await _userRepository.UserExistAsync(request.UserId))
+			{
+				throw new InvalidTokenClaimException();
+			}
+
 			CreateQuizAsync(request); // This is bacground job
 
-			return Task.FromResult("Quiz creation queued");
+			return ("Quiz creation queued");
 		}
 
 		private async void CreateQuizAsync(CreateAiQuizCommand request)
