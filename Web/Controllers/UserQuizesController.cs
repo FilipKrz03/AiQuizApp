@@ -1,4 +1,5 @@
 ﻿using Application.Cqrs.UserQuiz.Command.CreateAiQuiz;
+using Application.Cqrs.UserQuiz.Command.DeleteAiQuiz;
 using Application.Cqrs.UserQuiz.Query.GetUserAiQuizQuery;
 using Application.Extensions;
 using Application.Requests;
@@ -38,6 +39,14 @@ namespace Web.Controllers
 			var result = await _mediator.Send(new GetUserAiQuizQuery(quizId, User.Claims.GetId()));
 
 			return Ok(result);
+		}
+
+		[HttpDelete("{quizId}")]
+		public async Task<ActionResult> DeleteQuiz(Guid quizId)
+		{
+			await _mediator.Send(new DeleteAiQuizCommand(quizId, User.Claims.GetId()));	
+
+			return StatusCode(204);
 		}
 	}
 }
