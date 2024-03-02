@@ -18,17 +18,17 @@ namespace Web.Controllers
 		[HttpPost]
 		public async Task<ActionResult> CreateQuiz([FromBody] CreateUserOwnQuizRequest request)
 		{
-			await _mediator.Send
+			var result = await _mediator.Send
 				(
 					new CreateAiQuizCommand(
-						User.Claims.GetId()!,
+						User.Claims.GetId(),
 						request.TechnologyName,
 						request.AdvanceNumber,
 						request.QuizTitle
 						)
 				);
 
-			return Ok();
+			return Ok(result);
 		}
 	}
 }

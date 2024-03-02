@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace Application.Cqrs.UserQuiz.Command.CreateAiQuiz
 {
 	public sealed record CreateAiQuizCommand(string UserId , string TechnologyName, 
-		int AdvanceNumber, string? QuizTitle) : IRequest
+		int AdvanceNumber, string? QuizTitle) : IRequest<string>
 	{
 	}
 }

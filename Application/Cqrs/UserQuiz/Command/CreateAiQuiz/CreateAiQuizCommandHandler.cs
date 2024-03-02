@@ -5,6 +5,7 @@ using Domain.Entities;
 using Domain.ValueObjects;
 using Infrastructure.Interfaces;
 using MediatR;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -15,19 +16,28 @@ using System.Threading.Tasks;
 namespace Application.Cqrs.UserQuiz.Command.CreateAiQuiz
 {
 	public sealed class CreateAiQuizCommandHandler(
-		IRepository<UserOwnQuiz> userOwnQuizRepository,
-		IQuizesCreator quizesCreator,
-		ILogger<CreateAiQuizCommandHandler> logger
+		IServiceProvider serviceProvider
 		)
-		: IRequestHandler<CreateAiQuizCommand>
+		: IRequestHandler<CreateAiQuizCommand , string>
 	{
-		private readonly IRepository<UserOwnQuiz> _userOwnQuizRepository = userOwnQuizRepository;
-		private readonly IQuizesCreator _quizesCreator = quizesCreator;
-		private readonly ILogger<CreateAiQuizCommandHandler> _logger = logger;
+		private readonly IServiceProvider _serviceProvider = serviceProvider;
 
-		public async Task Handle(CreateAiQuizCommand request, CancellationToken cancellationToken)
+		public Task<string> Handle(CreateAiQuizCommand request, CancellationToken cancellationToken)
 		{
-			var newQuiz = await _quizesCreator.CreateAsync(
+			CreateQuizAsync(request); // This is bacground job
+
+			return Task.FromResult("Quiz creation queued");
+		}
+
+		private async void CreateQuizAsync(CreateAiQuizCommand request)
+		{
+			var scope = _serviceProvider.CreateScope();
+
+			var quizesCreator = scope.ServiceProvider.GetRequiredService<IQuizesCreator>();
+			var userOwnQuizRepository = scope.ServiceProvider.GetRequiredService<IRepository<UserOwnQuiz>>();
+			var logger = scope.ServiceProvider.GetRequiredService<ILogger<CreateAiQuizCommandHandler>>();
+
+			var newQuiz = await quizesCreator.CreateAsync(
 			request.TechnologyName,
 			AdvanceNumber.Create(request.AdvanceNumber)!,
 			request.QuizTitle
@@ -35,7 +45,7 @@ namespace Application.Cqrs.UserQuiz.Command.CreateAiQuiz
 
 			if (newQuiz == null)
 			{
-				_logger.LogWarning(
+				logger.LogWarning(
 					"Failed to create quiz, quizTechnology : {t} , advanceNumber : {a}",
 					request.TechnologyName,
 					request.AdvanceNumber
@@ -50,8 +60,8 @@ namespace Application.Cqrs.UserQuiz.Command.CreateAiQuiz
 					Questions = newQuiz.Questions
 				};
 
-			_userOwnQuizRepository.Insert(userOwnQuiz);
-			await _userOwnQuizRepository.SaveChangesAsync();
+			userOwnQuizRepository.Insert(userOwnQuiz);
+			await userOwnQuizRepository.SaveChangesAsync();
 		}
 	}
 }
