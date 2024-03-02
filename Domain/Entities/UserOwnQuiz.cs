@@ -10,15 +10,14 @@ namespace Domain.Entities
 {
 	public class UserOwnQuiz : Quiz
 	{
-		public UserOwnQuiz
-			(Guid id, string title, string technologyName, AdvanceNumber advanceNumber, string userId )
+		[ForeignKey("UserId")]
+		public string UserId { get; set; } = null!;
+		public User User { get; set; } = null!;
+
+		public UserOwnQuiz(Guid id, string title, string technologyName, AdvanceNumber advanceNumber , string userId)
 			: base(id, title, technologyName, advanceNumber)
 		{
 			UserId = userId;
 		}
-
-		[ForeignKey("UserId")]
-		public string UserId { get; set; }
-		public User User { get; set; } = null!;
 	}
 }
