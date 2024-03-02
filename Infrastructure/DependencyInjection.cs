@@ -24,6 +24,7 @@ namespace Infrastructure
             services.AddScoped<IRepository<Answer>, Repository<Answer>>();
             services.AddScoped<IRepository<Question>, Repository<Question>>();
             services.AddScoped<IRepository<UserOwnQuiz>, Repository<UserOwnQuiz>>();
+            services.AddScoped<IUserRepository, UserRepository>();
 
             return services;
         }
