@@ -22,46 +22,7 @@ namespace Infrastructure.DbContexts
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
-			modelBuilder.Entity<Question>()
-				.Property(p => p.ProperAnswerLetter)
-				.HasConversion(
-				ProperAnswerLetter => ProperAnswerLetter.Letter,
-				value => AnswerLetter.Create(value)!
-				);
-
-			modelBuilder.Entity<Quiz>()
-				.Property(p => p.AdvanceNumber)
-				.HasConversion(
-				 AdvanceNumber => AdvanceNumber.Number,
-				 value => AdvanceNumber.Create(value)!
-				 );
-
-			modelBuilder.Entity<Quiz>()
-			.HasMany(x => x.Questions)
-			.WithOne(x => x.Quiz)
-			.OnDelete(DeleteBehavior.Cascade);
-
-			modelBuilder.Entity<Question>()
-				.HasOne(x => x.Quiz)
-				.WithMany(x => x.Questions)
-				.OnDelete(DeleteBehavior.Cascade);
-
-			modelBuilder.Entity<UserOwnQuiz>()
-			  .Property(p => p.AdvanceNumber)
-			  .HasConversion(
-			   AdvanceNumber => AdvanceNumber.Number,
-			   value => AdvanceNumber.Create(value)!
-			   );
-
-			modelBuilder.Entity<Answer>()
-				.Property(p => p.AnswerLetter)
-				.HasConversion(
-				 AnswerLetter => AnswerLetter.Letter,
-				 value => AnswerLetter.Create(value)!
-				);
-
-			modelBuilder.Entity<Quiz>().ToTable("Quizzes");
-			modelBuilder.Entity<UserOwnQuiz>().ToTable("UserOwnQuizzes");
+			modelBuilder.ApplyConfigurationsFromAssembly(typeof(QuizApplicationDbContext).Assembly);
 
 			base.OnModelCreating(modelBuilder);
 		}
