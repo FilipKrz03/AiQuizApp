@@ -20,6 +20,11 @@ namespace Web.Middleware
                 context.Response.StatusCode = StatusCodes.Status404NotFound;
                 await context.Response.WriteAsync(ex.Message);
             }
+            catch(InvalidAccesTokenException ex)
+            {
+                context.Response.StatusCode = StatusCodes.Status400BadRequest;
+                await context.Response.WriteAsync(ex.Message);
+            }
             catch (Exception ex)
             {
                 _logger.LogError("ExceptionHandlingMiddleware - {ex}", ex.Message);

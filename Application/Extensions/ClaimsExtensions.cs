@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Domain.Exceptions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -9,7 +10,8 @@ namespace Application.Extensions
 {
 	public static class ClaimsExtensions
 	{
-		public static string? GetId(this IEnumerable<Claim> claims) => 
-			claims.Where(e => e.Type == ClaimTypes.NameIdentifier).FirstOrDefault()?.Value;
+		public static string GetId(this IEnumerable<Claim> claims) =>
+			claims.Where(e => e.Type == ClaimTypes.NameIdentifier).FirstOrDefault()?.Value ??
+				throw new InvalidAccesTokenException();
 	}
 }
