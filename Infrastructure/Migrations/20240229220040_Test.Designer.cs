@@ -4,6 +4,7 @@ using Infrastructure.DbContexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(QuizApplicationDbContext))]
-    partial class QuizApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240229220040_Test")]
+    partial class Test
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -64,11 +67,14 @@ namespace Infrastructure.Migrations
                     b.Property<Guid?>("UserOwnQuizId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("UserQuizId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
                     b.HasIndex("QuizId");
 
-                    b.HasIndex("UserOwnQuizId");
+                    b.HasIndex("UserQuizId");
 
                     b.ToTable("Questions");
                 });
@@ -82,6 +88,11 @@ namespace Infrastructure.Migrations
                     b.Property<int>("AdvanceNumber")
                         .HasColumnType("int");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasMaxLength(13)
+                        .HasColumnType("nvarchar(13)");
+
                     b.Property<string>("TechnologyName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -92,9 +103,11 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Quizzes", (string)null);
+                    b.ToTable("Quizzes");
 
-                    b.UseTptMappingStrategy();
+                    b.HasDiscriminator<string>("Discriminator").HasValue("Quiz");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("Domain.Entities.User", b =>
@@ -305,7 +318,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserOwnQuizzes", (string)null);
+                    b.HasDiscriminator().HasValue("UserOwnQuiz");
                 });
 
             modelBuilder.Entity("Domain.Entities.Answer", b =>
@@ -327,7 +340,7 @@ namespace Infrastructure.Migrations
 
                     b.HasOne("Domain.Entities.UserOwnQuiz", "UserOwnQuiz")
                         .WithMany()
-                        .HasForeignKey("UserOwnQuizId");
+                        .HasForeignKey("UserQuizId");
 
                     b.Navigation("Quiz");
 
@@ -387,12 +400,6 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.UserOwnQuiz", b =>
                 {
-                    b.HasOne("Domain.Entities.Quiz", null)
-                        .WithOne()
-                        .HasForeignKey("Domain.Entities.UserOwnQuiz", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Domain.Entities.User", "User")
                         .WithMany("UserQuizzes")
                         .HasForeignKey("UserId")

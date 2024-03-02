@@ -37,11 +37,11 @@ namespace Infrastructure.DbContexts
                  );
 
 			modelBuilder.Entity<UserOwnQuiz>()
-			   .Property(p => p.AdvanceNumber)
-			   .HasConversion(
-				AdvanceNumber => AdvanceNumber.Number,
-				value => AdvanceNumber.Create(value)!
-				);
+			  .Property(p => p.AdvanceNumber)
+			  .HasConversion(
+			   AdvanceNumber => AdvanceNumber.Number,
+			   value => AdvanceNumber.Create(value)!
+			   );
 
 			modelBuilder.Entity<Answer>()
                 .Property(p => p.AnswerLetter)
@@ -49,6 +49,9 @@ namespace Infrastructure.DbContexts
                  AnswerLetter => AnswerLetter.Letter,
                  value => AnswerLetter.Create(value)!
                 );
+
+            modelBuilder.Entity<Quiz>().ToTable("Quizzes");
+            modelBuilder.Entity<UserOwnQuiz>().ToTable("UserOwnQuizzes");
 
             base.OnModelCreating(modelBuilder);
         }
