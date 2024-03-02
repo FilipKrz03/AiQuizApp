@@ -1,4 +1,5 @@
 ﻿using Application.Cqrs.UserQuiz.Command.CreateAiQuiz;
+using Application.Cqrs.UserQuiz.Query.GetUserAiQuizQuery;
 using Application.Extensions;
 using Application.Requests;
 using MediatR;
@@ -27,6 +28,14 @@ namespace Web.Controllers
 						request.QuizTitle
 						)
 				);
+
+			return Ok(result);
+		}
+
+		[HttpGet("{quizId}")]
+		public async Task<ActionResult> GetQuiz(Guid quizId)
+		{
+			var result = await _mediator.Send(new GetUserAiQuizQuery(quizId, User.Claims.GetId()));
 
 			return Ok(result);
 		}

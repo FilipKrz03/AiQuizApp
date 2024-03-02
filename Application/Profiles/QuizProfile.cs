@@ -16,7 +16,7 @@ namespace Application.Profiles
             CreateMap<Quiz, QuizDetailResponseDto>()
                 .ForMember(src =>
                      src.AdvanceNumber, opt => opt.MapFrom(x => x.AdvanceNumber.Number));
-            CreateMap<Quiz, QuizBasicResponseDto>()
+			CreateMap<Quiz, QuizBasicResponseDto>()
                 .ForMember(src =>
                      src.AdvanceNumber, opt => opt.MapFrom(x => x.AdvanceNumber.Number));
         }

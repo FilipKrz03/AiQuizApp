@@ -19,5 +19,10 @@ namespace Domain.Entities
 		{
 			UserId = userId;
 		}
+
+		public UserOwnQuiz(Guid id, string title, string technologyName, AdvanceNumber advanceNumber)
+			: base(id, title, technologyName, advanceNumber)
+		{
+		}
 	}
 }
