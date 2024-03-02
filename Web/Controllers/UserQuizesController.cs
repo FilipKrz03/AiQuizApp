@@ -1,4 +1,6 @@
-﻿using Application.Cqrs.UserQuiz.Command.CreateQuizCommand;
+﻿using Application.Cqrs.UserQuiz.Command.CreateAiQuiz;
+using Application.Extensions;
+using Application.Requests;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -14,11 +16,19 @@ namespace Web.Controllers
 		private readonly IMediator _mediator = mediator;
 
 		[HttpPost]
-		public async Task<ActionResult> CreateQuiz([FromBody] CreateAiQuizCommand command)
+		public async Task<ActionResult> CreateQuiz([FromBody] CreateUserOwnQuizRequest request)
 		{
-			var result = await _mediator.Send(command);
+			await _mediator.Send
+				(
+					new CreateAiQuizCommand(
+						User.Claims.GetId()!,
+						request.TechnologyName,
+						request.AdvanceNumber,
+						request.QuizTitle
+						)
+				);
 
-			return Ok(result);
+			return Ok();
 		}
 	}
 }

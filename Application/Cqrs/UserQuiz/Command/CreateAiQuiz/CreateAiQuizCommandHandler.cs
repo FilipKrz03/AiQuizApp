@@ -44,9 +44,12 @@ namespace Application.Cqrs.UserQuiz.Command.CreateAiQuiz
 				return;
 			}
 
-			var userOwnQuiz = 
-				new UserOwnQuiz(newQuiz.Id, newQuiz.Title, newQuiz.TechnologyName, newQuiz.AdvanceNumber, request.UserId);
-		
+			UserOwnQuiz userOwnQuiz =
+				new(newQuiz.Id, newQuiz.Title, newQuiz.TechnologyName, newQuiz.AdvanceNumber, request.UserId)
+				{
+					Questions = newQuiz.Questions
+				};
+
 			_userOwnQuizRepository.Insert(userOwnQuiz);
 			await _userOwnQuizRepository.SaveChangesAsync();
 		}

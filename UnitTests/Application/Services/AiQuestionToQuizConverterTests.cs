@@ -92,11 +92,11 @@ namespace UnitTests.Application.Services
 
             quiz.Id
                 .Should()
-                .Be(quiz.Questions[0].QuizId);
+                .Be((Guid)quiz.Questions[0].QuizId!);
 
             quiz.Id
                 .Should()
-                .Be(quiz.Questions[1].QuizId);
+                .Be((Guid)quiz.Questions[1].QuizId!);
         }
 
         [Fact]
