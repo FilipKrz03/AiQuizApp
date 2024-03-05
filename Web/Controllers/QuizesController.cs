@@ -2,6 +2,8 @@
 using Application.Cqrs.Quiz.Query.GetQuiz;
 using Application.Cqrs.Quiz.Query.GetQuizes;
 using Application.Dto;
+using Application.Extensions;
+using Azure;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -28,9 +30,9 @@ namespace Web.Controllers
         {
             var result = await _mediator.Send(new GetQuizesQuery(resourceParamethers));
 
-			Response.Headers.Append("X-Pagination", result.CreatePaginationMetadataAsString());
+            Response.AddPaginationHeader(result);
 
-			return Ok(result);
+            return Ok(result);
         }
     }
 }

@@ -59,7 +59,7 @@ namespace Web.Controllers
 				resourceParamethers
 				));
 
-			Response.Headers.Append("X-Pagination", result.CreatePaginationMetadataAsString());
+			Response.AddPaginationHeader(result);
 
 			return Ok(result);
 		}
