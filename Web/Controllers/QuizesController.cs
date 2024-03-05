@@ -28,7 +28,9 @@ namespace Web.Controllers
         {
             var result = await _mediator.Send(new GetQuizesQuery(resourceParamethers));
 
-            return Ok(result);
+			Response.Headers.Append("X-Pagination", result.CreatePaginationMetadataAsString());
+
+			return Ok(result);
         }
     }
 }
