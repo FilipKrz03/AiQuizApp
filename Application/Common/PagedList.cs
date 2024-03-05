@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 
 namespace Application.Common
@@ -17,6 +19,17 @@ namespace Application.Common
 
         public bool HasPrevious => PageNumber > 1;
         public bool HasNext => PageNumber < TotalPages;
+
+        
+        private PaginationMetadata<T> CreatePaginationMetadata()
+        {
+            return new PaginationMetadata<T>(this);
+        }
+
+        public string CreatePaginationMetadataAsString()
+        {
+            return JsonSerializer.Serialize(CreatePaginationMetadata());
+        }
 
         public PagedList(List<T> items, int pageSize, int pageNumber, int totalCount)
         {
