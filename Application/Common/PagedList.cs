@@ -20,8 +20,17 @@ namespace Application.Common
         public bool HasPrevious => PageNumber > 1;
         public bool HasNext => PageNumber < TotalPages;
 
-        
-        private PaginationMetadata<T> CreatePaginationMetadata()
+
+		public PagedList(List<T> items, int pageSize, int pageNumber, int totalCount)
+		{
+			PageSize = pageSize;
+			PageNumber = pageNumber;
+			TotalCount = totalCount;
+			TotalPages = (int)Math.Ceiling(TotalCount / (double)PageSize);
+			AddRange(items);
+		}
+
+		private PaginationMetadata<T> CreatePaginationMetadata()
         {
             return new PaginationMetadata<T>(this);
         }
@@ -29,15 +38,6 @@ namespace Application.Common
         public string CreatePaginationMetadataAsString()
         {
             return JsonSerializer.Serialize(CreatePaginationMetadata());
-        }
-
-        public PagedList(List<T> items, int pageSize, int pageNumber, int totalCount)
-        {
-            PageSize = pageSize;
-            PageNumber = pageNumber;
-            TotalCount = totalCount;
-            TotalPages = (int)Math.Ceiling(TotalCount / (double)PageSize);
-            AddRange(items);
         }
 
         public static async Task<PagedList<T>> CreateAsync(IQueryable<T> source, int pageSize, int pageNumber)
