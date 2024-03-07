@@ -1,0 +1,34 @@
+﻿@using Client.Components.QuizDetailContainer
+
+@page "/dashboard/quizes/{QuizId}"
+
+@attribute [Authorize]
+
+@if (Quiz != null && !IsLoading)
+{
+	<QuizDetailContainer Quiz="Quiz" />
+}
+@if (IsLoading)
+{
+	<Loading />
+}
+
+@code {
+	[Inject]
+	public IDataService _quizDataService { get; set; } = null!;
+
+	[Parameter]
+	public string QuizId { get; set; } = null!;
+
+	public bool IsLoading { get; set; } = true;
+
+	public QuizDetailResponseDto? Quiz { get; set; }
+
+	protected override async Task OnInitializedAsync()
+	{
+		var quiz = await _quizDataService.GetUserQuizDetailAsync(QuizId);
+		Quiz = quiz;
+
+		IsLoading = false;
+	}
+}

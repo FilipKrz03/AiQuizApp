@@ -3,11 +3,14 @@
 <div class="container">
 	@foreach(var quiz in Quizes)
 	{
-		<QuizItem Quiz=quiz />
+		<QuizItem Quiz=quiz IsQuizLimitedToUser="AreQuizesLimitedToUser" />
 	}
 </div>
 
 @code {
 	[Parameter]
 	public IEnumerable<QuizBasicResponseDto> Quizes { get; set; } = null!;
+
+	[Parameter]
+	public bool AreQuizesLimitedToUser { get; set; } = false;
 }

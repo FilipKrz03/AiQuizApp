@@ -1,4 +1,4 @@
-﻿<div class="item" @onclick='(() => NavigationManager.NavigateTo($"quizes/{Quiz.Id}"))'>
+﻿<div class="item" @onclick='(() => NavigationManager.NavigateTo(GetQuizPath()))'>
 	<h3>@Quiz.Title</h3>
 	<p>Advance number : @Quiz.AdvanceNumber / 10</p>
 </div>
@@ -9,4 +9,10 @@
 
 	[Parameter]
 	public QuizBasicResponseDto Quiz { get; set; } = null!;
+
+	[Parameter]
+	public bool IsQuizLimitedToUser { get; set; } = false;
+
+	private string GetQuizPath() => 
+		IsQuizLimitedToUser ? $"dashboard/quizes/{Quiz.Id}" : $"quizes/{Quiz.Id}";
 }

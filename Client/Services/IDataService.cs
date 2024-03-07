@@ -9,5 +9,6 @@ namespace Client.Services
 		Task<System.Net.HttpStatusCode> RegisterAsync(string email, string password);
 		Task<bool> LoginAsync(string email, string password);
 		Task<IEnumerable<QuizBasicResponseDto>> GetUserQuizesAsync();
+		Task<QuizDetailResponseDto> GetUserQuizDetailAsync(string quizId);
 	}
 }
