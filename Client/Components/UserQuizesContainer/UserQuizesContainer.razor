@@ -1,14 +1,22 @@
 ﻿@using Client.Components.QuizesContainer
 @inject IDataService _dataService
 
-<div class="container">
-	<div class="main-info">
-		<p>You created @Quizes.Count() quizes !</p>
-		<Button Content="Create Quiz" />
+@if (!IsLoading)
+{
+	<div class="container">
+		<div class="main-info">
+			<p>
+				Stworzyłeś
+				<span class="bolder-font">
+					@Quizes.Count() quiz@(GetQuizesWordSufix()) !
+				</span>
+			</p>
+			<Button Content="Stwórz quiz" Secondary=true />
+		</div>
+		<QuizesContainer Quizes="Quizes" AreQuizesLimitedToUser=true />
 	</div>
-	<QuizesContainer Quizes="Quizes" AreQuizesLimitedToUser=true />
-</div>
-@if(IsLoading)
+}
+@if (IsLoading)
 {
 	<Loading />
 }
@@ -23,5 +31,15 @@
 		IsLoading = true;
 		Quizes = await _dataService.GetUserQuizesAsync();
 		IsLoading = false;
+	}
+
+	private string GetQuizesWordSufix()
+	{
+		var quizesCount = Quizes.Count();
+
+		if (quizesCount == 1) return "";
+		if (quizesCount > 1 && quizesCount < 5) return "y";
+
+		return "ów";
 	}
 }
