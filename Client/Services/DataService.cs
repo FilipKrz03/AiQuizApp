@@ -11,12 +11,14 @@ namespace Client.Services
 	public class DataService(
 		HttpClient httpClient,
 		ILocalStorageService localStorageService,
-		CustomAuthStateProvider authenticationStateProvider
+		CustomAuthStateProvider authenticationStateProvider , 
+		AccessTokenRequestHandler accessTokenRequestHandler
 		) : IDataService
 	{
 		private readonly HttpClient _httpClient = httpClient;
 		private readonly ILocalStorageService _localStorageService = localStorageService;
 		private readonly CustomAuthStateProvider _authenticationStateProvider = authenticationStateProvider;
+		private readonly AccessTokenRequestHandler _accessTokenRequestHandler = accessTokenRequestHandler;
 
 		public async Task<IEnumerable<QuizBasicResponseDto>> GetQuizes()
 		{
@@ -77,6 +79,17 @@ namespace Client.Services
 			await _authenticationStateProvider.AuthenticateAsync(new User(email));
 
 			return true;
+		}
+
+
+		public async Task<IEnumerable<QuizBasicResponseDto>> GetUserQuizesAsync()
+		{
+			var result = await _httpClient.GetAsync("api/user/quizes");
+
+			var data = JsonConvert.DeserializeObject<IEnumerable<QuizBasicResponseDto>>
+				(await result.Content.ReadAsStringAsync());
+
+			return data!;
 		}
 	}
 }

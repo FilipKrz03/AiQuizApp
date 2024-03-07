@@ -9,7 +9,14 @@ var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
-builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+builder.Services.AddHttpClient("Api",
+	client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress))
+	.AddHttpMessageHandler<AccessTokenRequestHandler>();
+
+builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>()
+.CreateClient("Api"));
+
+
 builder.Services.AddScoped<AccessTokenRequestHandler>();
 builder.Services.AddScoped<IDataService, DataService>();
 builder.Services.AddScoped<CustomAuthStateProvider>();

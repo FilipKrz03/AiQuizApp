@@ -10,12 +10,11 @@ namespace Client.Services
 {
 	public class AccessTokenRequestHandler(
 		ILocalStorageService localStorageService,
-		HttpClient httpClient,
 		CustomAuthStateProvider authenticationStateProvider
 		) : DelegatingHandler
 	{
 		private readonly ILocalStorageService _localStorageService = localStorageService;
-		private readonly HttpClient _httpClient = httpClient;
+		private readonly HttpClient _httpClient = new();
 		private readonly CustomAuthStateProvider _authenticationStateProvider = authenticationStateProvider;
 
 		protected async override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)

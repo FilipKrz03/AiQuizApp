@@ -1,0 +1,27 @@
+﻿@using Client.Components.QuizesContainer
+@inject IDataService _dataService
+
+<div class="container">
+	<div class="main-info">
+		<p>You created @Quizes.Count() quizes !</p>
+		<Button Content="Create Quiz" />
+	</div>
+	<QuizesContainer Quizes="Quizes" />
+</div>
+@if(IsLoading)
+{
+	<Loading />
+}
+
+@code {
+
+	public IEnumerable<QuizBasicResponseDto> Quizes { get; set; } = [];
+	public bool IsLoading { get; set; } = false;
+
+	protected override async Task OnInitializedAsync()
+	{
+		IsLoading = true;
+		Quizes = await _dataService.GetUserQuizesAsync();
+		IsLoading = false;
+	}
+}
