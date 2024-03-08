@@ -1,4 +1,5 @@
 using Blazored.LocalStorage;
+using Blazored.Modal;
 using Client;
 using Client.Services;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -16,12 +17,12 @@ builder.Services.AddHttpClient("Api",
 builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>()
 .CreateClient("Api"));
 
-
 builder.Services.AddScoped<AccessTokenRequestHandler>();
 builder.Services.AddScoped<IDataService, DataService>();
 builder.Services.AddScoped<CustomAuthStateProvider>();
 builder.Services.AddScoped<AuthenticationStateProvider>(provider => provider.GetRequiredService<CustomAuthStateProvider>());
 builder.Services.AddAuthorizationCore();
 builder.Services.AddBlazoredLocalStorage();
+builder.Services.AddBlazoredModal();
 
 await builder.Build().RunAsync();
