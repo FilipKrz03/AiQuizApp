@@ -1,4 +1,5 @@
 ﻿using Application.Dto;
+using Client.Models;
 
 namespace Client.Services
 {
@@ -10,5 +11,6 @@ namespace Client.Services
 		Task<bool> LoginAsync(string email, string password);
 		Task<IEnumerable<QuizBasicResponseDto>> GetUserQuizesAsync();
 		Task<QuizDetailResponseDto> GetUserQuizDetailAsync(string quizId);
+		Task<bool> SendCreateUserQuizRequestAsync(CreationQuizDataModel quizToCreateData);
 	}
 }

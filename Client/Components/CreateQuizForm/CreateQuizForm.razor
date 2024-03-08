@@ -1,0 +1,38 @@
+﻿@inject IDataService _dataService
+
+<EditForm Model="creationQuizData" OnValidSubmit="HandleValidSubmit">
+	<div class="input">
+		<label>Wybierz poziom zaawansowania quizu</label>
+		<InputSelect @bind-Value="creationQuizData.AdvanceNumber">
+			<option value="1">1</option> 
+			<option value="2">2</option>
+			<option value="3">3</option>
+			<option value="4">4</option>
+			<option value="5">5</option>
+			<option value="6">6</option>
+			<option value="7">7</option>
+			<option value="8">8</option>
+			<option value="9">9</option>
+			<option value="10">10</option>
+		</InputSelect>
+	</div>
+	<div class="input">
+		<label>Wpisz technologię quizu</label>
+		<InputText @bind-Value="creationQuizData.TechnologyName" />
+	</div>
+	<div class="input">
+		<label>Podaj tytuł quizu</label>
+		<InputText @bind-Value="creationQuizData.QuizTitle" />
+	</div>
+	<Button Content="Stwórz" IsSubmit=true />
+</EditForm>
+
+
+@code {
+	public CreationQuizDataModel creationQuizData = new();
+
+	public async Task HandleValidSubmit()
+	{
+		var result = await _dataService.SendCreateUserQuizRequestAsync(creationQuizData);
+	}
+}

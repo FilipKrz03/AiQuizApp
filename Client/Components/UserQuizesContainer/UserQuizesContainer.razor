@@ -1,5 +1,7 @@
 ﻿@using Client.Components.QuizesContainer
 @using Client.Components.LoginForm
+@using Client.Components.CreateQuizForm
+
 @inject IDataService _dataService
 
 @if (!IsLoading)
@@ -16,6 +18,7 @@
 		</div>
 		<QuizesContainer Quizes="Quizes" AreQuizesLimitedToUser=true />
 	</div>
+	<CreateQuizForm />
 }
 @if (IsLoading)
 {

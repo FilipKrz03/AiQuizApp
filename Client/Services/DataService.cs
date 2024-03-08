@@ -100,5 +100,12 @@ namespace Client.Services
 
 			return data!;
 		}
+
+		public async Task<bool> SendCreateUserQuizRequestAsync(CreationQuizDataModel quizToCreateData)
+		{
+			var result = await _httpClient.PostAsJsonAsync("api/user/quizes" , quizToCreateData);
+
+			return result.IsSuccessStatusCode;
+		}
 	}
 }
