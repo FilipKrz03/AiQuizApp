@@ -3,6 +3,7 @@
 @using Client.Components.CreateQuizForm
 
 @inject IDataService _dataService
+@inject IModalService _modalService
 
 @if (!IsLoading)
 {
@@ -14,11 +15,10 @@
 					@Quizes.Count() quiz@(GetQuizesWordSufix()) !
 				</span>
 			</p>
-			<Button Content="Stwórz quiz" Secondary=true />
+			<Button Content="Stwórz quiz" Secondary=true OnClickCallback="ShowCreateQuizModal" />
 		</div>
 		<QuizesContainer Quizes="Quizes" AreQuizesLimitedToUser=true />
 	</div>
-	<CreateQuizForm />
 }
 @if (IsLoading)
 {
@@ -35,6 +35,11 @@
 		IsLoading = true;
 		Quizes = await _dataService.GetUserQuizesAsync();
 		IsLoading = false;
+	}
+
+	private void ShowCreateQuizModal()
+	{
+		var modal = _modalService.Show<CreateQuizForm>("Stworz quiz !");
 	}
 
 	private string GetQuizesWordSufix()

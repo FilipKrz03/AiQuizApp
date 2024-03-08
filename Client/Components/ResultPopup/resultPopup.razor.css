@@ -1,0 +1,11 @@
+﻿.succes {
+    color: green;
+    font-weight: bolder;
+    padding: 0em 2em;
+}
+
+.failure {
+    color: red;
+    font-weight: bolder;
+    padding: 0em 2em;
+}
