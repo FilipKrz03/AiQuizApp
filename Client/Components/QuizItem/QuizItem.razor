@@ -1,6 +1,14 @@
 ﻿<div class="item" @onclick='(() => NavigationManager.NavigateTo(GetQuizPath()))'>
 	<h3>@Quiz.Title</h3>
 	<p>Advance number : @Quiz.AdvanceNumber / 10</p>
+	@if(IsQuizLimitedToUser)
+	{
+		<img 
+			@onclick:stopPropagation="true"
+			@onclick:preventDefault="true"
+			src="delete.png" alt="Delete Icon" class="delete-icon" @onclick="(()=>OnDelete.InvokeAsync(Quiz.Id))"
+			/>
+	}
 </div>
 
 @code {
@@ -12,6 +20,9 @@
 
 	[Parameter]
 	public bool IsQuizLimitedToUser { get; set; } = false;
+
+	[Parameter]
+	public EventCallback<Guid> OnDelete { get; set; } = default!;
 
 	private string GetQuizPath() => 
 		IsQuizLimitedToUser ? $"dashboard/quizes/{Quiz.Id}" : $"quizes/{Quiz.Id}";

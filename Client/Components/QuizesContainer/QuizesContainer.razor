@@ -1,11 +1,19 @@
 ﻿@using Client.Components.QuizItem
+@using Client.Components.ResultPopup
+
+@inject IDataService _dataService
+@inject IModalService _modalService
 
 <div class="container">
 	@foreach(var quiz in Quizes)
 	{
-		<QuizItem Quiz=quiz IsQuizLimitedToUser="AreQuizesLimitedToUser" />
+		<QuizItem Quiz=quiz IsQuizLimitedToUser="AreQuizesLimitedToUser" OnDelete="DeleteUserQuiz" />
 	}
 </div>
+@if(IsLoading)
+{
+	<Loading />
+}
 
 @code {
 	[Parameter]
@@ -13,4 +21,30 @@
 
 	[Parameter]
 	public bool AreQuizesLimitedToUser { get; set; } = false;
+
+	public bool IsLoading { get; set; } = false;
+
+	public async Task DeleteUserQuiz(Guid quizId)
+	{
+		if (!AreQuizesLimitedToUser) return;
+
+		IsLoading = true;
+
+		var result = await _dataService.DeleteQuizAsync(quizId);
+
+		IsLoading = false;
+
+		if(result)
+		{
+			Quizes = Quizes.Where(x => x.Id != quizId);
+		}
+		else
+		{
+			var modalParameters = new ModalParameters()
+				.Add(nameof(ResultPopup.IsSucces), false)
+				.Add(nameof(ResultPopup.Message), "Something went wrong when deleting");
+
+			_modalService.Show<ResultPopup>(modalParameters);
+		}
+	}
 }

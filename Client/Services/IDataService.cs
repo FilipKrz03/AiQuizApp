@@ -12,5 +12,6 @@ namespace Client.Services
 		Task<IEnumerable<QuizBasicResponseDto>> GetUserQuizesAsync();
 		Task<QuizDetailResponseDto> GetUserQuizDetailAsync(string quizId);
 		Task<bool> SendCreateUserQuizRequestAsync(CreationQuizDataModel quizToCreateData);
+		Task<bool> DeleteQuizAsync(Guid quizId);
 	}
 }

@@ -30,6 +30,11 @@
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 
+.delete-icon{
+    width:30px;
+    height:30px;
+}
+
 @keyframes fall {
   from {
     transform: translateY(-25px);

@@ -107,5 +107,12 @@ namespace Client.Services
 
 			return result.IsSuccessStatusCode;
 		}
+
+		public async Task<bool> DeleteQuizAsync(Guid quizId)
+		{
+			var result = await _httpClient.DeleteAsync($"api/user/quizes/{quizId}");
+
+			return result.IsSuccessStatusCode;
+		}
 	}
 }
