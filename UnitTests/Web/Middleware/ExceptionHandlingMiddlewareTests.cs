@@ -30,31 +30,57 @@ namespace UnitTests.Web.Middleware
         [Fact]
         public async Task Middleware_Should_CatchResourceNotFoundException_WhenThrown()
         {
-            var responseStream = new MemoryStream();
-            _context.Response.Body = responseStream;
-
             var next = new RequestDelegate(_ => throw new ResourceNotFoundException(Guid.NewGuid()));
 
             await _middleware.InvokeAsync(_context, next);
-
-            responseStream.Position = 0;
 
             _context.Response.StatusCode
                 .Should()
                 .Be(StatusCodes.Status404NotFound);
         }
 
-        [Fact]
+		[Fact]
+		public async Task Middleware_Should_CatchInvalidAccesTokenException_WhenThrown()
+		{
+			var next = new RequestDelegate(_ => throw new InvalidAccesTokenException());
+
+			await _middleware.InvokeAsync(_context, next);
+
+			_context.Response.StatusCode
+				.Should()
+				.Be(StatusCodes.Status400BadRequest);
+		}
+
+		[Fact]
+		public async Task Middleware_Should_CatchInvalidTokenClaimException_WhenThrown()
+		{
+			var next = new RequestDelegate(_ => throw new InvalidTokenClaimException());
+
+			await _middleware.InvokeAsync(_context, next);
+
+			_context.Response.StatusCode
+				.Should()
+				.Be(StatusCodes.Status400BadRequest);
+		}
+
+		[Fact]
+		public async Task Middleware_Should_CatchResourceAlreadyNotExistException_WhenThrown()
+		{
+			var next = new RequestDelegate(_ => throw new ResourceAlreadyNotExistException(Guid.NewGuid()));
+
+			await _middleware.InvokeAsync(_context, next);
+
+			_context.Response.StatusCode
+				.Should()
+				.Be(StatusCodes.Status404NotFound);
+		}
+
+		[Fact]
         public async Task Middleware_Should_CatchAnyOtherUnkownException_WhenThrown()
         {
-            var responseStream = new MemoryStream();
-            _context.Response.Body = responseStream;
-
             var next = new RequestDelegate(_ => throw new AccessViolationException()); // Unkown
 
             await _middleware.InvokeAsync(_context, next);
-
-            responseStream.Position = 0;
 
             _context.Response.StatusCode
                 .Should()
