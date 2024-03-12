@@ -66,7 +66,7 @@ namespace Application.Services
         {
             Random random = new();
 
-            return AdvanceNumber.Create(random.Next(0, 10))!;
+            return AdvanceNumber.Create(random.Next(1, 10))!;
         }
     }
 }

@@ -2,6 +2,7 @@
 using AutoMapper;
 using Azure.Core;
 using Domain.Entities;
+using Domain.Enum;
 using Domain.Exceptions;
 using Domain.ValueObjects;
 using Infrastructure.Interfaces;
@@ -18,7 +19,7 @@ namespace Application.Cqrs.UserQuiz.Command.CreateAiQuiz
 {
 	public sealed class CreateAiQuizCommandHandler(
 		IServiceProvider serviceProvider,
-		IUserRepository userRepository
+		IUserRepository userRepository  
 		)
 		: IRequestHandler<CreateAiQuizCommand, string>
 	{
@@ -44,6 +45,15 @@ namespace Application.Cqrs.UserQuiz.Command.CreateAiQuiz
 			var quizesCreator = scope.ServiceProvider.GetRequiredService<IQuizesCreator>();
 			var userOwnQuizRepository = scope.ServiceProvider.GetRequiredService<IRepository<UserOwnQuiz>>();
 			var logger = scope.ServiceProvider.GetRequiredService<ILogger<CreateAiQuizCommandHandler>>();
+			var questionRepository = scope.ServiceProvider.GetRequiredService<IRepository<Question>>();
+
+			var quizId = Guid.NewGuid();
+
+			UserOwnQuiz userOwnQuiz =
+				new(quizId, request.QuizTitle, request.TechnologyName, AdvanceNumber.Create(request.AdvanceNumber)! , request.UserId);
+
+			userOwnQuizRepository.Insert(userOwnQuiz);
+			await userOwnQuizRepository.SaveChangesAsync();
 
 			var newQuiz = await quizesCreator.CreateAsync(
 			request.TechnologyName,
@@ -59,16 +69,21 @@ namespace Application.Cqrs.UserQuiz.Command.CreateAiQuiz
 					request.AdvanceNumber
 					);
 
+				userOwnQuiz.CreationStatus = CreationStatus.Failed;
+				await userOwnQuizRepository.SaveChangesAsync();
+
 				return;
 			}
 
-			UserOwnQuiz userOwnQuiz =
-				new(newQuiz.Id, newQuiz.Title, newQuiz.TechnologyName, newQuiz.AdvanceNumber, request.UserId)
-				{
-					Questions = newQuiz.Questions
-				};
+			foreach(var question in newQuiz.Questions)
+			{
+				question.QuizId = quizId;
+			}
+	
+			userOwnQuiz.CreationStatus = CreationStatus.Succes;
+			questionRepository.AddRange(newQuiz.Questions);
 
-			userOwnQuizRepository.Insert(userOwnQuiz);
+			
 			await userOwnQuizRepository.SaveChangesAsync();
 		}
 	}

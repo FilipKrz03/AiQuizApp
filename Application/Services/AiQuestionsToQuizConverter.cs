@@ -20,8 +20,6 @@ namespace Application.Services
         {
             var quizId = Guid.NewGuid();
 
-            quizTitle ??= technologyName + " - " + "Level: " + advanceNumber.Number + "/10";
-
             Quiz quiz = new(quizId, quizTitle, technologyName, advanceNumber)
             {
                 Questions = GetQuestions(response, quizId).ToList()
