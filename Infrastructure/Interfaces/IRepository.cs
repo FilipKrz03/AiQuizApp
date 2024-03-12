@@ -17,5 +17,5 @@ namespace Infrastructure.Interfaces
         Task<T?> GetByIdAsync(Guid id);
         Task<bool> EntityExistAsync(Guid id);
         Task SaveChangesAsync();
-    }
+	}
 }

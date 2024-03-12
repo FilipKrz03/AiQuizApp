@@ -20,11 +20,11 @@ namespace Infrastructure
             services.AddDbContext<QuizApplicationDbContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddScoped<IRepository<Quiz>, Repository<Quiz>>();
-            services.AddScoped<IRepository<Answer>, Repository<Answer>>();
-            services.AddScoped<IRepository<Question>, Repository<Question>>();
-            services.AddScoped<IRepository<UserOwnQuiz>, Repository<UserOwnQuiz>>();
-            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddTransient<IRepository<Quiz>, Repository<Quiz>>();
+            services.AddTransient<IRepository<Answer>, Repository<Answer>>();
+            services.AddTransient<IRepository<Question>, Repository<Question>>();
+            services.AddTransient<IRepository<UserOwnQuiz>, Repository<UserOwnQuiz>>();
+            services.AddTransient<IUserRepository, UserRepository>();
 
             return services;
         }
