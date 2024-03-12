@@ -16,12 +16,12 @@ namespace Domain.Entities
 		public AdvanceNumber AdvanceNumber { get; private set; }
 		public List<Question> Questions { get; set; } = [];
 
-		public Quiz(Guid id, string title, string technologyName, AdvanceNumber advanceNumber)
+		public Quiz(Guid id, string? title, string technologyName, AdvanceNumber advanceNumber)
 		: base(id)
 		{
-			Title = title;
 			TechnologyName = technologyName;
 			AdvanceNumber = advanceNumber;
+			Title = title ?? technologyName + " - " + "Level: " + advanceNumber.Number + "/10";
 		}
 	}
 }
