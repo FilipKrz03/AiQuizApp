@@ -26,6 +26,7 @@ builder.Services.AddIdentityCore<User>(cfg =>
     cfg.Password.RequireUppercase = true;
     cfg.Password.RequireDigit = true;
     cfg.Password.RequiredLength = 6;
+    cfg.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(1);
 })
     .AddEntityFrameworkStores<QuizApplicationDbContext>()
     .AddApiEndpoints();

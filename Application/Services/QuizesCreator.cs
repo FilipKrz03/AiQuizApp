@@ -17,52 +17,81 @@ using Domain.Entities;
 
 namespace Application.Services
 {
-    public class QuizesCreator(
-        ILogger<QuizesCreator> logger,
-        IAiQuestionsToQuizConverter aiQuestionToQuizConverter
-            ) : IQuizesCreator
-    {
-        private readonly ILogger<QuizesCreator> _logger = logger;
-        private readonly IAiQuestionsToQuizConverter _aiQuestionToQuizConverter = aiQuestionToQuizConverter;
+	public class QuizesCreator(
+		ILogger<QuizesCreator> logger,
+		IAiQuestionsConverter aiQuestionConverter
+			) : IQuizesCreator
+	{
+		private readonly ILogger<QuizesCreator> _logger = logger;
+		private readonly IAiQuestionsConverter _aiQuestionConverter = aiQuestionConverter;
 
-        public async Task<Quiz?> CreateAsync(string technologyName, AdvanceNumber advanceNumber , string? quizTitle)
-        {
-            var openAiService = new OpenAIService(new OpenAiOptions()
-            {
-                ApiKey = Environment.GetEnvironmentVariable("OpenAiApiKey")!,
-                DefaultModelId = Models.Gpt_3_5_Turbo
-            });
+		public async Task<Quiz?> CreateAsync(string technologyName, AdvanceNumber advanceNumber, string? quizTitle)
+		{
+			var body = await CreateQuizQuestionsByAiAsync(technologyName, advanceNumber);
 
-            var completionResult =
-                await openAiService.ChatCompletion.CreateCompletion(new ChatCompletionCreateRequest()
-                {
-                    Messages = new List<ChatMessage>
-                    {
-                        ChatMessage.FromSystem(GptPrompts.CreateQuizPrompt(technologyName , advanceNumber.Number))
-                    }
-                });
+			if (body == null) return null;
+	
+			try
+			{
+				var questions = JsonConvert.DeserializeObject<IEnumerable<QuestionAiResponseDto>>(body);
 
-            var body = completionResult.Choices.First().Message.Content;
+				var quiz = _aiQuestionConverter.ConvertToQuiz(questions!, technologyName, advanceNumber, quizTitle);
 
-            if (body == null)
-            {
-                _logger.LogWarning("Quizes creator - body of Ai response is null !");
-                return null;
-            }
+				return quiz;
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError("Quizes creator - {ex}", ex);
+				return null;
+			}
+		}
 
-            try
-            {
-                var questions = JsonConvert.DeserializeObject<IEnumerable<QuestionAiResponseDto>>(body);
+		public async Task<IEnumerable<Question>?> GetQuizQuestionsAsync(string technologyName, AdvanceNumber advanceNumber, Guid quizId)
+		{
+			var body = await CreateQuizQuestionsByAiAsync(technologyName, advanceNumber);
 
-                var quiz = _aiQuestionToQuizConverter.Convert(questions!, technologyName, advanceNumber , quizTitle);
+			if (body == null) return null;
 
-                return quiz;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError("Quizes creator - {ex}", ex);
-                return null;
-            }
-        }
-    }
+			try
+			{
+				var questions = JsonConvert.DeserializeObject<IEnumerable<QuestionAiResponseDto>>(body);
+
+				var convertedQuestions = _aiQuestionConverter.ConvertToQuestions(questions!, quizId);
+
+				return convertedQuestions;
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError("Quizes creator - {ex}", ex);
+				return null;
+			}
+		}
+
+		private async Task<string?> CreateQuizQuestionsByAiAsync(string technologyName, AdvanceNumber advanceNumber)
+		{
+			var openAiService = new OpenAIService(new OpenAiOptions()
+			{
+				ApiKey = Environment.GetEnvironmentVariable("OpenAiApiKey")!,
+				DefaultModelId = Models.Gpt_3_5_Turbo
+			});
+
+			var completionResult =
+				await openAiService.ChatCompletion.CreateCompletion(new ChatCompletionCreateRequest()
+				{
+					Messages = new List<ChatMessage>
+					{
+						ChatMessage.FromSystem(GptPrompts.CreateQuizPrompt(technologyName , advanceNumber.Number))
+					}
+				});
+
+			var body = completionResult.Choices.First().Message.Content;
+
+			if (body == null)
+			{
+				_logger.LogWarning("Quizes creator - body of Ai response is null !");
+			}
+
+			return body;
+		}
+	}
 }

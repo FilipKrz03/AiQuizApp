@@ -15,8 +15,8 @@ namespace UnitTests.Application.Services
 {
     public class AiQuestionToQuizConverterTests
     {
-        private readonly Mock<ILogger<AiQuestionsToQuizConverter>> _loggerMock;
-        private readonly AiQuestionsToQuizConverter _aiQuestionsToQuizConverter;
+        private readonly Mock<ILogger<AiQuestionsConverter>> _loggerMock;
+        private readonly AiQuestionsConverter _aiQuestionsToQuizConverter;
 
         public AiQuestionToQuizConverterTests()
         {

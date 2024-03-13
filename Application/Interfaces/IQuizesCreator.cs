@@ -15,5 +15,9 @@ namespace Application.Interfaces
             AdvanceNumber advanceNumber ,
             string? quizTitle
             );
-    }
+        Task<IEnumerable<Question>?> GetQuizQuestionsAsync(
+            string technologyName,
+            AdvanceNumber advanceNumber,
+            Guid quizId);
+	}
 }

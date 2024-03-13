@@ -55,13 +55,13 @@ namespace Application.Cqrs.UserQuiz.Command.CreateAiQuiz
 			userOwnQuizRepository.Insert(userOwnQuiz);
 			await userOwnQuizRepository.SaveChangesAsync();
 
-			var newQuiz = await quizesCreator.CreateAsync(
+			var quizQuestions = await quizesCreator.GetQuizQuestionsAsync(
 			request.TechnologyName,
 			AdvanceNumber.Create(request.AdvanceNumber)!,
-			request.QuizTitle
+			quizId
 			);
 
-			if (newQuiz == null)
+			if (quizQuestions == null)
 			{
 				logger.LogWarning(
 					"Failed to create quiz, quizTechnology : {t} , advanceNumber : {a}",
@@ -75,14 +75,8 @@ namespace Application.Cqrs.UserQuiz.Command.CreateAiQuiz
 				return;
 			}
 
-			foreach(var question in newQuiz.Questions)
-			{
-				question.QuizId = quizId;
-			}
-	
 			userOwnQuiz.CreationStatus = CreationStatus.Succes;
-			questionRepository.AddRange(newQuiz.Questions);
-
+			questionRepository.AddRange(quizQuestions);
 			
 			await userOwnQuizRepository.SaveChangesAsync();
 		}

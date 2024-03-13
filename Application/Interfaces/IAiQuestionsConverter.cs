@@ -9,13 +9,17 @@ using System.Threading.Tasks;
 
 namespace Application.Interfaces
 {
-    public interface IAiQuestionsToQuizConverter
+    public interface IAiQuestionsConverter
     {
-        Quiz Convert(
+        Quiz ConvertToQuiz(
             IEnumerable<QuestionAiResponseDto> response,
             string technologyName,
             AdvanceNumber advanceNumber ,
             string? quizTitle
             );
-    }
+        List<Question> ConvertToQuestions(
+            IEnumerable<QuestionAiResponseDto> response,
+            Guid quizId
+            );
+	}
 }

@@ -10,12 +10,12 @@ using System.Threading.Tasks;
 
 namespace Application.Services
 {
-    public sealed class AiQuestionsToQuizConverter
-        (ILogger<AiQuestionsToQuizConverter> logger) : IAiQuestionsToQuizConverter
+    public sealed class AiQuestionsConverter
+        (ILogger<AiQuestionsConverter> logger) : IAiQuestionsConverter
     {
-        private readonly ILogger<AiQuestionsToQuizConverter> _logger = logger;
+        private readonly ILogger<AiQuestionsConverter> _logger = logger;
 
-        public Quiz Convert
+        public Quiz ConvertToQuiz
             (IEnumerable<QuestionAiResponseDto> response, string technologyName, AdvanceNumber advanceNumber , string? quizTitle)
         {
             var quizId = Guid.NewGuid();
@@ -26,6 +26,11 @@ namespace Application.Services
             };
 
             return quiz;
+        }
+
+        public List<Question> ConvertToQuestions(IEnumerable<QuestionAiResponseDto> response, Guid quizId)
+        {
+            return GetQuestions(response, quizId).ToList(); 
         }
 
         private IEnumerable<Question> GetQuestions(IEnumerable<QuestionAiResponseDto> questions, Guid quizId)
