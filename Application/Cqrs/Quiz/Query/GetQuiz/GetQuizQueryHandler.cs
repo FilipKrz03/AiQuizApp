@@ -25,6 +25,7 @@ namespace Application.Cqrs.Quiz.Query.GetQuiz
         {
             var quiz = await _quizRepository
                 .GetByIdQuery(request.Id)
+				.Where(x => !(x is UserOwnQuiz))
                 .Include(q => q.Questions)
                 .ThenInclude(q => q.Answers)
                 .FirstOrDefaultAsync();

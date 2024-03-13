@@ -1,6 +1,7 @@
 ﻿using Application.Common;
 using Application.Dto;
 using AutoMapper;
+using Domain.Entities;
 using Infrastructure.Interfaces;
 using MediatR;
 using Microsoft.IdentityModel.Tokens;
@@ -23,7 +24,9 @@ namespace Application.Cqrs.Quiz.Query.GetQuizes
 
         public async Task<PagedList<QuizBasicResponseDto>> Handle(GetQuizesQuery request, CancellationToken cancellationToken)
         {
-            var query = _quizRepository.Query();
+            var query = _quizRepository
+                .Query()
+                .Where(x => !(x is UserOwnQuiz));
 
             if (!string.IsNullOrWhiteSpace(request.ResourceParamethers.SearchQuery))
             {
