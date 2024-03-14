@@ -1,5 +1,8 @@
-﻿using Application.Cqrs.Algorithm.Query.GetAlgorithm;
+﻿using Application.Common;
+using Application.Cqrs.Algorithm.Query.GetAlgorithm;
+using Application.Cqrs.Algorithm.Query.GetAlgorithms;
 using Application.Dto;
+using Application.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -18,6 +21,17 @@ namespace Web.Controllers
 			var result = await _mediator.Send(new GetAlgorithmQuery(algorithmId));
 
 			return Ok(result);	
+		}
+
+		[HttpGet]
+		public async Task<ActionResult<PagedList<AlgorithmTaskBasicResponseDto>>>
+			GetAlgorithms([FromQuery]ResourceParamethers resourceParamethers)
+		{
+			var result = await _mediator.Send(new GetAlgorithmsQuery(resourceParamethers));
+
+			Response.AddPaginationHeader(result);
+
+			return Ok(result);
 		}
 	}
 }

@@ -15,6 +15,8 @@ namespace Application.Profiles
 		{
 			CreateMap<AlgorithmTask, AlgorithmTaskDetailResponseDto>()
 				.ForMember(x => x.AdvanceNumber, opt => opt.MapFrom(src => src.AdvanceNumber.Number));
+			CreateMap<AlgorithmTask, AlgorithmTaskBasicResponseDto>()
+				.ForMember(x => x.AdvanceNumber, opt => opt.MapFrom(src => src.AdvanceNumber.Number));
 		}
 	}
 }
