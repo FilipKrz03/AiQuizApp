@@ -42,6 +42,7 @@ namespace Application.Cqrs.Quiz.Query.GetQuizes
                 {
                     "title" => quiz => quiz.Title,
                     "technologyName" => quiz => quiz.TechnologyName,
+                    "advanceNumber" => quiz => quiz.AdvanceNumber ,
                     _ => quiz => quiz.Id
                 };
 
