@@ -36,7 +36,9 @@ namespace Application.Props
                 $"\r\n\t{{\"LanguageName : \"Python\" , \"Content\" : \"Tresc rozwiazania dla Python tutaj}}," +
                 $"\r\n\t{{\"LanguageName : \"JavaScript\" , \"Content\" : \"Tresc rozwiazania dla JavaScript tutaj}}," +
                 $"\r\n\t{{\"LanguageName : \"Php\" , \"Content\" : \"Tresc rozwiazania dla Php tutaj}}," +
-                $"\r\n\t{{\"LanguageName : \"Cpp\" , \"Content\" : \"Tresc rozwiazania dla Cpp tutaj}},\r\n\r\n   ]\r\n}}";
+                $"\r\n\t{{\"LanguageName : \"Cpp\" , \"Content\" : \"Tresc rozwiazania dla Cpp tutaj}},\r\n\r\n   ]\r\n}} " +
+                $"- Rozwiazania w posczegolnych jezykach powinny byc w html z uwzglednieniem nowych linii np :" +
+                $" \r\n\"Content:\" :  \"using system <br /> public class Osoba() <br />\" , Wciecia powinny byc zrobione za pomoca <blockquote />\r\n";
         }
     }
 }
