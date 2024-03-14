@@ -13,7 +13,7 @@ namespace Application.Dto
 		public string TaskTitle { get; set; } = string.Empty;
 		public string TaskMainTopics { get; set; } = string.Empty;
 		public string TaskContent {  get; set; } = string.Empty;	
-		public AdvanceNumber AdvanceNumber {  get; set; } 
-		public List<string> Answers { get; set; } = [];
+		public int AdvanceNumber {  get; set; } 
+		public List<AlgorithmAnswerResponseDto> Answers { get; set; } = [];
 	}
 }

@@ -13,7 +13,8 @@ namespace Application.Profiles
 	{
 		public AlgorithmTaskProfile()
 		{
-			CreateMap<AlgorithmTask, AlgorithmTaskDetailResponseDto>();
+			CreateMap<AlgorithmTask, AlgorithmTaskDetailResponseDto>()
+				.ForMember(x => x.AdvanceNumber, opt => opt.MapFrom(src => src.AdvanceNumber.Number));
 		}
 	}
 }
