@@ -11,14 +11,16 @@ namespace Domain.Entities
 	public class AlgorithmTask : Entity
 	{
 		public string TaskTitle { get; set; }
+		public string TaskMainTopics {  get; set; }	
 		public string TaskContent { get; set; }
 		public AdvanceNumber AdvanceNumber { get; set; }
 		public List<AlgorithmAnswer> Answers { get; set; } = [];
 
-		public AlgorithmTask(Guid id, string taskTitle, string taskContent, AdvanceNumber advanceNumber)
+		public AlgorithmTask(Guid id, string taskTitle, string taskMainTopics, string taskContent, AdvanceNumber advanceNumber)
 			: base(id)
 		{
 			TaskTitle = taskTitle;
+			TaskMainTopics = taskMainTopics;
 			TaskContent = taskContent;
 			AdvanceNumber = advanceNumber;
 		}
