@@ -30,7 +30,7 @@ namespace UnitTests.Application.Services
             IEnumerable<QuestionAiResponseDto> response = [];
             var advanceNumber = AdvanceNumber.Create(5)!;
 
-            var quiz = _aiQuestionsToQuizConverter.Convert(response, "techName", advanceNumber, null);
+            var quiz = _aiQuestionsToQuizConverter.ConvertToQuiz(response, "techName", advanceNumber, null);
 
             quiz.Title
                 .Should()
@@ -48,7 +48,7 @@ namespace UnitTests.Application.Services
             var advanceNumber = AdvanceNumber.Create(5)!;
             string title = "Fake title";
 
-            var quiz = _aiQuestionsToQuizConverter.Convert(response, "techName", advanceNumber, title);
+            var quiz = _aiQuestionsToQuizConverter.ConvertToQuiz(response, "techName", advanceNumber, title);
 
             quiz.Title
                 .Should()
@@ -70,7 +70,7 @@ namespace UnitTests.Application.Services
 
             var advanceNumer = AdvanceNumber.Create(5)!;
 
-            var quiz = _aiQuestionsToQuizConverter.Convert(response, "techName", advanceNumer, null);
+            var quiz = _aiQuestionsToQuizConverter.ConvertToQuiz(response, "techName", advanceNumer, null);
 
             quiz.Questions.Count
                 .Should()
@@ -88,7 +88,7 @@ namespace UnitTests.Application.Services
 
             var advanceNumer = AdvanceNumber.Create(5)!;
 
-            var quiz = _aiQuestionsToQuizConverter.Convert(response, "techName", advanceNumer, null);
+            var quiz = _aiQuestionsToQuizConverter.ConvertToQuiz(response, "techName", advanceNumer, null);
 
             quiz.Id
                 .Should()
@@ -114,7 +114,7 @@ namespace UnitTests.Application.Services
 
             var advanceNumer = AdvanceNumber.Create(5)!;
 
-            var quiz = _aiQuestionsToQuizConverter.Convert(response, "techName", advanceNumer, null);
+            var quiz = _aiQuestionsToQuizConverter.ConvertToQuiz(response, "techName", advanceNumer, null);
 
             quiz.Questions[0].Id
                 .Should()
@@ -140,7 +140,7 @@ namespace UnitTests.Application.Services
 
             var advanceNumer = AdvanceNumber.Create(5)!;
 
-            var quiz = _aiQuestionsToQuizConverter.Convert(response, "techName", advanceNumer, null);
+            var quiz = _aiQuestionsToQuizConverter.ConvertToQuiz(response, "techName", advanceNumer, null);
 
             quiz.Questions[0].Answers[0].Content
                 .Should()
