@@ -1,4 +1,5 @@
 ﻿using Application.Dto;
+using Application.Interfaces;
 using Domain.Entities;
 using Domain.ValueObjects;
 using System;
@@ -9,19 +10,21 @@ using System.Threading.Tasks;
 
 namespace Application.Services
 {
-	public class AiAlgorithmsConverter
+	public class AiAlgorithmsConverter : IAiAlgorithmsConverter
 	{
-		public AlgorithmTask ConvertToAlgorithmTask(AlgorithmAiResponseDto response, string taskTitle, AdvanceNumber advanceNumber)
+		public AlgorithmTask ConvertToAlgorithmTask
+			(AlgorithmAiResponseDto response, string taskTitle, AdvanceNumber advanceNumber , string taskMainTopics)
 		{
 			var id = Guid.NewGuid();
 
-			return new(id, taskTitle, response.QuestionContent, advanceNumber)
+			return new(id, taskTitle, taskMainTopics, response.QuestionContent, advanceNumber)
 			{
-				Answers = GetAlgorithmAnswers(response.LanguageAiResponseDtos , id).ToList()
+				Answers = GetAlgorithmAnswers(response.Answers , id).ToList()
 			};
 		}
 
-		private IEnumerable<AlgorithmAnswer> GetAlgorithmAnswers(IEnumerable<ProgrammingLanguageWithAnswerAiResponseDto> languageAnswersResponses , Guid taskId)
+		private IEnumerable<AlgorithmAnswer> 
+			GetAlgorithmAnswers(IEnumerable<ProgrammingLanguageWithAnswerAiResponseDto> languageAnswersResponses , Guid taskId)
 		{
 			List<AlgorithmAnswer> algorithmAnswers = [];
 

@@ -19,8 +19,11 @@ namespace Application
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             services.AddHostedService<BaseQuizesManager>();
+            services.AddHostedService<BaseAlgorithemsManager>();
             services.AddTransient<IQuizesCreator, QuizesCreator>();
             services.AddScoped<IAiQuestionsConverter, AiQuestionsConverter>();
+            services.AddTransient<IAlgorithemsCreator, AlgorithemsCreator>();
+            services.AddScoped<IAiAlgorithmsConverter, AiAlgorithmsConverter>();
   
             return services;
         }

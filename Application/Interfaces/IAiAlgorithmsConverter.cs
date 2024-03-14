@@ -11,6 +11,7 @@ namespace Application.Interfaces
 {
 	public interface IAiAlgorithmsConverter
 	{
-		AlgorithmTask ConvertToAlgorithmTask(AlgorithmAiResponseDto response, string taskTitle, AdvanceNumber advanceNumber);
+		AlgorithmTask ConvertToAlgorithmTask
+		(AlgorithmAiResponseDto response, string taskTitle, AdvanceNumber advanceNumber, string taskMainTopics);
 	}
 }
