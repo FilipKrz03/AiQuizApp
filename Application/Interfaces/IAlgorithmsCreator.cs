@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Application.Interfaces
 {
-	public interface IAlgorithemsCreator
+	public interface IAlgorithmsCreator
 	{
 		Task<AlgorithmTask?> CreateAsync(AdvanceNumber advanceNumber, string taskTitle, string specialTopics);
 	}

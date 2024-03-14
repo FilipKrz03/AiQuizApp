@@ -15,19 +15,19 @@ using System.Threading.Tasks;
 
 namespace Application.Services
 {
-	public class BaseAlgorithemsManager(
-		ILogger<BaseAlgorithemsManager> logger,
+	public class BaseAlgorithmsManager(
+		ILogger<BaseAlgorithmsManager> logger,
 		IServiceProvider serviceProvider
 		) : BackgroundService
 	{
-		private readonly ILogger<BaseAlgorithemsManager> _logger = logger;
+		private readonly ILogger<BaseAlgorithmsManager> _logger = logger;
 		private readonly IServiceProvider _serviceProvider = serviceProvider;
 
 		protected override async Task ExecuteAsync(CancellationToken stoppingToken)
 		{
 			using IServiceScope scope = _serviceProvider.CreateScope();
 			{
-				var algorithemsCreator = scope.ServiceProvider.GetRequiredService<IAlgorithemsCreator>();
+				var algorithemsCreator = scope.ServiceProvider.GetRequiredService<IAlgorithmsCreator>();
 				var algoithmTasksRepository = scope.ServiceProvider.GetRequiredService<IRepository<AlgorithmTask>>();
 
 				var allAlgorithmsTopics =

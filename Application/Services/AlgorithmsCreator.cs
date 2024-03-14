@@ -17,12 +17,12 @@ using Domain.Entities;
 
 namespace Application.Services
 {
-	public class AlgorithemsCreator(
-		ILogger<AlgorithemsCreator> logger , 
+	public class AlgorithmsCreator(
+		ILogger<AlgorithmsCreator> logger , 
 		IAiAlgorithmsConverter aiAlgorithmsConverter
-		) : IAlgorithemsCreator
+		) : IAlgorithmsCreator
 	{
-		private readonly ILogger<AlgorithemsCreator> _logger = logger;
+		private readonly ILogger<AlgorithmsCreator> _logger = logger;
 		private readonly IAiAlgorithmsConverter _aiAlgorithmsConverter = aiAlgorithmsConverter;
 
 		public async Task<AlgorithmTask?> CreateAsync(AdvanceNumber advanceNumber, string taskTitle , string specialTopics)
