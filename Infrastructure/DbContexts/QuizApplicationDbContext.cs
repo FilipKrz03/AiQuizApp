@@ -16,6 +16,8 @@ namespace Infrastructure.DbContexts
 		public DbSet<Question> Questions { get; set; }
 		public DbSet<Answer> Answers { get; set; }
 		public DbSet<UserOwnQuiz> UserOwnQuizzes { get; set; }
+		public DbSet<AlgorithmTask> AlgorithmTasks { get; set; }
+		public DbSet<AlgorithmAnswer> AlgorithmAnswers { get; set; }
 
 		public QuizApplicationDbContext(DbContextOptions<QuizApplicationDbContext> options)
 			: base(options) { }

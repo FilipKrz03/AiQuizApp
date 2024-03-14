@@ -25,6 +25,8 @@ namespace Infrastructure
             services.AddTransient<IRepository<Question>, Repository<Question>>();
             services.AddTransient<IRepository<UserOwnQuiz>, Repository<UserOwnQuiz>>();
             services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IRepository<AlgorithmTask>, Repository<AlgorithmTask>>();
+            services.AddTransient<IRepository<AlgorithmAnswer>, Repository<AlgorithmAnswer>>();
 
             return services;
         }
