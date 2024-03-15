@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Configurations
 {
-	public class AlgorithmTaskConfiguration : IEntityTypeConfiguration<AlgorithmTask>
+	public class UserOwnAlgorithmTaskConfiguration : IEntityTypeConfiguration<UserOwnAlgorithmTask>
 	{
-		public void Configure(EntityTypeBuilder<AlgorithmTask> builder)
+		public void Configure(EntityTypeBuilder<UserOwnAlgorithmTask> builder)
 		{
 			builder
 			.Property(p => p.AdvanceNumber)
@@ -21,7 +21,7 @@ namespace Infrastructure.Configurations
 				value => AdvanceNumber.Create(value)!
 				);
 
-			builder.ToTable("AlgorithmTasks");
+			builder.ToTable("UserOwnAlgorithmTasks");
 		}
 	}
 }

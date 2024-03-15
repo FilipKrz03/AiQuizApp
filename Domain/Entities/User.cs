@@ -10,5 +10,6 @@ namespace Domain.Entities
 	public sealed class User : IdentityUser
 	{
 		public List<UserOwnQuiz> UserQuizzes { get; set; } = [];
+		public List<UserOwnAlgorithmTask> UserAlgorithms { get; set; } = [];
 	}
 }
