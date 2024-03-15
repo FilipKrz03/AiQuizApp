@@ -1,10 +1,12 @@
-﻿@page "/algorithms/{AlgorithmId}"
+﻿@using Client.Components.AlgorithmDetailContainer
+
+@page "/algorithms/{AlgorithmId}"
 
 @inject IDataService _dataService
 
 @if(!IsLoading && Algorithm != null)
 {
-	<p>Succes</p>
+	<AlgorithmDetailContainer Algorithm="Algorithm" />
 }
 @if(IsLoading)
 {

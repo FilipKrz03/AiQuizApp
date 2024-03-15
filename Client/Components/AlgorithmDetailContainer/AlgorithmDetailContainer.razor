@@ -1,0 +1,51 @@
+﻿<div class="container">
+	<h2>@Algorithm.TaskTitle</h2>
+	<div class="task-content">
+		<span class="title">Polecenie :</span>
+		<span>@Algorithm.TaskContent</span>
+	</div>
+	<p> <span class="bolder">Główne tematy : </span> @Algorithm.TaskMainTopics</p>
+	<Button 
+		Content="@(ShowAnswer == false ? "Pokaż" : "Ukryj")"
+		OnClickCallback="ToggleShowAnswerState"
+		/>
+	@if(ShowAnswer)
+	{
+		<div class="answer">
+			<div class="language-box">
+				@foreach (var language in AlgorithmAnswerProgrammingLanguages)
+				{
+					<button class="language-btn @(ChoosenLanguage == language ? "active" : "")"
+							@onclick='(() => ChoosenLanguage = language)'>
+						@language
+					</button>
+				}
+			</div>
+			<p>@((MarkupString)@Algorithm.Answers.Where(x => x.Language == ChoosenLanguage).FirstOrDefault()!.AnswerContent)</p>
+		</div>
+	}
+</div>
+
+@code {
+	[Parameter]
+	public AlgorithmTaskDetailResponseDto Algorithm { get; set; } = null!;
+
+	public List<string> AlgorithmAnswerProgrammingLanguages { get; set; } = [];
+
+	public string ChoosenLanguage { get; set; } = string.Empty;
+	public bool ShowAnswer { get; set; } = false;
+
+	protected override void OnInitialized()
+	{
+		foreach(var answer in Algorithm.Answers)
+		{
+			AlgorithmAnswerProgrammingLanguages.Add(answer.Language);
+		}
+		ChoosenLanguage = AlgorithmAnswerProgrammingLanguages.First();
+	}
+
+	private void ToggleShowAnswerState()
+	{
+		ShowAnswer = !ShowAnswer;
+	}
+}

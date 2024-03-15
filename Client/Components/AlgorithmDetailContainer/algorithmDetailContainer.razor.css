@@ -1,0 +1,57 @@
+﻿.container {
+  padding: 0em 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.container h2 {
+  text-align: center;
+}
+
+.container .task-content {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.container .task-content .title {
+  font-weight: bolder;
+  font-size: 25px;
+}
+
+.bolder {
+  font-weight: bolder;
+}
+
+.answer {
+  border: 2px solid black;
+  max-width: 700px;
+  animation: appear .25s ease-in-out;
+}
+
+.language-btn {
+  outline: none;
+  border: none;
+  padding: 8px;
+  border: 1px solid black;
+  cursor: pointer;
+  transition: 0.1s ease-in-out;
+}
+
+.active {
+  background-color: #212529;
+  color: white;
+}
+
+@keyframes appear {
+  from {
+    filter: blur(4px);
+    transform: translateY(-20px);
+  }
+  to {
+    filter: blur(0px);
+    transform: translateY(0px);
+  }
+}
