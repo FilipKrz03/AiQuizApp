@@ -14,5 +14,6 @@ namespace Client.Services
 		Task<bool> SendCreateUserQuizRequestAsync(CreationQuizDataModel quizToCreateData);
 		Task<bool> DeleteQuizAsync(Guid quizId);
 		Task<IEnumerable<AlgorithmTaskBasicResponseDto>> GetAlgorithmsAsync();
+		Task<AlgorithmTaskDetailResponseDto> GetAlgorithmDetailAsync(Guid algorithmId);
 	}
 }

@@ -1,4 +1,6 @@
-﻿<div class="item">
+﻿@inject NavigationManager _navigationManager
+
+<div class="item" @onclick='(() => _navigationManager.NavigateTo($"/algorithms/{Algorithm.Id}"))'>
 	<h3>@Algorithm.TaskTitle</h3>
 	<p>Main topics : @MainTopicsConverter()</p>
 </div>

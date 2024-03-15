@@ -1,0 +1,29 @@
+﻿@page "/algorithms/{AlgorithmId}"
+
+@inject IDataService _dataService
+
+@if(!IsLoading && Algorithm != null)
+{
+	<p>Succes</p>
+}
+@if(IsLoading)
+{
+	<Loading />
+}
+
+@code {
+	[Parameter]
+	public string AlgorithmId { get; set; } = null!;
+
+	public AlgorithmTaskDetailResponseDto? Algorithm{ get; set; }
+
+	public bool IsLoading { get; set; } = false;
+
+	protected override async Task OnInitializedAsync()
+	{
+		IsLoading = true;
+		var algorithm = await _dataService.GetAlgorithmDetailAsync(Guid.Parse(AlgorithmId));
+		Algorithm = algorithm;
+		IsLoading = false;
+	}
+}

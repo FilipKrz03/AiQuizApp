@@ -124,5 +124,15 @@ namespace Client.Services
 
 			return data!;
 		}
+
+		public async Task<AlgorithmTaskDetailResponseDto> GetAlgorithmDetailAsync(Guid algorithmId)
+		{
+			var result = await _httpClient.GetAsync($"api/algorithms/{algorithmId}");
+
+			var data = JsonConvert.DeserializeObject<AlgorithmTaskDetailResponseDto>
+				(await result.Content.ReadAsStringAsync());
+
+			return data!;
+		}
 	}
 }
