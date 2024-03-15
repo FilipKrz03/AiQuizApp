@@ -1,0 +1,13 @@
+﻿@using Client.Components.AlgorithmItem
+
+<div class="container">
+	@foreach (var algorithm in Algorithms)
+	{
+		<AlgorithmItem Algorithm="algorithm" />
+	}
+</div>
+
+@code {
+	[Parameter]
+	public IEnumerable<AlgorithmTaskBasicResponseDto> Algorithms { get; set; } = null!;
+}

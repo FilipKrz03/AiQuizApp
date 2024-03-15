@@ -1,0 +1,27 @@
+﻿@using Client.Components.AlgorithmsContainer
+
+@inject IDataService _dataService
+
+@page "/algorithms"
+
+
+@if(!IsLoading)
+{
+	<AlgorithmsContainer Algorithms="BaseAlgorithms" />	
+}
+@if(IsLoading)
+{
+	<Loading />
+}
+
+@code {
+	public IEnumerable<AlgorithmTaskBasicResponseDto> BaseAlgorithms{ get; set; } = [];
+	public bool IsLoading { get; set; } = true;
+
+	protected override async Task OnInitializedAsync()
+	{
+		var result = await _dataService.GetAlgorithmsAsync();
+		BaseAlgorithms = result;
+		IsLoading = false;
+	}
+}

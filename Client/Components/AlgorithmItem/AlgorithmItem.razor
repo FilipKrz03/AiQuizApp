@@ -1,0 +1,12 @@
+﻿<div class="item">
+	<h3>@Algorithm.TaskTitle</h3>
+	<p>Main topics : @MainTopicsConverter()</p>
+</div>
+
+@code {
+	[Parameter]
+	public AlgorithmTaskBasicResponseDto Algorithm { get; set; } = null!;
+
+	private string MainTopicsConverter() =>
+		Algorithm.TaskMainTopics.Length < 14 ? Algorithm.TaskMainTopics : Algorithm.TaskMainTopics.Substring(0, 14) + "...";
+}

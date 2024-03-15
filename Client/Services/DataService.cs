@@ -114,5 +114,15 @@ namespace Client.Services
 
 			return result.IsSuccessStatusCode;
 		}
+
+		public async Task<IEnumerable<AlgorithmTaskBasicResponseDto>> GetAlgorithmsAsync()
+		{
+			var result = await _httpClient.GetAsync("api/algorithms");
+
+			var data = JsonConvert.DeserializeObject<IEnumerable<AlgorithmTaskBasicResponseDto>>
+				(await result.Content.ReadAsStringAsync());
+
+			return data!;
+		}
 	}
 }
