@@ -1,7 +1,11 @@
-﻿using Application.Cqrs.UserAlgorithm.Command.CreateAlgorithm;
+﻿using Application.Cqrs.Algorithm.Query.GetAlgorithm;
+using Application.Cqrs.UserAlgorithm.Command.CreateAlgorithm;
+using Application.Cqrs.UserAlgorithm.Query.GetAlgorithm;
+using Application.Dto;
 using Application.Extensions;
 using Domain.ValueObjects;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,6 +13,7 @@ namespace Web.Controllers
 {
 	[Route("api/user/algorithms")]
 	[ApiController]
+	[Authorize]
 	public class UserAlgorithmsController(IMediator mediator) : ControllerBase
 	{
 		private readonly IMediator _mediator = mediator;
@@ -22,6 +27,14 @@ namespace Web.Controllers
 				reqeust.TaskMainTopics,
 				AdvanceNumber.Create(reqeust.AdvanceNumber)!
 				));
+
+			return Ok(result);
+		}
+
+		[HttpGet("{algorithmId}")]
+		public async Task<ActionResult<AlgorithmTaskDetailResponseDto>> GetAlgorithm(Guid algorithmId)
+		{
+			var result = await _mediator.Send(new GetUserAlgorithmQuery(User.Claims.GetId(), algorithmId));
 
 			return Ok(result);
 		}
