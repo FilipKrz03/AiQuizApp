@@ -27,6 +27,7 @@ namespace Infrastructure
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IRepository<AlgorithmTask>, Repository<AlgorithmTask>>();
             services.AddTransient<IRepository<AlgorithmAnswer>, Repository<AlgorithmAnswer>>();
+            services.AddTransient<IRepository<UserOwnAlgorithmTask> , Repository<UserOwnAlgorithmTask>>();
 
             return services;
         }

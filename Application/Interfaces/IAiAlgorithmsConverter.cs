@@ -13,5 +13,6 @@ namespace Application.Interfaces
 	{
 		AlgorithmTask ConvertToAlgorithmTask
 		(AlgorithmAiResponseDto response, string taskTitle, AdvanceNumber advanceNumber, string taskMainTopics);
+		(string, List<AlgorithmAnswer>) ConvertToAlgorithmContentAndAnswers(AlgorithmAiResponseDto response, Guid id);
 	}
 }

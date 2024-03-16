@@ -11,5 +11,10 @@ namespace Application.Interfaces
 	public interface IAlgorithmsCreator
 	{
 		Task<AlgorithmTask?> CreateAsync(AdvanceNumber advanceNumber, string taskTitle, string specialTopics);
+		Task<(string, List<AlgorithmAnswer>)?>CreateAlgorithmContentAndAnswersAsync(
+			AdvanceNumber advanceNumber,
+			string specialTopics,
+			Guid algorithmId
+			);
 	}
 }

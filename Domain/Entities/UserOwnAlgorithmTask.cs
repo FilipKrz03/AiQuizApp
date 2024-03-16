@@ -17,9 +17,11 @@ namespace Domain.Entities
 		public string UserId { get; set; } = null!;
 		public User User { get; set; } = null!;
 
-		public UserOwnAlgorithmTask(Guid id, string taskTitle, string taskMainTopics, string taskContent, AdvanceNumber advanceNumber)
+		public UserOwnAlgorithmTask(Guid id, string taskTitle, string taskMainTopics, string taskContent, AdvanceNumber advanceNumber , string userId)
 			: base(id, taskTitle, taskMainTopics, taskContent, advanceNumber)
 		{
+			CreationStatus = CreationStatus.Pending;
+			UserId = userId;
 		}
 	}
 }
