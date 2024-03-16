@@ -25,6 +25,7 @@ namespace Application.Cqrs.Algorithm.Query.GetAlgorithm
 		{
 			var algorithm = await _algorithmTaskRepository
 				.GetByIdQuery(request.AlgorithmId)
+				.Where(x => !(x is UserOwnAlgorithmTask))
 				.Include(x => x.Answers)
 				.FirstOrDefaultAsync();
 

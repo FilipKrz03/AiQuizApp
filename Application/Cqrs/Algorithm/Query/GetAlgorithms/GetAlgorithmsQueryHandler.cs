@@ -24,7 +24,9 @@ namespace Application.Cqrs.Algorithm.Query.GetAlgorithms
 
 		public async Task<PagedList<AlgorithmTaskBasicResponseDto>> Handle(GetAlgorithmsQuery request, CancellationToken cancellationToken)
 		{
-			var query = _algorithmTaskRepository.Query();
+			var query = _algorithmTaskRepository
+				.Query()
+				.Where(x => !(x is UserOwnAlgorithmTask));
 
 			if (!string.IsNullOrWhiteSpace(request.ResourceParamethers.SearchQuery))
 			{
