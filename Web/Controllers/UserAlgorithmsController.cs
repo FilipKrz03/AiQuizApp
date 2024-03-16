@@ -1,7 +1,9 @@
-﻿using Application.Cqrs.Algorithm.Query.GetAlgorithm;
+﻿using Application.Common;
+using Application.Cqrs.Algorithm.Query.GetAlgorithm;
 using Application.Cqrs.UserAlgorithm.Command.CreateAlgorithm;
 using Application.Cqrs.UserAlgorithm.Command.DeleteAlgorithm;
 using Application.Cqrs.UserAlgorithm.Query.GetAlgorithm;
+using Application.Cqrs.UserAlgorithm.Query.GetAlgorithms;
 using Application.Dto;
 using Application.Extensions;
 using Domain.ValueObjects;
@@ -32,6 +34,16 @@ namespace Web.Controllers
 			return Ok(result);
 		}
 
+		[HttpGet]
+		public async Task<ActionResult<PagedList<AlgorithmTaskBasicResponseDto>>> GetAlgortihms([FromQuery] ResourceParamethers resourceParamethers)
+		{
+			var result = await _mediator.Send(new GetUserAlgorithmsQuery(User.Claims.GetId() , resourceParamethers));
+
+			Response.AddPaginationHeader(result);	
+
+			return Ok(result);
+		}
+
 		[HttpGet("{algorithmId}")]
 		public async Task<ActionResult<AlgorithmTaskDetailResponseDto>> GetAlgorithm(Guid algorithmId)
 		{
@@ -43,7 +55,7 @@ namespace Web.Controllers
 		[HttpDelete("{algorithmId}")]
 		public async Task<ActionResult> DeleteAlgorithm(Guid algorithmId)
 		{
-			await _mediator.Send(new DeleteUserAlgorithmCommand(User.Claims.GetId() , algorithmId));
+			await _mediator.Send(new DeleteUserAlgorithmCommand(User.Claims.GetId(), algorithmId));
 
 			return NoContent();
 		}
