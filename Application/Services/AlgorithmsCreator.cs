@@ -27,6 +27,48 @@ namespace Application.Services
 
 		public async Task<AlgorithmTask?> CreateAsync(AdvanceNumber advanceNumber, string taskTitle , string specialTopics)
 		{
+			var body = await GetAlgorithmBodyAsync(advanceNumber, specialTopics);
+
+			if (body == null) return null;
+
+			try
+			{
+				var algorithm = JsonConvert.DeserializeObject<AlgorithmAiResponseDto>(body);
+
+				return _aiAlgorithmsConverter.ConvertToAlgorithmTask(algorithm! , taskTitle, advanceNumber , specialTopics);
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError("ex - {ex}", ex);
+
+				return null;
+			}
+		}
+
+		public async Task<(string , List<AlgorithmAnswer>)?> 
+			CreateAlgorithmContentAndAnswersAsync(AdvanceNumber advanceNumber , string specialTopics , Guid algorithmId)
+		{
+			var body = await GetAlgorithmBodyAsync(advanceNumber, specialTopics);
+
+			if (body == null) return null;
+
+			try
+			{
+				var algorithm = JsonConvert.DeserializeObject<AlgorithmAiResponseDto>(body);
+
+				return _aiAlgorithmsConverter.ConvertToAlgorithmContentAndAnswers(algorithm!, algorithmId);
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError("ex - {ex}", ex);
+
+				return null;
+			}
+		}
+
+
+		private async Task<string?> GetAlgorithmBodyAsync(AdvanceNumber advanceNumber,  string specialTopics)
+		{
 			var openAiService = new OpenAIService(new OpenAiOptions()
 			{
 				ApiKey = Environment.GetEnvironmentVariable("OpenAiApiKey")!,
@@ -50,18 +92,7 @@ namespace Application.Services
 				return null;
 			}
 
-			try
-			{
-				var algorithm = JsonConvert.DeserializeObject<AlgorithmAiResponseDto>(body);
-
-				return _aiAlgorithmsConverter.ConvertToAlgorithmTask(algorithm! , taskTitle, advanceNumber , specialTopics);
-			}
-			catch (Exception ex)
-			{
-				_logger.LogError("ex - {ex}", ex);
-
-				return null;
-			}
+			return body;
 		}
 	}
 }

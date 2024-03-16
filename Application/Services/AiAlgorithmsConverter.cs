@@ -23,6 +23,13 @@ namespace Application.Services
 			};
 		}
 
+		public (string , List<AlgorithmAnswer>) ConvertToAlgorithmContentAndAnswers(AlgorithmAiResponseDto response , Guid id)
+		{
+			var answers = GetAlgorithmAnswers(response.Answers , id);
+
+			return (response.QuestionContent, answers.ToList());
+		}
+
 		private IEnumerable<AlgorithmAnswer> 
 			GetAlgorithmAnswers(IEnumerable<ProgrammingLanguageWithAnswerAiResponseDto> languageAnswersResponses , Guid taskId)
 		{
