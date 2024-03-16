@@ -1,5 +1,6 @@
 ﻿using Application.Cqrs.Algorithm.Query.GetAlgorithm;
 using Application.Cqrs.UserAlgorithm.Command.CreateAlgorithm;
+using Application.Cqrs.UserAlgorithm.Command.DeleteAlgorithm;
 using Application.Cqrs.UserAlgorithm.Query.GetAlgorithm;
 using Application.Dto;
 using Application.Extensions;
@@ -37,6 +38,14 @@ namespace Web.Controllers
 			var result = await _mediator.Send(new GetUserAlgorithmQuery(User.Claims.GetId(), algorithmId));
 
 			return Ok(result);
+		}
+
+		[HttpDelete("{algorithmId}")]
+		public async Task<ActionResult> DeleteAlgorithm(Guid algorithmId)
+		{
+			await _mediator.Send(new DeleteUserAlgorithmCommand(User.Claims.GetId() , algorithmId));
+
+			return NoContent();
 		}
 	}
 }
