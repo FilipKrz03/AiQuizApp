@@ -2,6 +2,7 @@
 using Application.Dto;
 using AutoMapper;
 using Domain.Entities;
+using Domain.Enum;
 using Domain.Exceptions;
 using Infrastructure.Interfaces;
 using MediatR;
@@ -34,7 +35,7 @@ namespace Application.Cqrs.UserQuiz.Query.GetUserAiQuizesQuery
 
 			var userOwnQuizesQuery = _userOwnQuizRepository
 				.Query()
-				.Where(x => x.UserId == request.UserId);
+				.Where(x => x.UserId == request.UserId && x.CreationStatus == CreationStatus.Succes);
 
 			if (!request.ResourceParamethers.SearchQuery.IsNullOrEmpty())
 			{

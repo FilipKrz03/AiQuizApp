@@ -2,6 +2,7 @@
 using Application.Dto;
 using AutoMapper;
 using Domain.Entities;
+using Domain.Enum;
 using Domain.Exceptions;
 using Infrastructure.Interfaces;
 using MediatR;
@@ -33,7 +34,7 @@ namespace Application.Cqrs.UserAlgorithm.Query.GetAlgorithms
 
 			var query = _userOwnAlgorithmTaskRepository
 				.Query()
-				.Where(x => x.UserId == request.UserId);
+				.Where(x => x.UserId == request.UserId && x.CreationStatus == CreationStatus.Succes);
 
 			if (!string.IsNullOrWhiteSpace(request.ResourceParamethers.SearchQuery))
 			{
