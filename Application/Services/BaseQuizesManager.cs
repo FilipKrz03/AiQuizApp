@@ -1,4 +1,5 @@
-﻿using Application.Interfaces;
+﻿using Application.Dto;
+using Application.Interfaces;
 using Application.Props;
 using Domain.Entities;
 using Domain.ValueObjects;
@@ -49,7 +50,7 @@ namespace Application.Services
 
                 foreach (var technology in baseTechnologiesWithNoQuizes)
                 {
-                    var quiz = await quizesCreator.CreateAsync(technology, DrawAdvanceNumber(), null);
+                    var quiz = await quizesCreator.CreateAsync(new CreateQuizInput(technology, DrawAdvanceNumber(), null));
 
                     if (quiz != null)
                     {

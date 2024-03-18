@@ -18,37 +18,15 @@ using Domain.Entities;
 namespace Application.Services
 {
 	public class QuizesCreator(
-		ILogger<QuizesCreator> logger,
+		ILogger<AiContentCreatorBase<CreateQuizInput, IEnumerable<QuestionAiResponseDto>, Quiz>> logger,
 		IAiQuestionsConverter aiQuestionConverter
-			) : IQuizesCreator
+			) : AiContentCreatorBase<CreateQuizInput, IEnumerable<QuestionAiResponseDto>, Quiz>(logger), IQuizesCreator
 	{
-		private readonly ILogger<QuizesCreator> _logger = logger;
 		private readonly IAiQuestionsConverter _aiQuestionConverter = aiQuestionConverter;
-
-		public async Task<Quiz?> CreateAsync(string technologyName, AdvanceNumber advanceNumber, string? quizTitle)
-		{
-			var body = await CreateQuizQuestionsByAiAsync(technologyName, advanceNumber);
-
-			if (body == null) return null;
-	
-			try
-			{
-				var questions = JsonConvert.DeserializeObject<IEnumerable<QuestionAiResponseDto>>(body);
-
-				var quiz = _aiQuestionConverter.ConvertToQuiz(questions!, technologyName, advanceNumber, quizTitle);
-
-				return quiz;
-			}
-			catch (Exception ex)
-			{
-				_logger.LogError("Quizes creator - {ex}", ex);
-				return null;
-			}
-		}
 
 		public async Task<IEnumerable<Question>?> GetQuizQuestionsAsync(string technologyName, AdvanceNumber advanceNumber, Guid quizId)
 		{
-			var body = await CreateQuizQuestionsByAiAsync(technologyName, advanceNumber);
+			var body = await GenerateContentAsync(new CreateQuizInput(technologyName, advanceNumber, null));
 
 			if (body == null) return null;
 
@@ -67,31 +45,14 @@ namespace Application.Services
 			}
 		}
 
-		private async Task<string?> CreateQuizQuestionsByAiAsync(string technologyName, AdvanceNumber advanceNumber)
+		protected override Quiz Convert(IEnumerable<QuestionAiResponseDto> output, CreateQuizInput input)
 		{
-			var openAiService = new OpenAIService(new OpenAiOptions()
-			{
-				ApiKey = Environment.GetEnvironmentVariable("OpenAiApiKey")!,
-				DefaultModelId = Models.Gpt_3_5_Turbo
-			});
+			return _aiQuestionConverter.ConvertToQuiz(output, input.technologyName, input.advanceNumber, input.quizTitle);
+		}
 
-			var completionResult =
-				await openAiService.ChatCompletion.CreateCompletion(new ChatCompletionCreateRequest()
-				{
-					Messages = new List<ChatMessage>
-					{
-						ChatMessage.FromSystem(GptPrompts.CreateQuizPrompt(technologyName , advanceNumber.Number))
-					}
-				});
-
-			var body = completionResult.Choices.First().Message.Content;
-
-			if (body == null)
-			{
-				_logger.LogWarning("Quizes creator - body of Ai response is null !");
-			}
-
-			return body;
+		protected override string GetPrompt(CreateQuizInput input)
+		{
+			return GptPrompts.CreateQuizPrompt(input.technologyName, input.advanceNumber.Number);
 		}
 	}
 }

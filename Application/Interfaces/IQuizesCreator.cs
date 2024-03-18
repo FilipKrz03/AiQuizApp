@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Application.Dto;
+using Domain.Entities;
 using Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
@@ -11,10 +12,8 @@ namespace Application.Interfaces
     public interface IQuizesCreator
     {
         Task<Quiz?> CreateAsync(
-            string technologyName ,
-            AdvanceNumber advanceNumber ,
-            string? quizTitle
-            );
+		   CreateQuizInput input
+			);
         Task<IEnumerable<Question>?> GetQuizQuestionsAsync(
             string technologyName,
             AdvanceNumber advanceNumber,
