@@ -1,14 +1,32 @@
 ﻿@inject NavigationManager _navigationManager
 
-<div class="item" @onclick='(() => _navigationManager.NavigateTo($"/algorithms/{Algorithm.Id}"))'>
+<div class="item" @onclick='(() => _navigationManager.NavigateTo(GetAlgorithmPath()))'>
 	<h3>@Algorithm.TaskTitle</h3>
 	<p>Main topics : @MainTopicsConverter()</p>
+	@if (IsAlgorithmLimitedToUser)
+	{
+		<img @onclick:stopPropagation="true"
+			 @onclick:preventDefault="true"
+			 @onclick="(()=>OnDelete.InvokeAsync(Algorithm.Id))"
+			 src="delete.png" 
+			 alt="Delete Icon"
+			 class="delete-icon" />
+	}
 </div>
 
 @code {
 	[Parameter]
 	public AlgorithmTaskBasicResponseDto Algorithm { get; set; } = null!;
 
+	[Parameter]
+	public bool IsAlgorithmLimitedToUser { get; set; } = false;
+
+	[Parameter]
+	public EventCallback<Guid> OnDelete { get; set; } = default!;
+
 	private string MainTopicsConverter() =>
 		Algorithm.TaskMainTopics.Length < 14 ? Algorithm.TaskMainTopics : Algorithm.TaskMainTopics.Substring(0, 14) + "...";
+
+	private string GetAlgorithmPath() =>
+		IsAlgorithmLimitedToUser ? $"/dashboard/algorithms/{Algorithm.Id}" : $"/algorithms/{Algorithm.Id}";
 }

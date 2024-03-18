@@ -1,0 +1,49 @@
+﻿@using Client.Components.AlgorithmsContainer
+
+@inject IDataService _dataService
+
+@if (!IsLoading)
+{
+	<div class="container">
+		<div class="main-info">
+			<p>
+				Stworzyłeś
+				<span class="bolder-font">
+					@Algortihms.Count() quiz@(GetAlgorithmsWordSufix()) !
+				</span>
+			</p>
+			<Button Content="Stwórz algorytm" Secondary=true/>
+		</div>
+		<AlgorithmsContainer Algorithms="Algortihms" AreAlgorithmsLimitedToUser="true" />
+	</div>
+}
+@if(IsLoading)
+{
+	<Loading />
+}
+
+@code {
+	public IEnumerable<AlgorithmTaskBasicResponseDto> Algortihms { get; set; } = [];
+	public bool IsLoading { get; set; } = false;
+
+	protected override async Task OnInitializedAsync()
+	{
+		IsLoading = true;
+
+		var result = await _dataService.GetUserAlgorithmsAsync();
+		Algortihms = result;
+
+		IsLoading = false;
+	}
+
+
+	private string GetAlgorithmsWordSufix()
+	{
+		var quizesCount = Algortihms.Count();
+
+		if (quizesCount == 1) return "";
+		if (quizesCount > 1 && quizesCount < 5) return "y";
+
+		return "ów";
+	}
+}

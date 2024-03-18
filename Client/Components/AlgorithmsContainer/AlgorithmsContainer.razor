@@ -1,13 +1,50 @@
 ﻿@using Client.Components.AlgorithmItem
+@using Client.Components.ResultPopup
+
+@inject IDataService _dataService;
+@inject IModalService _modalService;
 
 <div class="container">
 	@foreach (var algorithm in Algorithms)
 	{
-		<AlgorithmItem Algorithm="algorithm" />
+		<AlgorithmItem Algorithm="algorithm" IsAlgorithmLimitedToUser="AreAlgorithmsLimitedToUser" OnDelete="DeleteUserQuiz" />
 	}
 </div>
+@if(IsLoading)
+{
+	<Loading />
+}
 
 @code {
 	[Parameter]
 	public IEnumerable<AlgorithmTaskBasicResponseDto> Algorithms { get; set; } = null!;
+
+	[Parameter]
+	public bool AreAlgorithmsLimitedToUser { get; set; } = false;
+
+	public bool IsLoading { get; set; } = false;
+
+	public async Task DeleteUserQuiz(Guid quizId)
+	{
+		if (!AreAlgorithmsLimitedToUser) return;
+
+		IsLoading = true;
+
+		var result = await _dataService.DeleteUserAlgorithmAsync(quizId);
+
+		IsLoading = false;
+
+		if (result)
+		{
+			Algorithms = Algorithms.Where(x => x.Id != quizId);
+		}
+		else
+		{
+			var modalParameters = new ModalParameters()
+				.Add(nameof(ResultPopup.IsSucces), false)
+				.Add(nameof(ResultPopup.Message), "Something went wrong when deleting");
+
+			_modalService.Show<ResultPopup>(modalParameters);
+		}
+	}
 }

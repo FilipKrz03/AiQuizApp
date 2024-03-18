@@ -15,5 +15,8 @@ namespace Client.Services
 		Task<bool> DeleteQuizAsync(Guid quizId);
 		Task<IEnumerable<AlgorithmTaskBasicResponseDto>> GetAlgorithmsAsync();
 		Task<AlgorithmTaskDetailResponseDto> GetAlgorithmDetailAsync(Guid algorithmId);
+		Task<IEnumerable<AlgorithmTaskBasicResponseDto>> GetUserAlgorithmsAsync();
+		Task<AlgorithmTaskDetailResponseDto> GetUserAlgorithmDetailAsync(Guid algorithmId);
+		Task<bool> DeleteUserAlgorithmAsync(Guid algorithmId);
 	}
 }

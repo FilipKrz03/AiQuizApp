@@ -134,5 +134,32 @@ namespace Client.Services
 
 			return data!;
 		}
+
+		public async Task<IEnumerable<AlgorithmTaskBasicResponseDto>> GetUserAlgorithmsAsync()
+		{
+			var result = await _httpClient.GetAsync("api/user/algorithms");
+
+			var data = JsonConvert.DeserializeObject<IEnumerable<AlgorithmTaskBasicResponseDto>>
+				(await result.Content.ReadAsStringAsync());
+
+			return data!;
+		}
+
+		public async Task<AlgorithmTaskDetailResponseDto> GetUserAlgorithmDetailAsync(Guid algorithmId)
+		{
+			var result = await _httpClient.GetAsync($"api/user/algorithms/{algorithmId}");
+
+			var data = JsonConvert.DeserializeObject<AlgorithmTaskDetailResponseDto>
+				(await result.Content.ReadAsStringAsync());
+
+			return data!;
+		}
+
+		public async Task<bool> DeleteUserAlgorithmAsync(Guid algorithmId)
+		{
+			var result = await _httpClient.DeleteAsync($"api/user/algorithms/{algorithmId}");
+
+			return result.IsSuccessStatusCode;
+		}
 	}
 }

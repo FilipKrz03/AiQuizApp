@@ -1,0 +1,31 @@
+﻿@using Client.Components.AlgorithmDetailContainer
+
+@page "/dashboard/algorithms/{AlgorithmId}"
+
+@inject IDataService _dataService
+
+@if (!IsLoading && Algorithm != null)
+{
+	<AlgorithmDetailContainer Algorithm="Algorithm" />
+}
+@if (IsLoading)
+{
+	<Loading />
+}
+
+@code {
+	[Parameter]
+	public string AlgorithmId { get; set; } = null!;
+
+	public AlgorithmTaskDetailResponseDto? Algorithm { get; set; }
+
+	public bool IsLoading { get; set; } = false;
+
+	protected override async Task OnInitializedAsync()
+	{
+		IsLoading = true;
+		var algorithm = await _dataService.GetUserAlgorithmDetailAsync(Guid.Parse(AlgorithmId));
+		Algorithm = algorithm;
+		IsLoading = false;
+	}
+}
