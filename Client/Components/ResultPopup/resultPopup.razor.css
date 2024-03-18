@@ -1,11 +1,23 @@
-﻿.succes {
-    color: green;
+﻿.container{
+    display:flex;
+    flex-direction:row;
+    align-items:center;
+    gap:20px;
+}
+
+.result-img{
+    width:25px;
+    height:25px;
+}
+
+.succes {
+    color: #007f5f;
     font-weight: bolder;
     padding: 0em 2em;
 }
 
 .failure {
-    color: red;
+    color: #ef233c;
     font-weight: bolder;
     padding: 0em 2em;
 }

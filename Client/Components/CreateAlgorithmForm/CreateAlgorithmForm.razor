@@ -31,7 +31,7 @@
 		<Button Content="Stwórz" IsSubmit=true />
 	</EditForm>
 </div>
-@if(IsLoading)
+@if (IsLoading)
 {
 	<Loading />
 }
@@ -65,7 +65,7 @@
 			.Add(nameof(ResultPopup.Message), modalMessage)
 			.Add(nameof(ResultPopup.IsSucces), result);
 
-		_modalService.Show<ResultPopup>(parameters);
+		_modalService.Show<ResultPopup>(parameters, ModalOptionsHelper.GetForResultPopup());
 	}
 
 

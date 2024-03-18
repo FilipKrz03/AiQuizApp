@@ -68,6 +68,6 @@
 			.Add(nameof(ResultPopup.Message), modalMessage)
 			.Add(nameof(ResultPopup.IsSucces), result);
 
-		_modalService.Show<ResultPopup>(parameters);
+		_modalService.Show<ResultPopup>(parameters , ModalOptionsHelper.GetForResultPopup());
 	}
 }

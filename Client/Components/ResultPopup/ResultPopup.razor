@@ -1,4 +1,7 @@
-﻿<p class=@(IsSucces == true ? "succes" : "failure")>@Message</p>
+﻿<div class="container @(IsSucces == true ? "succes" : "failure")">
+	<img class="result-img" src=@(IsSucces ? "succes.png" : "failure.png") alt="@(IsSucces ? "Succes icon" : "Failure icon")" />
+	@Message
+	</div>
 
 @code {
 	[CascadingParameter] BlazoredModalInstance BlazoredModal { get; set; } = default!;
