@@ -1,0 +1,72 @@
+﻿@inject IDataService _dataService;
+@inject IModalService _modalService;
+
+<div class="container">
+	<EditForm Model="dataModel" OnValidSubmit="HandleValidSubmit">
+		<DataAnnotationsValidator />
+		<div class="input">
+			<label>Wybierz poziom zaawansowania algorytmu</label>
+			<InputSelect @bind-Value="dataModel.AdvanceNumber">
+				<option value="1">1</option>
+				<option value="2">2</option>
+				<option value="3">3</option>
+				<option value="4">4</option>
+				<option value="5">5</option>
+				<option value="6">6</option>
+				<option value="7">7</option>
+				<option value="8">8</option>
+				<option value="9">9</option>
+				<option value="10">10</option>
+			</InputSelect>
+		</div>
+		<div class="input">
+			<label>Wpisz tytuł algorytmu</label>
+			<InputText @bind-Value="dataModel.TaskTitle" />
+		</div>
+		<div class="input">
+			<label>Podaj główne zagadnienie algorytmu</label>
+			<InputText @bind-Value="dataModel.TaskMainTopics" />
+		</div>
+		<ValidationSummary />
+		<Button Content="Stwórz" IsSubmit=true />
+	</EditForm>
+</div>
+@if(IsLoading)
+{
+	<Loading />
+}
+
+@code {
+	[CascadingParameter]
+	BlazoredModalInstance BlazoredModal { get; set; } = default!;
+
+	CreationAlgorithmDataModel dataModel = new();
+
+	private bool IsLoading { get; set; } = false;
+
+	private async Task CloseModal() => await BlazoredModal.CloseAsync();
+
+	public async Task HandleValidSubmit()
+	{
+		IsLoading = true;
+
+		var result = await _dataService.SendCreateAlgorithmReqeustAsync(dataModel);
+
+		IsLoading = false;
+		await CloseModal();
+
+		string modalMessage = result switch
+		{
+			true => "Algorithm creation queued !",
+			false => "Something went wrong"
+		};
+
+		var parameters = new ModalParameters()
+			.Add(nameof(ResultPopup.Message), modalMessage)
+			.Add(nameof(ResultPopup.IsSucces), result);
+
+		_modalService.Show<ResultPopup>(parameters);
+	}
+
+
+}

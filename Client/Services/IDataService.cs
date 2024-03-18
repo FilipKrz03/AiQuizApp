@@ -18,5 +18,6 @@ namespace Client.Services
 		Task<IEnumerable<AlgorithmTaskBasicResponseDto>> GetUserAlgorithmsAsync();
 		Task<AlgorithmTaskDetailResponseDto> GetUserAlgorithmDetailAsync(Guid algorithmId);
 		Task<bool> DeleteUserAlgorithmAsync(Guid algorithmId);
+		Task<bool> SendCreateAlgorithmReqeustAsync(CreationAlgorithmDataModel model);
 	}
 }

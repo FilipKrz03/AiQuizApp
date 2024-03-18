@@ -161,5 +161,12 @@ namespace Client.Services
 
 			return result.IsSuccessStatusCode;
 		}
+
+		public async Task<bool> SendCreateAlgorithmReqeustAsync(CreationAlgorithmDataModel model)
+		{
+			var result = await _httpClient.PostAsJsonAsync("api/user/algorithms", model);
+
+			return result.IsSuccessStatusCode;
+		}
 	}
 }

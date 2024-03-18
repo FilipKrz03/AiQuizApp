@@ -1,6 +1,8 @@
 ﻿@using Client.Components.AlgorithmsContainer
+@using Client.Components.CreateAlgorithmForm
 
-@inject IDataService _dataService
+@inject IModalService _modalService;
+@inject IDataService _dataService;
 
 @if (!IsLoading)
 {
@@ -12,7 +14,7 @@
 					@Algortihms.Count() quiz@(GetAlgorithmsWordSufix()) !
 				</span>
 			</p>
-			<Button Content="Stwórz algorytm" Secondary=true/>
+			<Button Content="Stwórz algorytm" Secondary=true OnClickCallback="ShowCreateAlgorithmModal"/>
 		</div>
 		<AlgorithmsContainer Algorithms="Algortihms" AreAlgorithmsLimitedToUser="true" />
 	</div>
@@ -36,6 +38,10 @@
 		IsLoading = false;
 	}
 
+	private void ShowCreateAlgorithmModal()
+	{
+		var modal = _modalService.Show<CreateAlgorithmForm>("Stwórz algorytm !");
+	}
 
 	private string GetAlgorithmsWordSufix()
 	{
