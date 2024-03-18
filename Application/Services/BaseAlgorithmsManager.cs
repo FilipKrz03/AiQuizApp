@@ -1,4 +1,5 @@
-﻿using Application.Interfaces;
+﻿using Application.Dto;
+using Application.Interfaces;
 using Application.Props;
 using Domain.Entities;
 using Domain.ValueObjects;
@@ -47,7 +48,8 @@ namespace Application.Services
 				{
 					var advanceNumber = DrawAdvanceNumber();
 
-					var algorithm = await algorithemsCreator.CreateAsync(advanceNumber, $"Task {advanceNumber.Number} / 10", topic);
+					var algorithm = await algorithemsCreator
+						.CreateAsync(new CreateAlgorithmInput(advanceNumber, $"Task {advanceNumber.Number} / 10", topic));
 
 					if (algorithm != null)
 					{

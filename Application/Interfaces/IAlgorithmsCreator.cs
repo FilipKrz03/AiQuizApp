@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Application.Dto;
+using Domain.Entities;
 using Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ namespace Application.Interfaces
 {
 	public interface IAlgorithmsCreator
 	{
-		Task<AlgorithmTask?> CreateAsync(AdvanceNumber advanceNumber, string taskTitle, string specialTopics);
+		Task<AlgorithmTask?> CreateAsync(CreateAlgorithmInput input);
 		Task<(string, List<AlgorithmAnswer>)?>CreateAlgorithmContentAndAnswersAsync(
 			AdvanceNumber advanceNumber,
 			string specialTopics,
