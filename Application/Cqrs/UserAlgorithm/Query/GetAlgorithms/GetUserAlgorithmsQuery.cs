@@ -1,5 +1,6 @@
 ﻿using Application.Common;
 using Application.Dto;
+using Application.Interfaces;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 namespace Application.Cqrs.UserAlgorithm.Query.GetAlgorithms
 {
 	public sealed record GetUserAlgorithmsQuery(string UserId , ResourceParamethersWithCreationStatus ResourceParamethers) 
-		: IRequest<PagedList<AlgorithmTaskBasicResponseDto>>
+		: IRequest<PagedList<AlgorithmTaskBasicResponseDto>> , IResourceParamethersWithCreationStatus
 	{
 	}
 }
