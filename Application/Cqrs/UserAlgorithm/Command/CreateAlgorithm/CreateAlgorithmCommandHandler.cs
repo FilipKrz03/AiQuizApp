@@ -3,6 +3,7 @@ using Application.Services;
 using Domain.Entities;
 using Domain.Enum;
 using Domain.Exceptions;
+using Domain.ValueObjects;
 using Infrastructure.Interfaces;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
@@ -47,13 +48,13 @@ namespace Application.Cqrs.UserAlgorithm.Command.CreateAlgorithm
 			var id = Guid.NewGuid();
 
 			UserOwnAlgorithmTask userOwnAlgorithmTask = 
-				new(id, request.TaskTitle, request.TaskMainTopics, "" , request.AdvanceNumber , request.UserId);
+				new(id, request.TaskTitle, request.TaskMainTopics, "" , AdvanceNumber.Create(request.AdvanceNumber)! , request.UserId);
 
 			userOwnAlgorithmTaskRepository.Insert(userOwnAlgorithmTask);
 			await userOwnAlgorithmTaskRepository.SaveChangesAsync();
 
 			var createdAlgorithm = await algorithmsCreator.CreateAlgorithmContentAndAnswersAsync(
-				request.AdvanceNumber,
+				AdvanceNumber.Create(request.AdvanceNumber)!,
 				request.TaskMainTopics,
 				id
 				);

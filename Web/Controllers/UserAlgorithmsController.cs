@@ -28,7 +28,7 @@ namespace Web.Controllers
 				User.Claims.GetId(),
 				reqeust.TaskTitle,
 				reqeust.TaskMainTopics,
-				AdvanceNumber.Create(reqeust.AdvanceNumber)!
+				reqeust.AdvanceNumber
 				));
 
 			return Ok(result);

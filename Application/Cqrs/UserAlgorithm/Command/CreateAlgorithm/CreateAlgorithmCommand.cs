@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace Application.Cqrs.UserAlgorithm.Command.CreateAlgorithm
 {
 	public sealed record CreateAlgorithmCommand 
-		(string UserId , string TaskTitle , string TaskMainTopics, AdvanceNumber AdvanceNumber) : IRequest<string>
+		(string UserId , string TaskTitle , string TaskMainTopics, int AdvanceNumber) : IRequest<string>
 	{
 	}
 }
