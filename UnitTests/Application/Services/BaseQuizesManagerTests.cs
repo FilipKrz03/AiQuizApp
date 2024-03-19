@@ -1,4 +1,5 @@
-﻿using Application.Interfaces;
+﻿using Application.Dto;
+using Application.Interfaces;
 using Application.Props;
 using Application.Services;
 using Castle.Core.Logging;
@@ -73,9 +74,7 @@ namespace UnitTests.Application.Services
 
             _quizesCreatorMock.Verify
                (x => x.CreateAsync(
-                   It.IsAny<string>(),
-                   It.IsAny<AdvanceNumber>(),
-                   It.IsAny<string>()
+                   It.IsAny<CreateQuizInput>()
                    ),
                    Times.Exactly(expectedTimesCall)
                   );

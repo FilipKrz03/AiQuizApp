@@ -35,7 +35,8 @@ namespace Web.Controllers
 		}
 
 		[HttpGet]
-		public async Task<ActionResult<PagedList<AlgorithmTaskBasicResponseDto>>> GetAlgortihms([FromQuery] ResourceParamethers resourceParamethers)
+		public async Task<ActionResult<PagedList<AlgorithmTaskBasicResponseDto>>> GetAlgortihms
+			([FromQuery] ResourceParamethersWithCreationStatus resourceParamethers)
 		{
 			var result = await _mediator.Send(new GetUserAlgorithmsQuery(User.Claims.GetId() , resourceParamethers));
 

@@ -52,7 +52,7 @@ namespace Web.Controllers
 		}
 
 		[HttpGet]
-		public async Task<ActionResult> GetQuizes([FromQuery] ResourceParamethers resourceParamethers)
+		public async Task<ActionResult> GetQuizes([FromQuery] ResourceParamethersWithCreationStatus resourceParamethers)
 		{
 			var result = await _mediator.Send(new GetUserAiQuizesQuery(
 				User.Claims.GetId(),

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Application.Cqrs.UserAlgorithm.Query.GetAlgorithms
 {
-	public sealed record GetUserAlgorithmsQuery(string UserId , ResourceParamethers ResourceParamethers) 
+	public sealed record GetUserAlgorithmsQuery(string UserId , ResourceParamethersWithCreationStatus ResourceParamethers) 
 		: IRequest<PagedList<AlgorithmTaskBasicResponseDto>>
 	{
 	}

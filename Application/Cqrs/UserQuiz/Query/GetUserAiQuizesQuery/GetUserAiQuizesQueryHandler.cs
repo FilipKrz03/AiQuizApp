@@ -13,6 +13,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Application.Cqrs.UserQuiz.Query.GetUserAiQuizesQuery
 {
@@ -33,13 +34,30 @@ namespace Application.Cqrs.UserQuiz.Query.GetUserAiQuizesQuery
 				throw new InvalidTokenClaimException();
 			}
 
-			var userOwnQuizesQuery = _userOwnQuizRepository
+			var query = _userOwnQuizRepository
 				.Query()
-				.Where(x => x.UserId == request.UserId && x.CreationStatus == CreationStatus.Succes);
+				.Where(x => x.UserId == request.UserId);
+
+			if (!string.IsNullOrWhiteSpace(request.ResourceParamethers.CreationStatus))
+			{
+				var splittedValues = request.ResourceParamethers.CreationStatus.Split(',');
+
+				List<CreationStatus> creationStatuses = [];
+
+				foreach (var value in splittedValues)
+				{
+					if (Enum.TryParse(value.Trim(), ignoreCase: true, out CreationStatus statusEnum))
+					{
+						creationStatuses.Add(statusEnum);
+					}
+				}
+
+				if(creationStatuses.Count > 0) query = query.Where(x => creationStatuses.Contains(x.CreationStatus));
+			}
 
 			if (!request.ResourceParamethers.SearchQuery.IsNullOrEmpty())
 			{
-				userOwnQuizesQuery = userOwnQuizesQuery
+				query = query
 					.Where(
 						x => x.Title.Contains(request.ResourceParamethers.SearchQuery!) ||
 						x.AdvanceNumber.Number.ToString().Contains(request.ResourceParamethers.SearchQuery!) ||
@@ -58,15 +76,15 @@ namespace Application.Cqrs.UserQuiz.Query.GetUserAiQuizesQuery
 
 			if (request.ResourceParamethers.SortOrder.Equals("desc", StringComparison.CurrentCultureIgnoreCase))
 			{
-				userOwnQuizesQuery = userOwnQuizesQuery.OrderByDescending(keySelector);
+				query = query.OrderByDescending(keySelector);
 			}
 			else
 			{
-				userOwnQuizesQuery = userOwnQuizesQuery.OrderBy(keySelector);
+				query = query.OrderBy(keySelector);
 			}
 		
 			var quizesFromDb = await PagedList<UserOwnQuiz>.CreateAsync(
-				userOwnQuizesQuery,
+				query,
 				request.ResourceParamethers.PageSize,
 				request.ResourceParamethers.PageNumber
 				);

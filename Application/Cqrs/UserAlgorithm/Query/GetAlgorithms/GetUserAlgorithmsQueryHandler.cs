@@ -27,14 +27,31 @@ namespace Application.Cqrs.UserAlgorithm.Query.GetAlgorithms
 
 		public async Task<PagedList<AlgorithmTaskBasicResponseDto>> Handle(GetUserAlgorithmsQuery request, CancellationToken cancellationToken)
 		{
-			if(!await _userRepository.UserExistAsync(request.UserId))
+			if (!await _userRepository.UserExistAsync(request.UserId))
 			{
 				throw new InvalidTokenClaimException();
 			}
 
 			var query = _userOwnAlgorithmTaskRepository
 				.Query()
-				.Where(x => x.UserId == request.UserId && x.CreationStatus == CreationStatus.Succes);
+				.Where(x => x.UserId == request.UserId);
+
+			if (!string.IsNullOrWhiteSpace(request.ResourceParamethers.CreationStatus))
+			{
+				var splittedValues = request.ResourceParamethers.CreationStatus.Split(',');
+
+				List<CreationStatus> creationStatuses = [];
+
+				foreach (var value in splittedValues)
+				{
+					if (Enum.TryParse(value.Trim(), ignoreCase: true, out CreationStatus statusEnum))
+					{
+						creationStatuses.Add(statusEnum);
+					}
+				}
+
+				if (creationStatuses.Count > 0) query = query.Where(x => creationStatuses.Contains(x.CreationStatus));
+			}
 
 			if (!string.IsNullOrWhiteSpace(request.ResourceParamethers.SearchQuery))
 			{
