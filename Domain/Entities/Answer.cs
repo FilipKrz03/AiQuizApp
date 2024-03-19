@@ -9,20 +9,20 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
-    public sealed class Answer : Entity
-    {
-        public string Content { get; private set; } = string.Empty;
-        public AnswerLetter AnswerLetter { get; private set; } 
+	public sealed class Answer : Entity
+	{
+		public string Content { get; private set; } = string.Empty;
+		public AnswerLetter AnswerLetter { get; private set; } 
 
-        [ForeignKey("QuestionId")]
-        public Question Question { get; set; } = null!;
-        public Guid QuestionId { get; set; }
+		[ForeignKey("QuestionId")]
+		public Question Question { get; set; } = null!;
+		public Guid QuestionId { get; set; }
 
-        public Answer(Guid id, string content , AnswerLetter answerLetter)
-            : base(id)
-        {
-            Content = content;
-            AnswerLetter = answerLetter;
-        }
-    }
+		public Answer(Guid id, string content , AnswerLetter answerLetter)
+			: base(id)
+		{
+			Content = content;
+			AnswerLetter = answerLetter;
+		}
+	}
 }

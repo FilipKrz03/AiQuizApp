@@ -19,7 +19,7 @@ namespace Application.Cqrs.UserAlgorithm.Query.GetAlgorithms
 		IRepository<UserOwnAlgorithmTask> userOwnAlgorithmTaskRepository,
 		IUserRepository userRepository,
 		IMapper mapper
- 		) : IRequestHandler<GetUserAlgorithmsQuery, PagedList<AlgorithmTaskBasicResponseDto>>
+		) : IRequestHandler<GetUserAlgorithmsQuery, PagedList<AlgorithmTaskBasicResponseDto>>
 	{
 		private readonly IRepository<UserOwnAlgorithmTask> _userOwnAlgorithmTaskRepository = userOwnAlgorithmTaskRepository;
 		private readonly IUserRepository _userRepository = userRepository;

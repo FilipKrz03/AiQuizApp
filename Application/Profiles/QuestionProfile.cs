@@ -9,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace Application.Profiles
 {
-    public class QuestionProfile : Profile
-    {
-        public QuestionProfile()
-        {
-            CreateMap<Question, QuestionResponseDto>()
-                .ForMember(src => src.ProperAnswerLetter, opt => opt.MapFrom(x => x.ProperAnswerLetter.Letter));
-        }
-    }
+	public class QuestionProfile : Profile
+	{
+		public QuestionProfile()
+		{
+			CreateMap<Question, QuestionResponseDto>()
+				.ForMember(src => src.ProperAnswerLetter, opt => opt.MapFrom(x => x.ProperAnswerLetter.Letter));
+		}
+	}
 }

@@ -6,20 +6,20 @@ using System.Threading.Tasks;
 
 namespace Domain.ValueObjects
 {
-    public record AnswerLetter
-    {
-        private AnswerLetter(char letter) => Letter = letter;
+	public record AnswerLetter
+	{
+		private AnswerLetter(char letter) => Letter = letter;
 
-        public char Letter { get; init; }
+		public char Letter { get; init; }
 
-        public static AnswerLetter? Create(char letter)
-        {
-            if(letter != 'a' && letter != 'b' && letter != 'c' && letter != 'd')
-            {
-                return null;
-            }
+		public static AnswerLetter? Create(char letter)
+		{
+			if(letter != 'a' && letter != 'b' && letter != 'c' && letter != 'd')
+			{
+				return null;
+			}
 
-            return new AnswerLetter(letter);
-        }
-    }
+			return new AnswerLetter(letter);
+		}
+	}
 }

@@ -14,22 +14,22 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddTransient<ExceptionHandlingMiddleware>();
 
 builder.Services
-    .AddApplication()
-    .AddInfrastructure(builder.Configuration);
+	.AddApplication()
+	.AddInfrastructure(builder.Configuration);
 
 builder.Services.AddAuthentication().AddBearerToken(IdentityConstants.BearerScheme);
 builder.Services.AddAuthorizationBuilder();
 builder.Services.AddIdentityCore<User>(cfg =>
 {
-    cfg.Password.RequireNonAlphanumeric = false;
-    cfg.Password.RequireLowercase = true;
-    cfg.Password.RequireUppercase = true;
-    cfg.Password.RequireDigit = true;
-    cfg.Password.RequiredLength = 6;
-    cfg.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(1);
+	cfg.Password.RequireNonAlphanumeric = false;
+	cfg.Password.RequireLowercase = true;
+	cfg.Password.RequireUppercase = true;
+	cfg.Password.RequireDigit = true;
+	cfg.Password.RequiredLength = 6;
+	cfg.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(1);
 })
-    .AddEntityFrameworkStores<QuizApplicationDbContext>()
-    .AddApiEndpoints();
+	.AddEntityFrameworkStores<QuizApplicationDbContext>()
+	.AddApiEndpoints();
 
 //builder.Host.UseSerilog((context, configuration) =>
 //    configuration.ReadFrom.Configuration(context.Configuration));
@@ -38,10 +38,10 @@ var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+	app.UseSwagger();
+	app.UseSwaggerUI();
 
-    app.UseWebAssemblyDebugging();
+	app.UseWebAssemblyDebugging();
 }
 
 var group = app.MapGroup(prefix: "api");

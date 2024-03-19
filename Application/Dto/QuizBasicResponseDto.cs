@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace Application.Dto
 {
-    public class QuizBasicResponseDto
-    {
-        public Guid Id { get; set; }
-        public string Title { get; set; } = string.Empty;
-        public string TechnologyName { get; set; } = string.Empty;  
-        public int AdvanceNumber {  get; set; } 
-    }
+	public class QuizBasicResponseDto
+	{
+		public Guid Id { get; set; }
+		public string Title { get; set; } = string.Empty;
+		public string TechnologyName { get; set; } = string.Empty;  
+		public int AdvanceNumber {  get; set; } 
+	}
 }

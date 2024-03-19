@@ -11,9 +11,9 @@ namespace Application.Profiles
 {
 	public class AlgorithmAnswerProfile : Profile
 	{
-        public AlgorithmAnswerProfile()
-        {
-            CreateMap<AlgorithmAnswer, AlgorithmAnswerResponseDto>();
-        }
-    }
+		public AlgorithmAnswerProfile()
+		{
+			CreateMap<AlgorithmAnswer, AlgorithmAnswerResponseDto>();
+		}
+	}
 }

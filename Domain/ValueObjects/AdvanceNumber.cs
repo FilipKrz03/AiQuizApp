@@ -6,20 +6,20 @@ using System.Threading.Tasks;
 
 namespace Domain.ValueObjects
 {
-    public record AdvanceNumber
-    {
-        private AdvanceNumber(int number) => Number = number;
+	public record AdvanceNumber
+	{
+		private AdvanceNumber(int number) => Number = number;
 
-        public int Number { get; init; }
+		public int Number { get; init; }
 
-        public static AdvanceNumber? Create(int number)
-        {
-            if (number < 0 || number > 10)
-            {
-                return null;
-            }
+		public static AdvanceNumber? Create(int number)
+		{
+			if (number < 0 || number > 10)
+			{
+				return null;
+			}
 
-            return new AdvanceNumber(number);
-        }
-    }
+			return new AdvanceNumber(number);
+		}
+	}
 }

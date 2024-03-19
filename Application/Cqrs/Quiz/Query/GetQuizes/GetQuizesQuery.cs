@@ -9,8 +9,8 @@ using System.Threading.Tasks;
 
 namespace Application.Cqrs.Quiz.Query.GetQuizes
 {
-    public sealed record GetQuizesQuery(ResourceParamethers ResourceParamethers) 
-        : IRequest<PagedList<QuizBasicResponseDto>>
-    { 
-    }
+	public sealed record GetQuizesQuery(ResourceParamethers ResourceParamethers) 
+		: IRequest<PagedList<QuizBasicResponseDto>>
+	{ 
+	}
 }

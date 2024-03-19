@@ -9,14 +9,14 @@ using System.Threading.Tasks;
 
 namespace Application.Interfaces
 {
-    public interface IQuizesCreator
-    {
-        Task<Quiz?> CreateAsync(
+	public interface IQuizesCreator
+	{
+		Task<Quiz?> CreateAsync(
 		   CreateQuizInput input
 			);
-        Task<IEnumerable<Question>?> GetQuizQuestionsAsync(
-            string technologyName,
-            AdvanceNumber advanceNumber,
-            Guid quizId);
+		Task<IEnumerable<Question>?> GetQuizQuestionsAsync(
+			string technologyName,
+			AdvanceNumber advanceNumber,
+			Guid quizId);
 	}
 }

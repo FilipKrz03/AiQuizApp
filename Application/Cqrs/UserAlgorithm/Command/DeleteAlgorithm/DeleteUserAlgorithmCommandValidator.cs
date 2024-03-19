@@ -9,9 +9,9 @@ namespace Application.Cqrs.UserAlgorithm.Command.DeleteAlgorithm
 {
 	public class DeleteUserAlgorithmCommandValidator : AbstractValidator<DeleteUserAlgorithmCommand>
 	{
-        public DeleteUserAlgorithmCommandValidator()
-        {
-            RuleFor(x => x.UserId).NotEmpty();
-        }
-    }
+		public DeleteUserAlgorithmCommandValidator()
+		{
+			RuleFor(x => x.UserId).NotEmpty();
+		}
+	}
 }

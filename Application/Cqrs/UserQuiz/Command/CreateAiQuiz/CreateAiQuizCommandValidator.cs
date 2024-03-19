@@ -9,12 +9,12 @@ namespace Application.Cqrs.UserQuiz.Command.CreateAiQuiz
 {
 	public class CreateAiQuizCommandValidator : AbstractValidator<CreateAiQuizCommand>
 	{
-        public CreateAiQuizCommandValidator()
-        {
-            RuleFor(x => x.AdvanceNumber).NotEmpty().GreaterThan(0).LessThanOrEqualTo(10);
-            RuleFor(x => x.QuizTitle).NotEmpty();
-            RuleFor(x => x.TechnologyName).NotEmpty();
-            RuleFor(x => x.UserId).NotEmpty();
-        }
-    }
+		public CreateAiQuizCommandValidator()
+		{
+			RuleFor(x => x.AdvanceNumber).NotEmpty().GreaterThan(0).LessThanOrEqualTo(10);
+			RuleFor(x => x.QuizTitle).NotEmpty();
+			RuleFor(x => x.TechnologyName).NotEmpty();
+			RuleFor(x => x.UserId).NotEmpty();
+		}
+	}
 }

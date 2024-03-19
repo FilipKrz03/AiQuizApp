@@ -10,29 +10,29 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Web.Controllers
 {
-    [Route("api/quizes")]
-    [ApiController]
-    public sealed class QuizesController(IMediator mediator) : ControllerBase
-    {
-        private readonly IMediator _mediator = mediator;
+	[Route("api/quizes")]
+	[ApiController]
+	public sealed class QuizesController(IMediator mediator) : ControllerBase
+	{
+		private readonly IMediator _mediator = mediator;
 
-        [HttpGet("{quizId}")]
-        public async Task<ActionResult<QuizDetailResponseDto>> GetQuizDetails(Guid quizId)
-        {
-            var result = await _mediator.Send(new GetQuizQuery(quizId));
+		[HttpGet("{quizId}")]
+		public async Task<ActionResult<QuizDetailResponseDto>> GetQuizDetails(Guid quizId)
+		{
+			var result = await _mediator.Send(new GetQuizQuery(quizId));
 
-            return Ok(result);
-        }
+			return Ok(result);
+		}
 
-        [HttpGet]
-        public async Task<ActionResult<List<QuizBasicResponseDto>>>
-            GetQuizes([FromQuery]ResourceParamethers resourceParamethers)
-        {
-            var result = await _mediator.Send(new GetQuizesQuery(resourceParamethers));
+		[HttpGet]
+		public async Task<ActionResult<List<QuizBasicResponseDto>>>
+			GetQuizes([FromQuery]ResourceParamethers resourceParamethers)
+		{
+			var result = await _mediator.Send(new GetQuizesQuery(resourceParamethers));
 
-            Response.AddPaginationHeader(result);
+			Response.AddPaginationHeader(result);
 
-            return Ok(result);
-        }
-    }
+			return Ok(result);
+		}
+	}
 }

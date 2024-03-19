@@ -9,9 +9,9 @@ namespace Application.Cqrs.UserQuiz.Command.DeleteAiQuiz
 {
 	public class DeleteAiQuizCommandValidator : AbstractValidator<DeleteAiQuizCommand>
 	{
-        public DeleteAiQuizCommandValidator()
-        {
-            RuleFor(x => x.UserId).NotEmpty();
-        }
-    }
+		public DeleteAiQuizCommandValidator()
+		{
+			RuleFor(x => x.UserId).NotEmpty();
+		}
+	}
 }
