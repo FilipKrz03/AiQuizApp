@@ -9,5 +9,6 @@ namespace Application.Cqrs.UserQuiz.Query.GetUserAiQuizesQuery
 {
 	public class GetUserAiQuizesQueryValidator : CreationStatusFilterCorrectnessValidator<GetUserAiQuizesQuery>
 	{
+		// All work is done by CreationStatusFilterCorrectnesValidator generic class
 	}
 }
