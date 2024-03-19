@@ -7,6 +7,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FluentValidation;
+using System.Reflection;
+using Application.Behaviors;
+using MediatR;
 
 namespace Application
 {
@@ -18,7 +22,11 @@ namespace Application
                 configuration.RegisterServicesFromAssembly(typeof(DependencyInjection).Assembly));
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-            services.AddHostedService<BaseQuizesManager>();
+			services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+			ValidatorOptions.Global.LanguageManager.Enabled = false; // To set Fluent Validation default exceptions language to english 
+
+			services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+			services.AddHostedService<BaseQuizesManager>();
             services.AddHostedService<BaseAlgorithmsManager>();
             services.AddTransient<IQuizesCreator, QuizesCreator>();
             services.AddScoped<IAiQuestionsConverter, AiQuestionsConverter>();
