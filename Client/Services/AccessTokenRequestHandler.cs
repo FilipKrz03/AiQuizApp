@@ -1,21 +1,25 @@
 ﻿using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using System.Text;
 using Blazored.LocalStorage;
 using Client.Models;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 
 namespace Client.Services
 {
 	public class AccessTokenRequestHandler(
 		ILocalStorageService localStorageService,
-		CustomAuthStateProvider authenticationStateProvider
+		CustomAuthStateProvider authenticationStateProvider , 
+		NavigationManager navigationManager
 		) : DelegatingHandler
 	{
 		private readonly ILocalStorageService _localStorageService = localStorageService;
-		private readonly HttpClient _httpClient = new();
 		private readonly CustomAuthStateProvider _authenticationStateProvider = authenticationStateProvider;
+		private readonly NavigationManager _navigationManager = navigationManager;
 
 		protected async override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
 		{
@@ -32,6 +36,9 @@ namespace Client.Services
 				if (refreshAction == false)
 				{
 					await _authenticationStateProvider.LogOutAsync();
+					_navigationManager.NavigateTo("/login");
+
+					return response;
 				}
 
 				return await SendAsync(request, cancellationToken);
@@ -51,7 +58,10 @@ namespace Client.Services
 				refreshToken
 			};
 
-			var request = await _httpClient.PostAsJsonAsync("/api/refresh", body);
+			var httpRequest = new HttpRequestMessage(HttpMethod.Post, "/api/refresh");
+			httpRequest.Content = new StringContent(JsonConvert.SerializeObject(body), new MediaTypeHeaderValue("application/json"));
+
+			var request = await base.SendAsync(httpRequest , default);
 
 			if (!request.IsSuccessStatusCode) return false;
 
