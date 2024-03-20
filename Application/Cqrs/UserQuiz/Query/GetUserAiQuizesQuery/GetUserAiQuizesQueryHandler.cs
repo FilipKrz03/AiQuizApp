@@ -21,13 +21,13 @@ namespace Application.Cqrs.UserQuiz.Query.GetUserAiQuizesQuery
 		IUserRepository userRepository,
 		IRepository<UserOwnQuiz> userOwnQuizRepository,
 		IMapper mapper
-		) : IRequestHandler<GetUserAiQuizesQuery, PagedList<QuizBasicResponseDto>>
+		) : IRequestHandler<GetUserAiQuizesQuery, PagedList<UserOwnQuizBasicResponseDto>>
 	{
 		private readonly IUserRepository _userRepository = userRepository;
 		private readonly IRepository<UserOwnQuiz> _userOwnQuizRepository = userOwnQuizRepository;
 		private readonly IMapper _mapper = mapper;
 
-		public async Task<PagedList<QuizBasicResponseDto>> Handle(GetUserAiQuizesQuery request, CancellationToken cancellationToken)
+		public async Task<PagedList<UserOwnQuizBasicResponseDto>> Handle(GetUserAiQuizesQuery request, CancellationToken cancellationToken)
 		{
 			if (!await _userRepository.UserExistAsync(request.UserId))
 			{
@@ -89,7 +89,7 @@ namespace Application.Cqrs.UserQuiz.Query.GetUserAiQuizesQuery
 				request.ResourceParamethers.PageNumber
 				);
 
-			return _mapper.Map<PagedList<QuizBasicResponseDto>>(quizesFromDb)!;
+			return _mapper.Map<PagedList<UserOwnQuizBasicResponseDto>>(quizesFromDb)!;
 		}
 	}
 }

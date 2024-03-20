@@ -33,8 +33,7 @@ namespace Application.Cqrs.Algorithm.Query.GetAlgorithms
 				query = query.Where(
 					x => x.TaskMainTopics.Contains(request.ResourceParamethers.SearchQuery) ||
 					x.TaskContent.Contains(request.ResourceParamethers.SearchQuery) ||
-					x.TaskTitle.Contains(request.ResourceParamethers.SearchQuery) ||
-					x.AdvanceNumber.ToString().Contains(request.ResourceParamethers.SearchQuery)
+					x.TaskTitle.Contains(request.ResourceParamethers.SearchQuery) 
 				);
 			}
 

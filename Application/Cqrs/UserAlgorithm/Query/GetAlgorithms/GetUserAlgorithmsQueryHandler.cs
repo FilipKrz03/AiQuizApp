@@ -19,13 +19,13 @@ namespace Application.Cqrs.UserAlgorithm.Query.GetAlgorithms
 		IRepository<UserOwnAlgorithmTask> userOwnAlgorithmTaskRepository,
 		IUserRepository userRepository,
 		IMapper mapper
-		) : IRequestHandler<GetUserAlgorithmsQuery, PagedList<AlgorithmTaskBasicResponseDto>>
+		) : IRequestHandler<GetUserAlgorithmsQuery, PagedList<UserOwnAlgorithmTaskBasicResponseDto>>
 	{
 		private readonly IRepository<UserOwnAlgorithmTask> _userOwnAlgorithmTaskRepository = userOwnAlgorithmTaskRepository;
 		private readonly IUserRepository _userRepository = userRepository;
 		private readonly IMapper _mapper = mapper;
 
-		public async Task<PagedList<AlgorithmTaskBasicResponseDto>> Handle(GetUserAlgorithmsQuery request, CancellationToken cancellationToken)
+		public async Task<PagedList<UserOwnAlgorithmTaskBasicResponseDto>> Handle(GetUserAlgorithmsQuery request, CancellationToken cancellationToken)
 		{
 			if (!await _userRepository.UserExistAsync(request.UserId))
 			{
@@ -88,7 +88,7 @@ namespace Application.Cqrs.UserAlgorithm.Query.GetAlgorithms
 				request.ResourceParamethers.PageNumber
 				);
 
-			return _mapper.Map<PagedList<AlgorithmTaskBasicResponseDto>>(result)!;
+			return _mapper.Map<PagedList<UserOwnAlgorithmTaskBasicResponseDto>>(result)!;
 		}
 	}
 }
