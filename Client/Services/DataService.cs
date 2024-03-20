@@ -178,5 +178,15 @@ namespace Client.Services
 
 			return data!;
 		}
+
+		public async Task <IEnumerable<UserOwnQuizBasicResponseDto>> GetUserNotCreatedQuizesAsync()
+		{
+			var result = await _httpClient.GetAsync("api/user/quizes?CreationStatus=Pending,Failed");
+
+			var data = JsonConvert.DeserializeObject<IEnumerable<UserOwnQuizBasicResponseDto>>
+				(await result.Content.ReadAsStringAsync());
+
+			return data!;
+		}
 	}
 }

@@ -5,6 +5,30 @@
   gap: 30px;
 }
 
+.toggle-btn {
+    width: 60%;
+    margin: 0 auto;
+    height: 50px;
+    border-radius: 10px;
+    outline: none;
+    border: none;
+    background-color: #212529;
+    color: #f2f2f2;
+    cursor: pointer;
+    font-size: 15px;
+    font-family: "Comfortaa", sans-serif;
+    transition: 0.3s ease-in-out;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 25px;
+}
+
+.toggle-btn:hover {
+    background-color: #4d5d6d;
+}
+
 .main-info {
   display: flex;
   flex-direction: row;

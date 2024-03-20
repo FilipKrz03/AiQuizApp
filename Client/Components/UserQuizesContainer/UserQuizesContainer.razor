@@ -1,6 +1,7 @@
 ﻿@using Client.Components.QuizesContainer
 @using Client.Components.LoginForm
 @using Client.Components.CreateQuizForm
+@using Client.Components.NotCreatedQuizesContainer
 
 @inject IDataService _dataService
 @inject IModalService _modalService
@@ -8,6 +9,10 @@
 @if (!IsLoading)
 {
 	<div class="container">
+		<button class="toggle-btn"
+				@onclick='ToggleShowNotCreatedQuizesState'>
+			@GetToggleButtonContent()
+		</button>
 		<div class="main-info">
 			<p>
 				Stworzyłeś
@@ -17,7 +22,14 @@
 			</p>
 			<Button Content="Stwórz quiz" Secondary=true OnClickCallback="ShowCreateQuizModal" />
 		</div>
-		<QuizesContainer Quizes="Quizes" AreQuizesLimitedToUser=true />
+		@if(!ShowNotCreatedQuizes)
+		{
+			<QuizesContainer Quizes="Quizes" AreQuizesLimitedToUser=true />
+		}
+		@if(ShowNotCreatedQuizes)
+		{
+			<NotCreatedQuizesContainer NotCreatedQuizzes="NotCreatedQuizes" />
+		}
 	</div>
 }
 @if (IsLoading)
@@ -28,7 +40,9 @@
 @code {
 
 	public IEnumerable<QuizBasicResponseDto> Quizes { get; set; } = [];
+	public IEnumerable<UserOwnQuizBasicResponseDto> NotCreatedQuizes { get; set; } = [];
 	public bool IsLoading { get; set; } = false;
+	public bool ShowNotCreatedQuizes { get; set; } = false;
 
 	protected override async Task OnInitializedAsync()
 	{
@@ -37,12 +51,12 @@
 		IsLoading = false;
 	}
 
-	private void ShowCreateQuizModal()
+	void ShowCreateQuizModal()
 	{
 		var modal = _modalService.Show<CreateQuizForm>("Stworz quiz !");
 	}
 
-	private string GetQuizesWordSufix()
+	string GetQuizesWordSufix()
 	{
 		var quizesCount = Quizes.Count();
 
@@ -50,5 +64,27 @@
 		if (quizesCount > 1 && quizesCount < 5) return "y";
 
 		return "ów";
+	}
+
+	async Task ToggleShowNotCreatedQuizesState()
+	{
+		IsLoading = true;
+		ShowNotCreatedQuizes = !ShowNotCreatedQuizes;
+
+		if(ShowNotCreatedQuizes)
+		{
+			NotCreatedQuizes = await _dataService.GetUserNotCreatedQuizesAsync();
+		}
+		else
+		{
+			Quizes = await _dataService.GetUserQuizesAsync();
+		}
+
+		IsLoading = false;
+	}
+
+	string GetToggleButtonContent()
+	{
+		return ShowNotCreatedQuizes == false ? "Pokaż (jeszcze?) nie stworzone quizy" : "Pokaż stworzone quizy";
 	}
 }

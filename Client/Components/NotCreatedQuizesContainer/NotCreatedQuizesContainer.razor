@@ -1,0 +1,18 @@
+﻿@using Client.Components.NotCreatedItem
+
+<div class="container">
+	@foreach(var item in NotCreatedQuizzes)
+	{
+		<NotCreatedItem
+			ItemTitle="@item.Title"
+			CreationStatus="@item.CreationStatus"
+			SpecialColumnTitle="Technologia:"
+			SpecialColumnContent="@item.TechnologyName"
+			/>
+	}
+</div>
+
+@code {
+	[Parameter]
+	public IEnumerable<UserOwnQuizBasicResponseDto> NotCreatedQuizzes { get; set; } = [];
+}
