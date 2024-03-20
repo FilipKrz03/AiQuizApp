@@ -7,15 +7,15 @@
 		{
 			<QuizQuestion @ref="questionRef" Question="question" OnAnswerChange="HandleQuizAnswerChange" />
 		}
+		@if (ShowAnswers)
+		{
+			<p class="score">Twój wynik : @TotalScore / @Quiz.Questions.Count() </p>
+		}
 		<div class="buttons">
 			<Button IsSubmit=true Content="Sprawdź" />
 			<Button Content="Restart" OnClickCallback=HandleRestart />
 		</div>
 	</form>
-	@if (ShowAnswers)
-	{
-		<p>Total Score : @TotalScore / @Quiz.Questions.Count() </p>
-	}
 </div>
 
 @code {
