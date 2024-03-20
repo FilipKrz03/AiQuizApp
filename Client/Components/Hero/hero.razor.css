@@ -11,7 +11,7 @@
 }
 
 h1 {
-  color: #212529;
+  color: var(--darkblue);
   font-size: 65px;
   margin: 0px;
   animation-name: fallFromUp;
@@ -24,7 +24,7 @@ h1:focus {
 }
 
 .hero_desc {
-  color: #6c757d;
+  color: var(--gray);
   font-size: 24px;
   animation-name: appear;
   animation-duration: 0.5s;

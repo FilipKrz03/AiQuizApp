@@ -17,7 +17,7 @@
 .brand {
   font-size: 32px;
   text-decoration: none;
-  color:#212529;
+  color:var(--darkblue);
 }
 
 .nav-links {
@@ -29,12 +29,12 @@
   text-decoration: none;
   padding: 10px 15px;
   transition: background-color 0.3s;
-  color: #6c757d;
+  color: var(--gray);
   font-size: 20px;
 }
 
 ::deep .nav-links a:hover {
-  color:#212529;
+  color:var(--darkblue);
 }
 
 @media screen and (max-width: 650px) {
@@ -54,7 +54,7 @@
 }
 
 ::deep .nav-links a.active {
-  background-color: #212529;
+  background-color: var(--darkblue);
   color: white;
 }
 

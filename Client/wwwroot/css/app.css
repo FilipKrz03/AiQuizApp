@@ -1,3 +1,10 @@
+:root {
+    --darkblue: #212529;
+    --gray: #6c757d;
+}
+
+
+
 body {
   margin: 0;
   padding: 0;
