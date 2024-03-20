@@ -168,5 +168,15 @@ namespace Client.Services
 
 			return result.IsSuccessStatusCode;
 		}
+
+		public async Task<IEnumerable<UserOwnAlgorithmTaskBasicResponseDto>> GetUserNotCreatedAlgorithmsAsync()
+		{
+			var result = await _httpClient.GetAsync("api/user/algorithms?CreationStatus=Pending,Failed");
+
+			var data = JsonConvert.DeserializeObject<IEnumerable<UserOwnAlgorithmTaskBasicResponseDto>>
+				(await result.Content.ReadAsStringAsync());
+
+			return data!;
+		}
 	}
 }

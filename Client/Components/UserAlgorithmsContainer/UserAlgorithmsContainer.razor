@@ -1,5 +1,6 @@
 ﻿@using Client.Components.AlgorithmsContainer
 @using Client.Components.CreateAlgorithmForm
+@using Client.Components.NotCreatedAlgorithmsContainer
 
 @inject IModalService _modalService;
 @inject IDataService _dataService;
@@ -9,7 +10,7 @@
 	<div class="container">
 		<button 
 			class="toggle-btn"
-			@onclick='(() => ShowNotCreatedAlgorithms = !ShowNotCreatedAlgorithms)'>
+			@onclick='ToggleShowNotCreatedAlgorithmsState'>
 			@GetToggleButtonContent()
 			</button>
 		<div class="main-info">
@@ -21,7 +22,14 @@
 			</p>
 			<Button Content="Stwórz algorytm" Secondary=true OnClickCallback="ShowCreateAlgorithmModal"/>
 		</div>
-		<AlgorithmsContainer Algorithms="Algortihms" AreAlgorithmsLimitedToUser="true" />
+		@if(!ShowNotCreatedAlgorithms)
+		{
+			<AlgorithmsContainer Algorithms="Algortihms" AreAlgorithmsLimitedToUser="true" />
+		}
+		@if(ShowNotCreatedAlgorithms)
+		{
+			<NotCreatedAlgorithmsContainer Algorithms="NotCreatedAlgorithms" />
+		}
 	</div>
 }
 @if(IsLoading)
@@ -31,6 +39,8 @@
 
 @code {
 	public IEnumerable<AlgorithmTaskBasicResponseDto> Algortihms { get; set; } = [];
+	public IEnumerable<UserOwnAlgorithmTaskBasicResponseDto> NotCreatedAlgorithms = [];
+
 	public bool IsLoading { get; set; } = false;
 
 	public bool ShowNotCreatedAlgorithms { get; set; } = false;
@@ -58,6 +68,23 @@
 		if (quizesCount > 1 && quizesCount < 5) return "y";
 
 		return "ów";
+	}
+
+	private async Task ToggleShowNotCreatedAlgorithmsState()
+	{
+		ShowNotCreatedAlgorithms = !ShowNotCreatedAlgorithms;
+		IsLoading = true;
+
+		if(ShowNotCreatedAlgorithms)
+		{
+			NotCreatedAlgorithms = await _dataService.GetUserNotCreatedAlgorithmsAsync();
+		}
+		else
+		{
+			Algortihms = await _dataService.GetUserAlgorithmsAsync();
+		}
+
+		IsLoading = false;
 	}
 
 	private string GetToggleButtonContent()

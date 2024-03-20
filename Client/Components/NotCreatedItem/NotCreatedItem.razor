@@ -1,0 +1,39 @@
+﻿<div class="item">
+	<div class="item-title">
+		<span>Tytuł:</span>
+		<h3 class="title">@ItemTitle</h3>
+	</div>
+	<div class="creation-status-container">
+		Status: 
+		<img class="status-img" src="@GetCreationStatusDotImg()" />
+		<span class="creation-status-string">@GetCreationStatusName()</span>
+	</div>
+	<div class="special-info">
+		<span class="special-info-title">@SpecialColumnTitle</span>
+		<span class="special-info-content">@SpecialColumnContent</span>
+	</div>
+</div>
+
+@code {
+	[Parameter]
+	public CreationStatus CreationStatus { get; set; }
+
+	[Parameter]
+	public string ItemTitle { get; set; } = null!;
+
+	[Parameter]
+	public string SpecialColumnTitle { get; set; } = null!;
+
+	[Parameter]
+	public string SpecialColumnContent { get; set; } = null!;
+
+	string GetCreationStatusDotImg()
+	{
+		return CreationStatus == CreationStatus.Failed ? "red_dot.png" : "orange_dot.png";
+	}
+
+	string GetCreationStatusName()
+	{
+		return CreationStatus == CreationStatus.Failed ? "Fail" : "W trakcie";
+	}
+}

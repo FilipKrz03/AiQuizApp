@@ -1,0 +1,18 @@
+﻿@using Client.Components.NotCreatedItem
+
+<div class="container">
+	@foreach(var item in Algorithms)
+	{
+		<NotCreatedItem 
+			ItemTitle="@item.TaskTitle" 
+			CreationStatus="@item.CreationStatus" 
+			SpecialColumnTitle="Głowne zagadnienia:"
+			SpecialColumnContent="@item.TaskMainTopics"
+		/>
+	}
+</div>
+
+@code {
+	[Parameter]
+	public IEnumerable<UserOwnAlgorithmTaskBasicResponseDto> Algorithms { get; set; } = [];
+}
