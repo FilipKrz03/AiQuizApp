@@ -9,7 +9,7 @@
     font-family: inherit;
     width: 100%;
     border: 0;
-    border-bottom: 2px solid #9b9b9b;
+    border-bottom: 2px solid var(--gray);;
     outline: 0;
     font-size: 1.3rem;
     color: black;
@@ -34,7 +34,7 @@
     display: block;
     transition: 0.2s;
     font-size: 1rem;
-    color: #9b9b9b;
+    color: var(--gray);
 }
 
  .form__field:focus ~ .form__label {

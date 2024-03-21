@@ -4,23 +4,25 @@
 <div class="container">
 	<EditForm Model="dataModel" OnValidSubmit="HandleValidSubmit">
 		<DataAnnotationsValidator />
-		<div class="input">
-			<label>Wybierz poziom zaawansowania algorytmu</label>
-			<InputSelect @bind-Value="dataModel.AdvanceNumber">
-				<option value="1">1</option>
-				<option value="2">2</option>
-				<option value="3">3</option>
-				<option value="4">4</option>
-				<option value="5">5</option>
-				<option value="6">6</option>
-				<option value="7">7</option>
-				<option value="8">8</option>
-				<option value="9">9</option>
-				<option value="10">10</option>
-			</InputSelect>
-		</div>
 			<CustomInputText @bind-Value="dataModel.TaskTitle" Description="Tytuł algorytmu" />
 			<CustomInputText @bind-Value="dataModel.TaskMainTopics" Description="Główne zagadnienia" />
+		<div class="select-wrapper">
+			<label>Wybierz poziom zaawansowania</label>
+			<div class="select">
+				<InputSelect @bind-Value="dataModel.AdvanceNumber">
+					<option value="1">1</option>
+					<option value="2">2</option>
+					<option value="3">3</option>
+					<option value="4">4</option>
+					<option value="5">5</option>
+					<option value="6">6</option>
+					<option value="7">7</option>
+					<option value="8">8</option>
+					<option value="9">9</option>
+					<option value="10">10</option>
+				</InputSelect>
+			</div>
+		</div>
 		<ValidationSummary />
 		<Button Content="Stwórz" IsSubmit=true />
 	</EditForm>

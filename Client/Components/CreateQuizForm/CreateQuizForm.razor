@@ -6,23 +6,25 @@
 <div class="container">
 	<EditForm Model="creationQuizData" OnValidSubmit="HandleValidSubmit" class="form">
 		<DataAnnotationsValidator />
-		<div class="input">
-			<label>Wybierz poziom zaawansowania quizu</label>
-			<InputSelect @bind-Value="creationQuizData.AdvanceNumber">
-				<option value="1">1</option>
-				<option value="2">2</option>
-				<option value="3">3</option>
-				<option value="4">4</option>
-				<option value="5">5</option>
-				<option value="6">6</option>
-				<option value="7">7</option>
-				<option value="8">8</option>
-				<option value="9">9</option>
-				<option value="10">10</option>
-			</InputSelect>
-		</div>
 			<CustomInputText @bind-Value="creationQuizData.TechnologyName" Description="Technologia quizu" />
 			<CustomInputText @bind-Value="creationQuizData.QuizTitle" Description="Tytuł Quizu" />
+		<div class="select-wrapper">
+			<label>Wybierz poziom zaawansowania</label>
+			<div class="select">
+				<InputSelect @bind-Value="creationQuizData.AdvanceNumber">
+					<option value="1">1</option>
+					<option value="2">2</option>
+					<option value="3">3</option>
+					<option value="4">4</option>
+					<option value="5">5</option>
+					<option value="6">6</option>
+					<option value="7">7</option>
+					<option value="8">8</option>
+					<option value="9">9</option>
+					<option value="10">10</option>
+				</InputSelect>
+			</div>
+		</div>
 		<ValidationSummary />
 		<Button Content="Stwórz" IsSubmit=true />
 	</EditForm>
