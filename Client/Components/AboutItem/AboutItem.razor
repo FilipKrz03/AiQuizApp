@@ -1,0 +1,16 @@
+﻿<div class="item">
+	<img src="@ImgSrc" />
+	<h2>@Title</h2>
+	<p>@Description</p>
+</div>
+
+@code {
+	[Parameter]
+	public string ImgSrc { get; set; } = null!;
+
+	[Parameter]
+	public string Title { get; set; } = null!;
+
+	[Parameter]
+	public string Description { get; set; } = null!;
+}

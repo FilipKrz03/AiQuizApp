@@ -1,14 +1,31 @@
-﻿<section class="hero">
-	<h1>
-		Niech sztuczna inteligencja pomoże ci w nauce programowania.
-	</h1>
-	<p class="hero_desc">
-		Eksploruj quizy wygenerowane przez sztuczna inteligencję.
-		Nie znalazłeś tego czego szukasz ? Nie przejmuj się .
-		Ai stworzy quiz taki jaki zechcesz . Sam mozesz wybrac technologie oraz poziom zaawansowania.
-	</p>
-	<div class="buttons">
-		<Button Content="Eksploruj" />
-		<Button Content="Twórz" Secondary=true />
+﻿@inject NavigationManager _navigationManager;
+
+<section class="hero">
+	<div class="left">
+		<h1>
+			Niech sztuczna inteligencja pomoże ci w nauce programowania.
+		</h1>
+		<span class="hero_desc">
+			Eksploruj quizy i algorytmy wygenerowane przez sztuczna inteligencję.
+			Nie znalazłeś tego czego szukasz ? Nie przejmuj się .
+			Ai stworzy quiz taki jaki zechcesz . Sam mozesz wybrac technologie oraz poziom zaawansowania.
+		</span>
+		<div class="buttons">
+			<Button Content="Quizy" OnClickCallback="NavigateToQuizes" />
+			<Button Content="Algorytmy" Secondary=true OnClickCallback="NavigateToAlgorithms" />
+		</div>
 	</div>
+	<img src="ai-hero.png"/>
 </section>
+
+@code{
+	void NavigateToQuizes()
+	{
+		_navigationManager.NavigateTo("/quizes");
+	}
+
+	void NavigateToAlgorithms()
+	{
+		_navigationManager.NavigateTo("/algorithms");
+	}
+}
