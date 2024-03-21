@@ -4,11 +4,5 @@
    justify-content: center;
    align-items: center;
    gap: 25px;
+   width:500px;
 }
-
-::deep input{
-    border: 1px solid #212529;
-    border-radius: 5px;
-    outline: none;
-    padding: 0.2em;
- }

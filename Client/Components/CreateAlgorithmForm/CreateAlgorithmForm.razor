@@ -19,14 +19,8 @@
 				<option value="10">10</option>
 			</InputSelect>
 		</div>
-		<div class="input">
-			<label>Wpisz tytuł algorytmu</label>
-			<InputText @bind-Value="dataModel.TaskTitle" />
-		</div>
-		<div class="input">
-			<label>Podaj główne zagadnienie algorytmu</label>
-			<InputText @bind-Value="dataModel.TaskMainTopics" />
-		</div>
+			<CustomInputText @bind-Value="dataModel.TaskTitle" Description="Tytuł algorytmu" />
+			<CustomInputText @bind-Value="dataModel.TaskMainTopics" Description="Główne zagadnienia" />
 		<ValidationSummary />
 		<Button Content="Stwórz" IsSubmit=true />
 	</EditForm>

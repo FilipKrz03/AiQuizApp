@@ -21,14 +21,8 @@
 				<option value="10">10</option>
 			</InputSelect>
 		</div>
-		<div class="input">
-			<label>Wpisz technologię quizu</label>
-			<InputText @bind-Value="creationQuizData.TechnologyName" />
-		</div>
-		<div class="input">
-			<label>Podaj tytuł quizu</label>
-			<InputText @bind-Value="creationQuizData.QuizTitle" />
-		</div>
+			<CustomInputText @bind-Value="creationQuizData.TechnologyName" Description="Technologia quizu" />
+			<CustomInputText @bind-Value="creationQuizData.QuizTitle" Description="Tytuł Quizu" />
 		<ValidationSummary />
 		<Button Content="Stwórz" IsSubmit=true />
 	</EditForm>

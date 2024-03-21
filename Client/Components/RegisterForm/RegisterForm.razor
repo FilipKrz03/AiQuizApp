@@ -2,18 +2,9 @@
 	<h1>Witamy !</h1>
 	<EditForm Model="@registerModel" OnValidSubmit="HandleValidSubmit" class="form">
 		<DataAnnotationsValidator />
-		<div class="input">
-			<label>Email</label>
-			<InputText @bind-Value="registerModel.Email" />
-		</div>
-		<div class="input">
-			<label>Hasło</label>
-			<InputText type="password" @bind-Value="registerModel.Password" />
-		</div>
-		<div class="input">
-			<label>Powtórż hasło</label>
-			<InputText type="password" @bind-Value="registerModel.RepeatPassword" />
-		</div>
+		<CustomInputText @bind-Value="registerModel.Email" Description="Email" />
+		<CustomInputText IsPassword=true @bind-Value="registerModel.Password" Description="Hasło" />
+		<CustomInputText IsPassword=true @bind-Value="registerModel.RepeatPassword" Description="Powtórz hasło" />
 		<ValidationSummary />
 		<Button IsSubmit=true Content="Zarejstruj się !" />
 	</EditForm>

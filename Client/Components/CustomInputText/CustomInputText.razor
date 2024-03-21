@@ -1,0 +1,27 @@
+﻿@inherits InputBase<string>
+
+<div class="form__group field">
+	<input type=@GetInputType() @bind="@CurrentValue" class="form__field" placeholder="@Description"/>
+	<label for="name" class="form__label">@Description</label>
+</div>
+
+
+@code {
+	[Parameter]
+	public string Description { get; set; } = null!;
+
+	[Parameter]
+	public bool IsPassword { get; set; } = false;
+
+	protected override bool TryParseValueFromString(string value, out string result,  out string validationErrorMessage)
+	{
+		result = value;
+		validationErrorMessage = null;
+		return true;
+	}
+
+	string GetInputType()
+	{
+		return IsPassword == true ? "password" : "text";
+	}
+}

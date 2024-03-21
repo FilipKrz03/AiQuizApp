@@ -1,15 +1,13 @@
 ﻿<div class="container">
+	@using Client.Components.CustomInputText
+	
 	<h1>Witamy ponownie !</h1>
-	<EditForm Model="@loginModel" OnValidSubmit="HandleValidSubmit" class="form">
+	<EditForm  Model="@loginModel" OnValidSubmit="HandleValidSubmit" class="form">
 		<DataAnnotationsValidator />
-		<div class="input">
-			<label>Email</label>
-			<InputText @bind-Value="loginModel.Email" />
-		</div>
-		<div class="input">
-			<label>Hasło</label>
-			<InputText type="password" @bind-Value="loginModel.Password" />
-		</div>
+
+		<CustomInputText Description="Email" @bind-Value="@loginModel.Email" />
+
+		<CustomInputText Description="Hasło" @bind-Value="@loginModel.Password" IsPassword=true />
 		<ValidationSummary />
 		<Button IsSubmit=true Content="Zaloguj się !" />
 		@if (LoginFailed)
