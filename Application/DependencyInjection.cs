@@ -11,6 +11,7 @@ using FluentValidation;
 using System.Reflection;
 using Application.Behaviors;
 using MediatR;
+using MediatR.Pipeline;
 
 namespace Application
 {
@@ -26,6 +27,7 @@ namespace Application
 			ValidatorOptions.Global.LanguageManager.Enabled = false; // To set Fluent Validation default exceptions language to english 
 
 			services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+			services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
 			services.AddHostedService<BaseQuizesManager>();
 			services.AddHostedService<BaseAlgorithmsManager>();
 			services.AddTransient<IQuizesCreator, QuizesCreator>();
