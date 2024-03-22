@@ -39,7 +39,7 @@ namespace UnitTests.Application.Cqrs.UserQuizes
 			_userRepositoryMock.Setup(x => x.UserExistAsync(It.IsAny<string>()))
 				.ReturnsAsync(false);
 
-			await _handler.Invoking(x => x.Handle(new GetUserAiQuizesQuery("", new ResourceParamethers()), default!))
+			await _handler.Invoking(x => x.Handle(new GetUserAiQuizesQuery("", new ResourceParamethersWithCreationStatus()), default!))
 				.Should()
 				.ThrowAsync<InvalidTokenClaimException>();
 		}
@@ -79,7 +79,7 @@ namespace UnitTests.Application.Cqrs.UserQuizes
 			_mapperMock.Setup(x => x.Map<PagedList<QuizBasicResponseDto>>(It.IsAny<PagedList<UserOwnQuiz>>()))
 				.Returns(userOwnQuizesPagedList);	
 
-			ResourceParamethers resourceParamethers = new()
+			ResourceParamethersWithCreationStatus resourceParamethers = new()
 			{
 				SearchQuery = "Java"
 			};
