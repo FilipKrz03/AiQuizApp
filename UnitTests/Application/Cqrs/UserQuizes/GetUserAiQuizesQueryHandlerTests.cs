@@ -22,7 +22,7 @@ namespace UnitTests.Application.Cqrs.UserQuizes
 		private readonly Mock<IUserRepository> _userRepositoryMock;
 		private readonly Mock<IRepository<UserOwnQuiz>> _userOwnQuizRepositoryMock;
 		private readonly Mock<IMapper> _mapperMock;
-		private readonly GetUserAiQuizesQueryHandler _handler;
+		private readonly GetUserQuizesQueryHandler _handler;
 
 		public GetUserAiQuizesQueryHandlerTests()
 		{
@@ -39,7 +39,7 @@ namespace UnitTests.Application.Cqrs.UserQuizes
 			_userRepositoryMock.Setup(x => x.UserExistAsync(It.IsAny<string>()))
 				.ReturnsAsync(false);
 
-			await _handler.Invoking(x => x.Handle(new GetUserAiQuizesQuery("", new ResourceParamethersWithCreationStatus()), default!))
+			await _handler.Invoking(x => x.Handle(new GetUserQuizesQuery("", new ResourceParamethersWithCreationStatus()), default!))
 				.Should()
 				.ThrowAsync<InvalidTokenClaimException>();
 		}
@@ -84,7 +84,7 @@ namespace UnitTests.Application.Cqrs.UserQuizes
 				SearchQuery = "Java"
 			};
 
-			var result = await _handler.Handle(new GetUserAiQuizesQuery("", resourceParamethers), default!);
+			var result = await _handler.Handle(new GetUserQuizesQuery("", resourceParamethers), default!);
 
 			result.Count
 				.Should()

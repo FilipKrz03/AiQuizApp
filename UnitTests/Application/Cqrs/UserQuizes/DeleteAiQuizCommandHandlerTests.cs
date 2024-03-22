@@ -18,7 +18,7 @@ namespace UnitTests.Application.Cqrs.UserQuizes
 	{
 		private readonly Mock<IRepository<UserOwnQuiz>> _userOwnQuizRepositoryMock;
 		private readonly Mock<IUserRepository> _userRepositoryMock;
-        private readonly DeleteAiQuizCommandHandler _handler;
+        private readonly DeleteUserQuizCommandHandler _handler;
 
         public DeleteAiQuizCommandHandlerTests()
         {
@@ -34,7 +34,7 @@ namespace UnitTests.Application.Cqrs.UserQuizes
             _userRepositoryMock.Setup(x => x.UserExistAsync(It.IsAny<string>()))
                 .ReturnsAsync(false);
 
-            await _handler.Invoking(x => x.Handle(new DeleteAiQuizCommand(Guid.NewGuid(), ""), default!))
+            await _handler.Invoking(x => x.Handle(new DeleteUserQuizCommand(Guid.NewGuid(), ""), default!))
                 .Should()
                 .ThrowAsync<InvalidTokenClaimException>();
         }
@@ -50,7 +50,7 @@ namespace UnitTests.Application.Cqrs.UserQuizes
             _userOwnQuizRepositoryMock.Setup(x => x.GetByIdQuery(It.IsAny<Guid>()))
                 .Returns(emptyUserOwnQuizEnum.BuildMock());
 
-			await _handler.Invoking(x => x.Handle(new DeleteAiQuizCommand(Guid.NewGuid(), ""), default!))
+			await _handler.Invoking(x => x.Handle(new DeleteUserQuizCommand(Guid.NewGuid(), ""), default!))
 			   .Should()
 			   .ThrowAsync<ResourceAlreadyNotExistException>();
 		}
@@ -71,7 +71,7 @@ namespace UnitTests.Application.Cqrs.UserQuizes
 			_userOwnQuizRepositoryMock.Setup(x => x.GetByIdQuery(It.IsAny<Guid>()))
 				.Returns(userOwnQuizEnum.BuildMock());
 
-            await _handler.Handle(new DeleteAiQuizCommand(Guid.NewGuid(), fakeUserId), default!);
+            await _handler.Handle(new DeleteUserQuizCommand(Guid.NewGuid(), fakeUserId), default!);
 
             _userOwnQuizRepositoryMock.Verify(x => x.DeleteEntity(It.IsAny<UserOwnQuiz>()));
 			_userOwnQuizRepositoryMock.Verify(x => x.SaveChangesAsync());

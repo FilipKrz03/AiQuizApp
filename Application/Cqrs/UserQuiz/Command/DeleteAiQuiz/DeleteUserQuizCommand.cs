@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Application.Cqrs.UserQuiz.Command.DeleteAiQuiz
 {
-	public sealed record DeleteAiQuizCommand(Guid QuizId , string UserId) : IRequest
+	public sealed record DeleteUserQuizCommand(Guid QuizId , string UserId) : IRequest
 	{
 	}
 }

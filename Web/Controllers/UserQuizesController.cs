@@ -20,11 +20,11 @@ namespace Web.Controllers
 		private readonly IMediator _mediator = mediator;
 
 		[HttpPost]
-		public async Task<ActionResult> CreateQuiz([FromBody] CreateUserOwnQuizRequest request)
+		public async Task<ActionResult> CreateQuiz([FromBody] CreateUserQuizRequest request)
 		{
 			var result = await _mediator.Send
 				(
-					new CreateAiQuizCommand(
+					new CreateUserQuizCommand(
 						User.Claims.GetId(),
 						request.TechnologyName,
 						request.AdvanceNumber,
@@ -38,7 +38,7 @@ namespace Web.Controllers
 		[HttpGet("{quizId}")]
 		public async Task<ActionResult> GetQuiz(Guid quizId)
 		{
-			var result = await _mediator.Send(new GetUserAiQuizQuery(quizId, User.Claims.GetId()));
+			var result = await _mediator.Send(new GetUserQuizQuery(quizId, User.Claims.GetId()));
 
 			return Ok(result);
 		}
@@ -46,7 +46,7 @@ namespace Web.Controllers
 		[HttpDelete("{quizId}")]
 		public async Task<ActionResult> DeleteQuiz(Guid quizId)
 		{
-			await _mediator.Send(new DeleteAiQuizCommand(quizId, User.Claims.GetId()));	
+			await _mediator.Send(new DeleteUserQuizCommand(quizId, User.Claims.GetId()));	
 
 			return StatusCode(204);
 		}
@@ -54,7 +54,7 @@ namespace Web.Controllers
 		[HttpGet]
 		public async Task<ActionResult> GetQuizes([FromQuery] ResourceParamethersWithCreationStatus resourceParamethers)
 		{
-			var result = await _mediator.Send(new GetUserAiQuizesQuery(
+			var result = await _mediator.Send(new GetUserQuizesQuery(
 				User.Claims.GetId(),
 				resourceParamethers
 				));

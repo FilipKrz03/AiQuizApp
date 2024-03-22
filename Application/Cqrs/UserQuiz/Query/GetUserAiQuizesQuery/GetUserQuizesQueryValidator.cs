@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Application.Cqrs.UserQuiz.Query.GetUserAiQuizesQuery
 {
-	public class GetUserAiQuizesQueryValidator : CreationStatusFilterCorrectnessValidator<GetUserAiQuizesQuery>
+	public class GetUserQuizesQueryValidator : CreationStatusFilterCorrectnessValidator<GetUserQuizesQuery>
 	{
 		// All work is done by CreationStatusFilterCorrectnesValidator generic class
 	}

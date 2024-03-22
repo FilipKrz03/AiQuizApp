@@ -21,7 +21,7 @@ namespace UnitTests.Application.Cqrs.UserQuizes
 		private readonly Mock<IUserRepository> _userRepositoryMock;
 		private readonly Mock<IRepository<UserOwnQuiz>> _userOwnQuizRepositoryMock;
 		private readonly Mock<IMapper> _mapperMock;
-		private readonly GetUserAiQuizQueryHandler _handler;
+		private readonly GetUserQuizQueryHandler _handler;
 
         public GetUserAiQuizQueryHandlerTests()
         {
@@ -39,7 +39,7 @@ namespace UnitTests.Application.Cqrs.UserQuizes
 			_userRepositoryMock.Setup(x => x.UserExistAsync(It.IsAny<string>()))
 				.ReturnsAsync(false);
 
-			await _handler.Invoking(x => x.Handle(new GetUserAiQuizQuery(Guid.NewGuid(), ""), default!))
+			await _handler.Invoking(x => x.Handle(new GetUserQuizQuery(Guid.NewGuid(), ""), default!))
 				.Should()
 				.ThrowAsync<InvalidTokenClaimException>();
 		}
@@ -68,7 +68,7 @@ namespace UnitTests.Application.Cqrs.UserQuizes
 			_mapperMock.Setup(x => x.Map<QuizDetailResponseDto>(It.IsAny<UserOwnQuiz>()))
 				.Returns(mappedQuiz);
 
-			var result = await _handler.Handle(new GetUserAiQuizQuery(Guid.NewGuid(), ""), default!);
+			var result = await _handler.Handle(new GetUserQuizQuery(Guid.NewGuid(), ""), default!);
 
 			result
 				.Should()

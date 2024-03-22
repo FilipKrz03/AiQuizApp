@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Application.Cqrs.UserQuiz.Command.DeleteAiQuiz
 {
-	public class DeleteAiQuizCommandValidator : AbstractValidator<DeleteAiQuizCommand>
+	public class DeleteUserQuizCommandValidator : AbstractValidator<DeleteUserQuizCommand>
 	{
-		public DeleteAiQuizCommandValidator()
+		public DeleteUserQuizCommandValidator()
 		{
 			RuleFor(x => x.UserId).NotEmpty();
 		}

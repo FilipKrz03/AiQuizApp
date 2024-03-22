@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Application.Cqrs.UserQuiz.Query.GetUserAiQuizQuery
 {
-	public sealed record GetUserAiQuizQuery(Guid QuizId , string UserId) : IRequest<QuizDetailResponseDto>
+	public sealed record GetUserQuizQuery(Guid QuizId , string UserId) : IRequest<QuizDetailResponseDto>
 	{
 	}
 }

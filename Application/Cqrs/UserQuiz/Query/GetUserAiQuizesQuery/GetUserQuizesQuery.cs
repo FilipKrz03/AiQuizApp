@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Application.Cqrs.UserQuiz.Query.GetUserAiQuizesQuery
 {
-	public sealed record GetUserAiQuizesQuery(string UserId , ResourceParamethersWithCreationStatus ResourceParamethers)
+	public sealed record GetUserQuizesQuery(string UserId , ResourceParamethersWithCreationStatus ResourceParamethers)
 		: IRequest<PagedList<UserOwnQuizBasicResponseDto>> , IResourceParamethersWithCreationStatus
 	{
 	}

@@ -8,17 +8,17 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Cqrs.UserQuiz.Query.GetUserAiQuizQuery
 {
-	public sealed class GetUserAiQuizQueryHandler(
+	public sealed class GetUserQuizQueryHandler(
 		IRepository<UserOwnQuiz> userOwnQuizRepository,
 		IUserRepository userRepository,
 		IMapper mapper
-		) : IRequestHandler<GetUserAiQuizQuery, QuizDetailResponseDto>
+		) : IRequestHandler<GetUserQuizQuery, QuizDetailResponseDto>
 	{
 		private readonly IRepository<UserOwnQuiz> _userOwnQuizRepository = userOwnQuizRepository;
 		private readonly IUserRepository _userRepository = userRepository;
 		private readonly IMapper _mapper = mapper;
 
-		public async Task<QuizDetailResponseDto> Handle(GetUserAiQuizQuery request, CancellationToken cancellationToken)
+		public async Task<QuizDetailResponseDto> Handle(GetUserQuizQuery request, CancellationToken cancellationToken)
 		{
 			if (!await _userRepository.UserExistAsync(request.UserId))
 			{

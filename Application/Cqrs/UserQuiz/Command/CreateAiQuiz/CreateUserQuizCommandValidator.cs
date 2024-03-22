@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Application.Cqrs.UserQuiz.Command.CreateAiQuiz
 {
-	public class CreateAiQuizCommandValidator : AbstractValidator<CreateAiQuizCommand>
+	public class CreateUserQuizCommandValidator : AbstractValidator<CreateUserQuizCommand>
 	{
-		public CreateAiQuizCommandValidator()
+		public CreateUserQuizCommandValidator()
 		{
 			RuleFor(x => x.AdvanceNumber).NotEmpty().GreaterThan(0).LessThanOrEqualTo(10);
 			RuleFor(x => x.QuizTitle).NotEmpty();

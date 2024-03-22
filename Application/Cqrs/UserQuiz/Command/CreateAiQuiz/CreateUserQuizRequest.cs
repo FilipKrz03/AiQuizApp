@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Application.Requests
 {
-	public sealed record CreateUserOwnQuizRequest(string TechnologyName, int AdvanceNumber, string? QuizTitle)
+	public sealed record CreateUserQuizRequest(string TechnologyName, int AdvanceNumber, string? QuizTitle)
 	{
 	}
 }

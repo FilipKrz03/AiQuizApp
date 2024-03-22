@@ -14,15 +14,15 @@ using System.Threading.Tasks;
 
 namespace Application.Cqrs.UserQuiz.Command.DeleteAiQuiz
 {
-	public sealed class DeleteAiQuizCommandHandler(
+	public sealed class DeleteUserQuizCommandHandler(
 		IRepository<UserOwnQuiz> userOwnQuizRepository,
 		IUserRepository userRepository
-		) : IRequestHandler<DeleteAiQuizCommand>
+		) : IRequestHandler<DeleteUserQuizCommand>
 	{
 		private readonly IRepository<UserOwnQuiz> _userOwnQuizRepository = userOwnQuizRepository;
 		private readonly IUserRepository _userRepository = userRepository;
 
-		public async Task Handle(DeleteAiQuizCommand request, CancellationToken cancellationToken)
+		public async Task Handle(DeleteUserQuizCommand request, CancellationToken cancellationToken)
 		{
 			if (!await _userRepository.UserExistAsync(request.UserId))
 			{

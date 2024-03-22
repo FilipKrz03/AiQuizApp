@@ -15,7 +15,7 @@ namespace UnitTests.Application.Cqrs.UserQuizes
 	{
 		private readonly Mock<IServiceProvider> _serviceProviderMock;
 		private readonly Mock<IUserRepository> _userRepositoryMock;
-		private readonly CreateAiQuizCommandHandler _handler;
+		private readonly CreateUserQuizCommandHandler _handler;
 
         public CreateAiQuizCommandHandlerTests()
         {
@@ -31,7 +31,7 @@ namespace UnitTests.Application.Cqrs.UserQuizes
 			_userRepositoryMock.Setup(x => x.UserExistAsync(It.IsAny<string>()))
 			   .ReturnsAsync(false);
 
-			await _handler.Invoking(x => x.Handle(new CreateAiQuizCommand("" , "" , 5 , ""), default!))
+			await _handler.Invoking(x => x.Handle(new CreateUserQuizCommand("" , "" , 5 , ""), default!))
 				.Should()
 				.ThrowAsync<InvalidTokenClaimException>();
 		}
@@ -42,7 +42,7 @@ namespace UnitTests.Application.Cqrs.UserQuizes
 			_userRepositoryMock.Setup(x => x.UserExistAsync(It.IsAny<string>()))
 			   .ReturnsAsync(true);
 
-			var result = await _handler.Handle(new CreateAiQuizCommand("", "", 5, ""), default!);
+			var result = await _handler.Handle(new CreateUserQuizCommand("", "", 5, ""), default!);
 
 			result
 				.Should()

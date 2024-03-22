@@ -17,17 +17,17 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Application.Cqrs.UserQuiz.Query.GetUserAiQuizesQuery
 {
-	public sealed class GetUserAiQuizesQueryHandler(
+	public sealed class GetUserQuizesQueryHandler(
 		IUserRepository userRepository,
 		IRepository<UserOwnQuiz> userOwnQuizRepository,
 		IMapper mapper
-		) : IRequestHandler<GetUserAiQuizesQuery, PagedList<UserOwnQuizBasicResponseDto>>
+		) : IRequestHandler<GetUserQuizesQuery, PagedList<UserOwnQuizBasicResponseDto>>
 	{
 		private readonly IUserRepository _userRepository = userRepository;
 		private readonly IRepository<UserOwnQuiz> _userOwnQuizRepository = userOwnQuizRepository;
 		private readonly IMapper _mapper = mapper;
 
-		public async Task<PagedList<UserOwnQuizBasicResponseDto>> Handle(GetUserAiQuizesQuery request, CancellationToken cancellationToken)
+		public async Task<PagedList<UserOwnQuizBasicResponseDto>> Handle(GetUserQuizesQuery request, CancellationToken cancellationToken)
 		{
 			if (!await _userRepository.UserExistAsync(request.UserId))
 			{

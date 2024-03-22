@@ -17,16 +17,16 @@ using System.Threading.Tasks;
 
 namespace Application.Cqrs.UserQuiz.Command.CreateAiQuiz
 {
-	public sealed class CreateAiQuizCommandHandler(
+	public sealed class CreateUserQuizCommandHandler(
 		IServiceProvider serviceProvider,
 		IUserRepository userRepository  
 		)
-		: IRequestHandler<CreateAiQuizCommand, string>
+		: IRequestHandler<CreateUserQuizCommand, string>
 	{
 		private readonly IServiceProvider _serviceProvider = serviceProvider;
 		private readonly IUserRepository _userRepository = userRepository;
 
-		public async Task<string> Handle(CreateAiQuizCommand request, CancellationToken cancellationToken)
+		public async Task<string> Handle(CreateUserQuizCommand request, CancellationToken cancellationToken)
 		{
 			if(!await _userRepository.UserExistAsync(request.UserId))
 			{
@@ -38,13 +38,13 @@ namespace Application.Cqrs.UserQuiz.Command.CreateAiQuiz
 			return ("Quiz creation queued");
 		}
 
-		private async void CreateQuizAsync(CreateAiQuizCommand request)
+		private async void CreateQuizAsync(CreateUserQuizCommand request)
 		{
 			var scope = _serviceProvider.CreateScope();
 
 			var quizesCreator = scope.ServiceProvider.GetRequiredService<IQuizesCreator>();
 			var userOwnQuizRepository = scope.ServiceProvider.GetRequiredService<IRepository<UserOwnQuiz>>();
-			var logger = scope.ServiceProvider.GetRequiredService<ILogger<CreateAiQuizCommandHandler>>();
+			var logger = scope.ServiceProvider.GetRequiredService<ILogger<CreateUserQuizCommandHandler>>();
 			var questionRepository = scope.ServiceProvider.GetRequiredService<IRepository<Question>>();
 
 			var quizId = Guid.NewGuid();
