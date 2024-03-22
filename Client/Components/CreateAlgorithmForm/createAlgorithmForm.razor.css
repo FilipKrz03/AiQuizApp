@@ -52,3 +52,17 @@
 label {
     color: var(--gray);
 }
+
+@media screen and (max-width:545px)
+{
+    ::deep form{
+        width:350px;
+    }
+}
+
+
+@media screen and (max-width:355px) {
+    ::deep form {
+        width: 99vw;
+    }
+}

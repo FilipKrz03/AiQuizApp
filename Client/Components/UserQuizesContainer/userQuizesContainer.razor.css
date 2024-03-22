@@ -56,3 +56,19 @@
     transform: translateY(0px);
   }
 }
+
+@media screen and (max-width:800px)
+{
+    .toggle-btn{
+        width:85%;
+        font-size:21px;
+    }
+
+    .container{
+        padding:1em;
+    }
+
+    .main-info{
+        padding:0em;
+    }
+}
