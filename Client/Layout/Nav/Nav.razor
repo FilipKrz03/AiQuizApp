@@ -9,38 +9,60 @@
                     <img src="quiz.png" />
                     <a href="" class="brand">AiQuiz</a>
                 </div>
-                <div class="nav-links">
-                    <NavLink href="/" ActiveClass="active" Match="NavLinkMatch.All">Dom</NavLink>
-                    <NavLink href="/quizes" ActiveClass="active">Quizy</NavLink>
-                    <NavLink href="/algorithms" ActiveClass="active">Algorytmy</NavLink>
-                    <NavLink href="/dashboard" ActiveClass="active">Panel użytkownika</NavLink>
+                <div class="nav-links @(IsMobileNavActive ? "active" : "")">
+                    <NavLink @onclick=SetMobileNavInactive href="/" ActiveClass="active" Match="NavLinkMatch.All">Dom</NavLink>
+                    <NavLink @onclick=SetMobileNavInactive href="/quizes" ActiveClass="active">Quizy</NavLink>
+                    <NavLink @onclick=SetMobileNavInactive href="/algorithms" ActiveClass="active">Algorytmy</NavLink>
+                    <NavLink @onclick=SetMobileNavInactive href="/dashboard" ActiveClass="active">Panel użytkownika</NavLink>
                 </div>
+                <button class="burger @(IsMobileNavActive ? "active" : "")" @onclick="HandleBurgerClick">
+                    <div class="line"></div>
+                    <div class="line"></div>
+                    <div class="line"></div>
+                </button>
             </nav>
         </Authorized>
         <NotAuthorized>
             <nav class="navbar">
                 <div class="logo-title">
                     <img src="quiz.png" />
-                    <a href="" class="brand">AiQuiz</a>
+                    <a @onclick=SetMobileNavInactive href="" class="brand">AiQuiz</a>
                 </div>
-                <div class="nav-links">
-                    <NavLink href="/" ActiveClass="active" Match="NavLinkMatch.All">Dom</NavLink>
-                    <NavLink href="/quizes" ActiveClass="active">Quizy</NavLink>
-                    <NavLink href="/algorithms" ActiveClass="active">Algorytmy</NavLink>
-                    <NavLink href="/login" ActiveClass="active">Zaloguj</NavLink>
-                    <NavLink href="/register" ActiveClass="active">Zarejestruj</NavLink>
+                <div class="nav-links @(IsMobileNavActive ? "active" : "")">
+                    <NavLink @onclick=SetMobileNavInactive href="/" ActiveClass="active" Match="NavLinkMatch.All">Dom</NavLink>
+                    <NavLink @onclick=SetMobileNavInactive href="/quizes" ActiveClass="active">Quizy</NavLink>
+                    <NavLink @onclick=SetMobileNavInactive href="/algorithms" ActiveClass="active">Algorytmy</NavLink>
+                    <NavLink @onclick=SetMobileNavInactive href="/login" ActiveClass="active">Zaloguj</NavLink>
+                    <NavLink @onclick=SetMobileNavInactive href="/register" ActiveClass="active">Zarejestruj</NavLink>
                 </div>
+                <button class="burger @(IsMobileNavActive ? "active" : "")" @onclick="HandleBurgerClick">
+                    <div class="line"></div>
+                    <div class="line"></div>
+                    <div class="line"></div>
+                </button>
             </nav>
         </NotAuthorized>
     </AuthorizeView>
 </CascadingAuthenticationState>
 
 @code {
-    private bool userAuthenticated;
+    bool userAuthenticated;
+
+    bool IsMobileNavActive { get; set; } = false;
 
     protected override async Task OnInitializedAsync()
     {
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         userAuthenticated = authState.User.Identity.IsAuthenticated;
+    }
+
+    void HandleBurgerClick()
+    {
+        IsMobileNavActive = !IsMobileNavActive;
+    }
+
+    void SetMobileNavInactive()
+    {
+        IsMobileNavActive = false;
     }
 }
