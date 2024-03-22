@@ -1,0 +1,133 @@
+﻿.example{
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    gap:50px;
+    width:90vw;
+    max-width:1525px;
+    margin:0 auto;
+}
+
+.example h3{
+    font-size:35px;
+    font-weight:bolder;
+}
+
+.main-container{
+   display:flex;
+   flex-direction:row;
+   justify-content:center;
+   gap:75px;
+   align-items:flex-start;
+   width:100%;
+}
+
+.create-box {
+    padding: 2.5em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 30px 90px;
+    margin-bottom: 50px;
+}
+
+.create-box img{
+    width:475px;
+    height:390px;
+}
+
+.other-info{
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:flex-start;
+    gap:22px;
+}
+
+.lg-item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    background: var(--white);
+    width: 360px;
+    padding: 1em;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 20px 30px;
+}
+
+.top{
+    display:flex;
+    flex-direction:row;
+    justify-content:center;
+    align-items:center;
+    gap:10px;
+}
+
+.top img{
+    width:60px;
+}
+
+.lg-item .begin{
+    color:var(--peach);
+    font-weight:bolder;
+    cursor:pointer;
+}
+
+.sml-item{
+    display:flex;
+    flex-direction:row;
+    align-items:center;
+    gap:20px;
+}
+
+.sml-item img{
+    width:60px;
+}
+
+@media screen and (max-width:1650px)
+{
+    .example{
+        width:95vw;
+    }
+    
+    .create-box img{
+        width:360px;
+        height:300px;
+    }
+
+    .main-container{
+        align-items:center;
+    }
+}
+
+@media screen and (max-width:1350px)
+{
+    .main-container{
+        flex-direction:column;
+        justify-content:center;
+        align-items:center;
+        gap:5px;
+    }
+}
+
+
+@media screen and (max-width:900px) {
+    .create-box{
+        flex-direction:column;
+        padding:1em;
+    }
+
+    .example h3{
+        font-size:25px;
+    }
+
+    .create-box img {
+        width: 320px;
+        height: 260px;
+    }
+
+    .lg-item{
+        width:320px;
+    }
+}
