@@ -1,9 +1,11 @@
 ﻿@using Client.Components.QuizesContainer
-@using Client.Components.QuizesPageTitle
+@using Client.Components.PageTitle
 
 @page "/quizes"
 
-<QuizesPageTitle />
+<Microsoft.AspNetCore.Components.Web.PageTitle>Quizy</Microsoft.AspNetCore.Components.Web.PageTitle>
+
+<Client.Components.PageTitle.PageTitle Content="Odkrywaj naszą bazę quizow !" />
 @if(!IsLoading)
 {
 	<QuizesContainer Quizes=BaseQuizes />

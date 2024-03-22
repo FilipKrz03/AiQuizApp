@@ -13,15 +13,34 @@
 				@onclick='ToggleShowNotCreatedQuizesState'>
 			@GetToggleButtonContent()
 		</button>
-		<div class="main-info">
-			<p>
-				Stworzyłeś
-				<span class="bolder-font">
-					@Quizes.Count() quiz@(GetQuizesWordSufix()) !
-				</span>
-			</p>
-			<Button Content="Stwórz quiz" Secondary=true OnClickCallback="ShowCreateQuizModal" />
-		</div>
+			<div class="main-info">
+				@if(!ShowNotCreatedQuizes)
+				{
+					<p>
+						Stworzyłeś
+						<span class="bolder-font">
+							@Quizes.Count() quiz@(GetQuizesWordSufix(Quizes.Count())) !
+						</span>
+					</p>
+				}
+				@if (ShowNotCreatedQuizes)
+				{
+					@if (NotCreatedQuizes.Count() == 0)
+					{
+						<p>Żadne quizy nie czekają w kolejce !</p>
+					}
+					@if (NotCreatedQuizes.Count() > 0)
+					{
+						<p>
+							Nie stworzono jeszcze
+							<span class="bolder-font">
+								@NotCreatedQuizes.Count() quiz@(GetQuizesWordSufix(NotCreatedQuizes.Count())) !
+							</span>
+						</p>
+					}
+				}
+				<Button Content="Stwórz quiz" Secondary=true OnClickCallback="ShowCreateQuizModal" />
+			</div>
 		@if(!ShowNotCreatedQuizes)
 		{
 			<QuizesContainer Quizes="Quizes" AreQuizesLimitedToUser=true />
@@ -56,10 +75,8 @@
 		var modal = _modalService.Show<CreateQuizForm>("Stworz quiz !");
 	}
 
-	string GetQuizesWordSufix()
+	string GetQuizesWordSufix(int quizesCount)
 	{
-		var quizesCount = Quizes.Count();
-
 		if (quizesCount == 1) return "";
 		if (quizesCount > 1 && quizesCount < 5) return "y";
 

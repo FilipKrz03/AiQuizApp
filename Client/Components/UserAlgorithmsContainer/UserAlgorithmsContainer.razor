@@ -14,17 +14,36 @@
 			@GetToggleButtonContent()
 			</button>
 		<div class="main-info">
-			<p>
-				Stworzyłeś
-				<span class="bolder-font">
-					@Algortihms.Count() algorytm@(GetAlgorithmsWordSufix()) !
-				</span>
-			</p>
+			@if (!ShowNotCreatedAlgorithms)
+			{
+				<p>
+					Stworzyłeś
+					<span class="bolder-font">
+						@Algorithms.Count() algorytm@(GetAlgorithmsWordSufix(Algorithms.Count())) !
+					</span>
+				</p>
+			}
+			@if (ShowNotCreatedAlgorithms)
+			{
+				@if (NotCreatedAlgorithms.Count() == 0)
+				{
+					<p>Żadne algorytmy nie czekają w kolejce !</p>
+				}
+				@if (NotCreatedAlgorithms.Count() > 0)
+				{
+					<p>
+						Nie stworzono jeszcze
+						<span class="bolder-font">
+							@NotCreatedAlgorithms.Count() algorytm@(GetAlgorithmsWordSufix(NotCreatedAlgorithms.Count())) !
+						</span>
+					</p>
+				}
+			}
 			<Button Content="Stwórz algorytm" Secondary=true OnClickCallback="ShowCreateAlgorithmModal"/>
 		</div>
 		@if(!ShowNotCreatedAlgorithms)
 		{
-			<AlgorithmsContainer Algorithms="Algortihms" AreAlgorithmsLimitedToUser="true" />
+			<AlgorithmsContainer Algorithms="Algorithms" AreAlgorithmsLimitedToUser="true" />
 		}
 		@if(ShowNotCreatedAlgorithms)
 		{
@@ -38,7 +57,7 @@
 }
 
 @code {
-	public IEnumerable<AlgorithmTaskBasicResponseDto> Algortihms { get; set; } = [];
+	public IEnumerable<AlgorithmTaskBasicResponseDto> Algorithms { get; set; } = [];
 	public IEnumerable<UserOwnAlgorithmTaskBasicResponseDto> NotCreatedAlgorithms = [];
 
 	public bool IsLoading { get; set; } = false;
@@ -50,7 +69,7 @@
 		IsLoading = true;
 
 		var result = await _dataService.GetUserAlgorithmsAsync();
-		Algortihms = result;
+		Algorithms = result;
 
 		IsLoading = false;
 	}
@@ -60,12 +79,10 @@
 		var modal = _modalService.Show<CreateAlgorithmForm>("Stwórz algorytm !");
 	}
 
-	private string GetAlgorithmsWordSufix()
+	private string GetAlgorithmsWordSufix(int algorithmsCount)
 	{
-		var quizesCount = Algortihms.Count();
-
-		if (quizesCount == 1) return "";
-		if (quizesCount > 1 && quizesCount < 5) return "y";
+		if (algorithmsCount == 1) return "u";
+		if (algorithmsCount > 1 && algorithmsCount < 5) return "y";
 
 		return "ów";
 	}
@@ -81,7 +98,7 @@
 		}
 		else
 		{
-			Algortihms = await _dataService.GetUserAlgorithmsAsync();
+			Algorithms = await _dataService.GetUserAlgorithmsAsync();
 		}
 
 		IsLoading = false;
