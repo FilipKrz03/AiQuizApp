@@ -1,18 +1,51 @@
 ﻿@using Client.Components.NotCreatedItem
 
+@inject IDataService _dataService;
+@inject IModalService _modalService;
+
 <div class="container">
 	@foreach(var item in Algorithms)
 	{
 		<NotCreatedItem 
+			Id= "item.Id"
 			ItemTitle="@item.TaskTitle" 
 			CreationStatus="@item.CreationStatus" 
 			SpecialColumnTitle="Głowne zagadnienia:"
 			SpecialColumnContent="@item.TaskMainTopics"
+			OnItemDelete="DeleteAlgorithmAsync"
 		/>
 	}
 </div>
+@if(IsLoading)
+{
+	<Loading />
+}
 
 @code {
 	[Parameter]
 	public IEnumerable<UserOwnAlgorithmTaskBasicResponseDto> Algorithms { get; set; } = [];
+
+	bool IsLoading { get; set; } = false;
+
+	async Task DeleteAlgorithmAsync(Guid id)
+	{
+		IsLoading = true;
+
+		var request = await _dataService.DeleteUserAlgorithmAsync(id);
+
+		if (request)
+		{
+			Algorithms = Algorithms.Where(x => x.Id != id);
+		}
+		else
+		{
+			var parameters = new ModalParameters()
+			.Add(nameof(ResultPopup.Message), "Wystąpił błąd przy usuwaniu algorytmu")
+			.Add(nameof(ResultPopup.IsSucces), false);
+
+			_modalService.Show<ResultPopup>(parameters, ModalOptionsHelper.GetForResultPopup());
+		}
+
+		IsLoading = false;
+	}
 }

@@ -102,7 +102,7 @@ img{
     .nav-links {
         position: absolute;
         right: 0;
-        top: 15vh;
+        top: 75px;
         background-color: var(--darkblue);
         height: 92vh;
         flex-direction: column;

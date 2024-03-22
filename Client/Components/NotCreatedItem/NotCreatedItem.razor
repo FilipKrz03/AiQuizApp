@@ -12,9 +12,16 @@
 		<span class="special-info-title">@SpecialColumnTitle</span>
 		<span class="special-info-content">@SpecialColumnContent</span>
 	</div>
+	@if(CreationStatus == CreationStatus.Failed)
+	{
+		<img src="delete.png" class="delete-img" @onclick='(() => OnItemDelete.InvokeAsync(Id))'  />
+	}
 </div>
 
 @code {
+	[Parameter]
+	public Guid Id{ get; set; }
+
 	[Parameter]
 	public CreationStatus CreationStatus { get; set; }
 
@@ -26,6 +33,9 @@
 
 	[Parameter]
 	public string SpecialColumnContent { get; set; } = null!;
+
+	[Parameter]
+	public EventCallback<Guid> OnItemDelete{ get; set; }
 
 	string GetCreationStatusDotImg()
 	{

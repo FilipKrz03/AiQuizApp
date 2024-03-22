@@ -1,18 +1,51 @@
 ﻿@using Client.Components.NotCreatedItem
 
+@inject IDataService _dataService;
+@inject IModalService _modalService;
+
 <div class="container">
 	@foreach(var item in NotCreatedQuizzes)
 	{
 		<NotCreatedItem
+			Id="item.Id"
 			ItemTitle="@item.Title"
 			CreationStatus="@item.CreationStatus"
 			SpecialColumnTitle="Technologia:"
 			SpecialColumnContent="@item.TechnologyName"
+			OnItemDelete="DeleteQuizAsync"
 			/>
 	}
 </div>
+@if(IsLoading)
+{
+	<Loading />
+}
 
 @code {
 	[Parameter]
 	public IEnumerable<UserOwnQuizBasicResponseDto> NotCreatedQuizzes { get; set; } = [];
+
+	bool IsLoading { get; set; } = false;
+
+	async Task DeleteQuizAsync(Guid id)
+	{
+		IsLoading = true;
+
+		var request = await _dataService.DeleteQuizAsync(id);
+
+		if(request)
+		{
+			NotCreatedQuizzes = NotCreatedQuizzes.Where(x => x.Id != id);
+		}
+		else
+		{
+			var parameters = new ModalParameters()
+			.Add(nameof(ResultPopup.Message), "Wystąpił błąd przy usuwaniu algorytmu")
+			.Add(nameof(ResultPopup.IsSucces), false);
+
+			_modalService.Show<ResultPopup>(parameters, ModalOptionsHelper.GetForResultPopup());
+		}
+
+		IsLoading = false;
+	}
 }
