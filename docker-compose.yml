@@ -1,0 +1,23 @@
+version: '3.4'
+
+services:
+  quizappdb:
+    container_name: "quizappdb"
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    ports:
+     - 1433:1433
+    environment:
+     - ACCEPT_EULA=Y
+     - SA_PASSWORD=quizappPaassword123@  
+
+  web:
+    image: ${DOCKER_REGISTRY-}web
+    build:
+      context: .
+      dockerfile: Web/Dockerfile
+    ports:
+    - 8080:8080
+    environment:
+      - ConnectionStrings__DefaultConnection=Server=quizappdb,1433;User ID = sa;Password=quizappPaassword123@;TrustServerCertificate=true
+      - OpenAiApiKey=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
+      - ASPNETCORE_URLS=http://+:8080

@@ -51,7 +51,7 @@ app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 //app.UseSerilogRequestLogging();
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseBlazorFrameworkFiles();
 

@@ -7,6 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.Extensions.Logging;
 
 namespace Infrastructure.DbContexts
 {
@@ -20,8 +23,25 @@ namespace Infrastructure.DbContexts
 		public DbSet<AlgorithmAnswer> AlgorithmAnswers { get; set; }
 		public DbSet<UserOwnAlgorithmTask> UserOwnAlgorithms { get; set; }
 
-		public QuizApplicationDbContext(DbContextOptions<QuizApplicationDbContext> options)
-			: base(options) { }
+		public QuizApplicationDbContext(
+			DbContextOptions<QuizApplicationDbContext> options,
+			ILogger<QuizApplicationDbContext> logger
+			) : base(options)
+		{
+			try
+			{
+				var databaseCreator = Database.GetService<IDatabaseCreator>() as RelationalDatabaseCreator;
+				if (databaseCreator != null)
+				{
+					if (!databaseCreator.CanConnect()) databaseCreator.Create();
+					if (!databaseCreator.HasTables()) databaseCreator.CreateTables();
+				}
+			}
+			catch (Exception ex)
+			{
+				logger.LogError("Quiz application db context - {ex}", ex);
+			}
+		}
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
