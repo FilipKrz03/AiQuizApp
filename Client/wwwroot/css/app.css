@@ -5,12 +5,16 @@
     --peach: #fdb696;
 }
 
+html , body{
+    overflow-x:hidden;
+}
+
 body {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Comfortaa", sans-serif!important;
-  background-color: #f2f2f2;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Comfortaa", sans-serif !important;
+    background-color: #f2f2f2;
 }
 
 .valid.modified:not([type="checkbox"]) {

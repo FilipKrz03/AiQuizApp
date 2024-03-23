@@ -4,6 +4,13 @@
     flex-direction:column;
     justify-content:center;
     align-items:center;
+    opacity:0;
+    transition-delay:1s;
+    transition:1s ease-in-out;
+}
+
+.appear {
+    opacity: 1;
 }
 
 img{

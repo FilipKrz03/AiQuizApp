@@ -1,37 +1,40 @@
-﻿<article class="example">
-	<h3>Zobacz już teraz jakie to proste i intuicyjne !</h3>
-	<div class="main-container">
-		<div class="create-box">
-			<img src="createAlgorithm.png" alt="Create algorithm picture" />
-			<img src="createQuiz.png" alt="Create quiz picture" />
-		</div>
-		<div class="other-info">
-			<div class="lg-item">
-				<div class="top">
-					<img src="about1.png" />
-					<h4>Nieograniczone możliwości</h4>
+﻿<IntersectionObserve>
+	<article class="example">
+		<h3>Zobacz już teraz jakie to proste i intuicyjne !</h3>
+		<div class="main-container">
+			<div @ref="context.Ref.Current" class="create-box @(context.IsIntersecting ? "appear-left" : "")">
+				<img src="createAlgorithm.png" alt="Create algorithm picture" />
+				<img src="createQuiz.png" alt="Create quiz picture" />
+			</div>
+			<div class="other-info @(context.IsIntersecting ? "appear-right" : "")">
+				<div class="lg-item">
+					<div class="top">
+						<img src="about1.png" />
+						<h4>Nieograniczone możliwości</h4>
+					</div>
+					<p class="text">Z naszą aplikacją twoje możliwości się nie kończą. Sztuczna inteligencja nie ma limitów</p>
+					<span class="begin">Zacznij teraz</span>
 				</div>
-				<p class="text">Z naszą aplikacją twoje możliwości się nie kończą. Sztuczna inteligencja nie ma limitów</p>
-				<span class="begin">Zacznij teraz</span>
-			</div>
-			<div class="sml-item">
-				<img src="about2.png" />
-				<span>Niezawodność</span>
-			</div>
-			<div class="sml-item">
-				<img src="about3.png" />
-				<span>Intuicyjność</span>
-			</div>
-			<div class="sml-item">
-				<img src="about3.png" />
-				<span>Bezpieczeństwo</span>
-			</div>
-			<div class="sml-item">
-				<img src="about3.png" />
-				<span>Wiedza</span>
+				<div class="sml-item">
+					<img src="about2.png" />
+					<span>Niezawodność</span>
+				</div>
+				<div class="sml-item">
+					<img src="about3.png" />
+					<span>Intuicyjność</span>
+				</div>
+				<div class="sml-item">
+					<img src="about3.png" />
+					<span>Bezpieczeństwo</span>
+				</div>
+				<div class="sml-item">
+					<img src="about3.png" />
+					<span>Wiedza</span>
+				</div>
 			</div>
 		</div>
-	</div>
-</article>
+	</article>
+</IntersectionObserve>
+
 
 
