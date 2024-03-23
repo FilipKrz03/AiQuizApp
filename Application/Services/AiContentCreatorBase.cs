@@ -45,29 +45,38 @@ namespace Application.Services
 
 		protected async Task<string?> GenerateContentAsync(TInput input)
 		{
-			var openAiService = new OpenAIService(new OpenAiOptions()
+			try
 			{
-				ApiKey = Environment.GetEnvironmentVariable("OpenAiApiKey")!,
-				DefaultModelId = Models.Gpt_3_5_Turbo
-			});
-
-			var completionResult =
-				await openAiService.ChatCompletion.CreateCompletion(new ChatCompletionCreateRequest()
+				var openAiService = new OpenAIService(new OpenAiOptions()
 				{
-					Messages = new List<ChatMessage>
-					{
-						ChatMessage.FromSystem(GetPrompt(input))
-					}
+					ApiKey = Environment.GetEnvironmentVariable("OpenAiApiKey")!,
+					DefaultModelId = Models.Gpt_3_5_Turbo
 				});
 
-			var body = completionResult.Choices.First().Message.Content;
+				var completionResult =
+					await openAiService.ChatCompletion.CreateCompletion(new ChatCompletionCreateRequest()
+					{
+						Messages = new List<ChatMessage>
+						{
+						ChatMessage.FromSystem(GetPrompt(input))
+						}
+					});
 
-			if (body == null)
-			{
-				_logger.LogWarning("Content creator - body of Ai response is null !");
+				var body = completionResult?.Choices?.FirstOrDefault()?.Message?.Content;
+
+				if (body == null)
+				{
+					_logger.LogWarning("Content creator - body of Ai response is null !");
+				}
+
+				return body!;
 			}
+			catch(Exception ex)
+			{
+				_logger.LogError("Ai content creator base {ex}", ex);
 
-			return body!;
+				return null;
+			}
 		}
 
 		protected abstract string GetPrompt(TInput input);
