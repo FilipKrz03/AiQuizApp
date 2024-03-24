@@ -58,7 +58,12 @@ namespace Application.Services
 
 						_logger.LogInformation("BaseAlgorithmsManager - new base algorithm added to db");
 					}
+					else
+					{
+						_logger.LogWarning("Failed to create algorithm: {t}", topic);
+					}
 				}
+				_logger.LogInformation("Base quizes manager - all base algorithms added");
 			}
 		}
 

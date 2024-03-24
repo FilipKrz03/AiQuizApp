@@ -14,26 +14,26 @@ using System.Threading.Tasks;
 
 namespace Application.Services
 {
-	public abstract class AiContentCreatorBase<TInput , TOutput , TConvertedOutput>
+	public abstract class AiContentCreatorBase<TInput, TOutput, TConvertedOutput>
 	{
-		protected readonly ILogger<AiContentCreatorBase<TInput, TOutput, TConvertedOutput>> _logger;	
+		protected readonly ILogger<AiContentCreatorBase<TInput, TOutput, TConvertedOutput>> _logger;
 
 		protected AiContentCreatorBase(ILogger<AiContentCreatorBase<TInput, TOutput, TConvertedOutput>> logger)
 		{
 			_logger = logger;
 		}
 
-		public async Task <TConvertedOutput?> CreateAsync(TInput inputData)
+		public async Task<TConvertedOutput?> CreateAsync(TInput inputData)
 		{
-			var body = await GenerateContentAsync(inputData);
-
-			if (body == null) return default;
-
 			try
 			{
+				var body = await GenerateContentAsync(inputData);
+
+				if (body == null) return default;
+
 				var result = JsonConvert.DeserializeObject<TOutput>(body);
 
-				var convertedResult = Convert(result! , inputData);
+				var convertedResult = Convert(result!, inputData);
 				return convertedResult;
 			}
 			catch (Exception ex)
@@ -58,20 +58,42 @@ namespace Application.Services
 					{
 						Messages = new List<ChatMessage>
 						{
-						ChatMessage.FromSystem(GetPrompt(input))
+							ChatMessage.FromSystem(GetPrompt(input))
 						}
 					});
+
+				if (!completionResult.Successful)
+				{
+					await Task.Delay(20000); // It is realted to OpenAiApi limits
+
+					// retry
+					completionResult =
+						await openAiService.ChatCompletion.CreateCompletion(new ChatCompletionCreateRequest()
+						{
+							Messages = new List<ChatMessage>
+							{
+								ChatMessage.FromSystem(GetPrompt(input))
+							}
+						});
+				}
+
+				if (!completionResult.Successful)
+				{
+					_logger.LogInformation("AiContentCreatorBase - Ai response not succesfull {response}" , completionResult.Error?.Message ?? "Unkown");
+					return null;
+				}
 
 				var body = completionResult?.Choices?.FirstOrDefault()?.Message?.Content;
 
 				if (body == null)
 				{
 					_logger.LogWarning("Content creator - body of Ai response is null !");
+					return null;
 				}
 
 				return body!;
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				_logger.LogError("Ai content creator base {ex}", ex);
 
@@ -80,7 +102,7 @@ namespace Application.Services
 		}
 
 		protected abstract string GetPrompt(TInput input);
-		
+
 		protected abstract TConvertedOutput Convert(TOutput output, TInput input);
 	}
 }

@@ -36,7 +36,7 @@ namespace Application.Services
 					await quizRepository.Query()
 					.Select(e => e.TechnologyName)
 					.Distinct()
-					.ToListAsync(cancellationToken: stoppingToken);
+					.ToListAsync();
 
 				var baseTechnologiesWithNoQuizes =
 					BaseTechnologies.Get()
@@ -56,10 +56,14 @@ namespace Application.Services
 					{
 						quizRepository.Insert(quiz);
 						await quizRepository.SaveChangesAsync();
-
 						_logger.LogInformation("BaseQuizesManager - new base quize added to db");
 					}
+					else
+					{
+						_logger.LogWarning("Failed to create quiz : {q}" , technology);
+					}
 				}
+				_logger.LogInformation("Base quizes manager - all base quizes added");
 			}
 		}
 
