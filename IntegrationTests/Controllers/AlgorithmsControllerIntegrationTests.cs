@@ -25,12 +25,13 @@ namespace IntegrationTests.Controllers
 				new AlgorithmTask(Guid.NewGuid(), "BubbleSorting", "Test", "Test", AdvanceNumber.Create(5)!),
 				new AlgorithmTask(Guid.NewGuid(), "Numbers", "Test", "Test", AdvanceNumber.Create(5)!),
 				new AlgorithmTask(Guid.NewGuid(), "QuickSorting", "Test", "Test", AdvanceNumber.Create(5)!),
-				new AlgorithmTask(Guid.NewGuid(), "Binary", "Test", "Test", AdvanceNumber.Create(5)!)
+				new AlgorithmTask(Guid.NewGuid(), "BinarySearch", "Test", "Test", AdvanceNumber.Create(5)!) ,
+				new AlgorithmTask(Guid.NewGuid(), "BinaryTree", "Test", "Test", AdvanceNumber.Create(5)!)
 			];
 
 			DbSeeder(db => db.AddRange(algoritms));
 
-			var result = await _httpClient.GetAsync("api/algorithms?SearchQuery=Sorting&SortColumn=taskTitle&SortOrder=desc");
+			var result = await _httpClient.GetAsync("api/algorithms?SearchQuery=Binary&SortColumn=taskTitle&SortOrder=desc");
 
 			var content = JsonConvert.DeserializeObject<List<AlgorithmTaskBasicResponseDto>>
 				(await result.Content.ReadAsStringAsync());
@@ -41,11 +42,11 @@ namespace IntegrationTests.Controllers
 
 			content[0].TaskTitle
 				.Should()
-				.Be("QuickSorting");
+				.Be("BinaryTree");
 
 			content[1].TaskTitle
 				.Should()
-				.Be("BubbleSorting");
+				.Be("BinarySearch");
 		}
 
 		[Fact]
