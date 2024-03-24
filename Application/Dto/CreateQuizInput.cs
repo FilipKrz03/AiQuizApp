@@ -9,5 +9,9 @@ namespace Application.Dto
 {
 	public record class CreateQuizInput(string technologyName, AdvanceNumber advanceNumber, string? quizTitle)
 	{
+		public override string ToString()
+		{
+			return $"{technologyName}";
+		}
 	}
 }

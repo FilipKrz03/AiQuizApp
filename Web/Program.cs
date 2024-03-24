@@ -44,6 +44,7 @@ if (app.Environment.IsDevelopment())
 	app.UseWebAssemblyDebugging();
 }
 
+
 var group = app.MapGroup(prefix: "api");
 group.MapIdentityApi<User>();
 
@@ -66,3 +67,5 @@ app.MapControllers();
 app.MapFallbackToFile("index.html");
 
 app.Run();
+
+public partial class Program { }

@@ -21,7 +21,7 @@ namespace Application
 		{
 			services.AddMediatR(configuration =>
 				configuration.RegisterServicesFromAssembly(typeof(DependencyInjection).Assembly));
-			services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+			services.AddAutoMapper(typeof(DependencyInjection).Assembly);
 
 			services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 			ValidatorOptions.Global.LanguageManager.Enabled = false; // To set Fluent Validation default exceptions language to english 
