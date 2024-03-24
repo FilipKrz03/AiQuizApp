@@ -40,6 +40,7 @@ namespace Infrastructure.DbContexts
 			catch (Exception ex)
 			{
 				logger.LogError("Quiz application db context - {ex}", ex);
+				throw;
 			}
 		}
 

@@ -43,5 +43,18 @@ namespace IntegrationTests
 			_factory = appFactory;
 			_httpClient = appFactory.CreateClient();
 		}
+
+		public void DbSeeder(Action<QuizApplicationDbContext> dbAction)
+		{
+			using (var scope = _factory.Services.CreateScope())
+			{
+				var scopedServices = scope.ServiceProvider;
+				var db = scopedServices.GetRequiredService<QuizApplicationDbContext>();
+
+				dbAction.Invoke(db);
+
+				db.SaveChanges();
+			}
+		}
 	}
 }
