@@ -32,6 +32,11 @@ namespace Application.Cqrs.UserQuiz.Query.GetUserAiQuizQuery
 				.ThenInclude(x => x.Answers)
 				.FirstOrDefaultAsync(cancellationToken);
 
+			if (userQuiz == null)
+			{
+				throw new ResourceNotFoundException(request.QuizId, "User quiz");
+			}
+
 			return _mapper.Map<QuizDetailResponseDto>(userQuiz)!;
 		}
 	}
