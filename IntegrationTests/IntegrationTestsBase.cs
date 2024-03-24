@@ -11,7 +11,7 @@ namespace IntegrationTests
 		protected readonly WebApplicationFactory<Program> _factory;
 		protected readonly HttpClient _httpClient;
 
-		public IntegrationTestsBase()
+		protected IntegrationTestsBase()
 		{
 			var appFactory = new WebApplicationFactory<Program>()
 				.WithWebHostBuilder(builder =>
@@ -37,14 +37,19 @@ namespace IntegrationTests
 						{
 							options.UseInMemoryDatabase("TestDb");
 						});
+
+						services.AddAuthentication(TestAuthHandler.AuthenticationScheme)
+						 .AddScheme<TestAuthHandlerOptions, TestAuthHandler>(TestAuthHandler.AuthenticationScheme, options => { });
 					});
 				});
 
 			_factory = appFactory;
 			_httpClient = appFactory.CreateClient();
+
+			_httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Test");
 		}
 
-		public void DbSeeder(Action<QuizApplicationDbContext> dbAction)
+		protected void DbSeeder(Action<QuizApplicationDbContext> dbAction)
 		{
 			using (var scope = _factory.Services.CreateScope())
 			{
@@ -55,6 +60,11 @@ namespace IntegrationTests
 
 				db.SaveChanges();
 			}
+		}
+
+		protected void SetUserId(string id)
+		{
+			_httpClient.DefaultRequestHeaders.Add("userId", id);
 		}
 	}
 }
