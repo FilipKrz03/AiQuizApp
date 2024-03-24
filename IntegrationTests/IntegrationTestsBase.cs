@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace IntegrationTests
 {
-	public class IntegrationTestsBase
+	public abstract class IntegrationTestsBase
 	{
 		protected readonly WebApplicationFactory<Program> _factory;
 		protected readonly HttpClient _httpClient;
@@ -65,6 +65,23 @@ namespace IntegrationTests
 		protected void SetUserId(string id)
 		{
 			_httpClient.DefaultRequestHeaders.Add("userId", id);
+		}
+
+		protected void CreateUserWithId(string userId)
+		{
+			SetUserId(userId);
+
+			DbSeeder(db => db.Users.Add(new() { Id = userId }));
+		}
+
+		protected QuizApplicationDbContext DbContextGetter()
+		{
+			var scope = _factory.Services.CreateScope();
+
+			var scopedServices = scope.ServiceProvider;
+			var db = scopedServices.GetRequiredService<QuizApplicationDbContext>();
+
+			return db;
 		}
 	}
 }
