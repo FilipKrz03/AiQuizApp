@@ -79,7 +79,7 @@ namespace Application.Services
 
 				if (!completionResult.Successful)
 				{
-					_logger.LogInformation("AiContentCreatorBase - Ai response not succesfull {response}" , completionResult.Error?.Message ?? "Unkown");
+					_logger.LogWarning("AiContentCreatorBase - Ai response not succesfull {response}" , completionResult.Error?.Message ?? "Unkown");
 					return null;
 				}
 

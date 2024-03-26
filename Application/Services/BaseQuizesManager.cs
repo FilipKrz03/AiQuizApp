@@ -60,6 +60,15 @@ namespace Application.Services
 					}
 					else
 					{
+						if(Environment.GetEnvironmentVariable("OpenAiApiKey") != null)
+						{
+							_logger.LogWarning("Not null key");
+						}
+						else
+						{
+							_logger.LogWarning("Null key");
+						}
+
 						_logger.LogWarning("Failed to create quiz : {q}" , technology);
 					}
 				}
