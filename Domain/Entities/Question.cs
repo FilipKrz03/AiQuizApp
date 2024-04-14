@@ -19,10 +19,6 @@ namespace Domain.Entities
         public Quiz? Quiz { get; set; } 
         public Guid? QuizId { get; set; }
 
-        [ForeignKey("UserOwnQuizId")]
-        public UserOwnQuiz? UserOwnQuiz { get; set; } 
-        public Guid? UserOwnQuizId { get; set; }
-
 		public Question
             (Guid id, string content, AnswerLetter properAnswerLetter)
             : base(id)
