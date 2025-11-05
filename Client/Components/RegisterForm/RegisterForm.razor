@@ -6,15 +6,15 @@
 		<CustomInputText IsPassword=true @bind-Value="registerModel.Password" Description="Hasło" />
 		<CustomInputText IsPassword=true @bind-Value="registerModel.RepeatPassword" Description="Powtórz hasło" />
 		<ValidationSummary />
-		<Button IsSubmit=true Content="Zarejstruj się !" />
+		<Button IsSubmit=true Content="Zarejestruj się !" />
 	</EditForm>
 	@if (SuccesfullRegister)
 	{
-		<p class="register-succes">Account created !</p>
+		<p class="register-succes">Konto stworzone !</p>
 	}
 	@if (FailureRegister)
 	{
-		<p class="register-failure">Provided email already exist</p>
+		<p class="register-failure">Podany email juz istnieje !</p>
 	}
 </div>
 @if(IsLoading)
