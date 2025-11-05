@@ -12,11 +12,11 @@ using System.Threading.Tasks;
 namespace Application.Cqrs.UserAlgorithm.Command.DeleteAlgorithm
 {
 	public sealed class DeleteUserAlgorithmCommandHandler(
-		IRepository<UserOwnAlgorithmTask> userOwnAlgorithmTaskRepository,
+		IRepository<AlgorithmTask> algorithmTaskRepository,
 		IUserRepository userRepository
 		) : IRequestHandler<DeleteUserAlgorithmCommand>
 	{
-		private readonly IRepository<UserOwnAlgorithmTask> _userOwnAlgorithmTaskRepository = userOwnAlgorithmTaskRepository;
+		private readonly IRepository<AlgorithmTask> _algorithmTaskRepository = algorithmTaskRepository;
 		private readonly IUserRepository _userRepository = userRepository;
 
 		public async Task Handle(DeleteUserAlgorithmCommand request, CancellationToken cancellationToken)
@@ -26,7 +26,7 @@ namespace Application.Cqrs.UserAlgorithm.Command.DeleteAlgorithm
 				throw new InvalidTokenClaimException();
 			}
 
-			var algorithm = await _userOwnAlgorithmTaskRepository
+			var algorithm = await _algorithmTaskRepository
 				.GetByIdQuery(request.AlogrithmId)
 				.Where(x => x.UserId == request.UserId)
 				.FirstOrDefaultAsync();
@@ -36,8 +36,8 @@ namespace Application.Cqrs.UserAlgorithm.Command.DeleteAlgorithm
 				throw new ResourceAlreadyNotExistException(request.AlogrithmId, "Algorithm");
 			}
 
-			_userOwnAlgorithmTaskRepository.DeleteEntity(algorithm);
-			await _userOwnAlgorithmTaskRepository.SaveChangesAsync();
+			_algorithmTaskRepository.DeleteEntity(algorithm);
+			await _algorithmTaskRepository.SaveChangesAsync();
 		}
 	}
 }

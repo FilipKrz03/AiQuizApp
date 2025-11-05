@@ -47,7 +47,7 @@ namespace Application.Services
 		{
 			try
 			{
-				var openAiService = new OpenAIService(new OpenAiOptions()
+                var openAiService = new OpenAIService(new OpenAiOptions()
 				{
 					ApiKey = Environment.GetEnvironmentVariable("OpenAiApiKey")!,
 					DefaultModelId = Models.Gpt_3_5_Turbo

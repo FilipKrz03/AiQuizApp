@@ -9,12 +9,12 @@ using Microsoft.EntityFrameworkCore;
 namespace Application.Cqrs.UserQuiz.Query.GetUserAiQuizQuery
 {
 	public sealed class GetUserQuizQueryHandler(
-		IRepository<UserOwnQuiz> userOwnQuizRepository,
+		IRepository<Domain.Entities.Quiz> quizRepository,
 		IUserRepository userRepository,
 		IMapper mapper
 		) : IRequestHandler<GetUserQuizQuery, QuizDetailResponseDto>
 	{
-		private readonly IRepository<UserOwnQuiz> _userOwnQuizRepository = userOwnQuizRepository;
+		private readonly IRepository<Domain.Entities.Quiz> _quizRepository = quizRepository;
 		private readonly IUserRepository _userRepository = userRepository;
 		private readonly IMapper _mapper = mapper;
 
@@ -25,7 +25,7 @@ namespace Application.Cqrs.UserQuiz.Query.GetUserAiQuizQuery
 				throw new InvalidTokenClaimException();
 			}
 
-			var userQuiz = await _userOwnQuizRepository
+			var userQuiz = await _quizRepository
 				.GetByIdQuery(request.QuizId)
 				.Where(x => x.UserId == request.UserId)
 				.Include(x => x.Questions)

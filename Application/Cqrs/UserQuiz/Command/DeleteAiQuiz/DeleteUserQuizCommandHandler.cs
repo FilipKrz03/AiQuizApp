@@ -15,11 +15,11 @@ using System.Threading.Tasks;
 namespace Application.Cqrs.UserQuiz.Command.DeleteAiQuiz
 {
 	public sealed class DeleteUserQuizCommandHandler(
-		IRepository<UserOwnQuiz> userOwnQuizRepository,
+		IRepository<Domain.Entities.Quiz> quizRepository,
 		IUserRepository userRepository
 		) : IRequestHandler<DeleteUserQuizCommand>
 	{
-		private readonly IRepository<UserOwnQuiz> _userOwnQuizRepository = userOwnQuizRepository;
+		private readonly IRepository<Domain.Entities.Quiz> _quizRepository = quizRepository;
 		private readonly IUserRepository _userRepository = userRepository;
 
 		public async Task Handle(DeleteUserQuizCommand request, CancellationToken cancellationToken)
@@ -29,7 +29,7 @@ namespace Application.Cqrs.UserQuiz.Command.DeleteAiQuiz
 				throw new InvalidTokenClaimException();
 			}
 
-			var quiz = await _userOwnQuizRepository
+			var quiz = await _quizRepository
 				.GetByIdQuery(request.QuizId)
 				.Where(x => x.UserId == request.UserId)
 				.FirstOrDefaultAsync();
@@ -39,8 +39,8 @@ namespace Application.Cqrs.UserQuiz.Command.DeleteAiQuiz
 				throw new ResourceAlreadyNotExistException(request.QuizId, "User quiz");
 			}
 
-			_userOwnQuizRepository.DeleteEntity(quiz);
-			await _userOwnQuizRepository.SaveChangesAsync();
+			_quizRepository.DeleteEntity(quiz);
+			await _quizRepository.SaveChangesAsync();
 		}
 	}
 

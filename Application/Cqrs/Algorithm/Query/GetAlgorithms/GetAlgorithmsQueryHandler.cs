@@ -26,9 +26,10 @@ namespace Application.Cqrs.Algorithm.Query.GetAlgorithms
 		{
 			var query = _algorithmTaskRepository
 				.Query()
-				.Where(x => !(x is UserOwnAlgorithmTask));
+				.Where(x => string.IsNullOrWhiteSpace(x.UserId));
 
-			if (!string.IsNullOrWhiteSpace(request.ResourceParamethers.SearchQuery))
+
+            if (!string.IsNullOrWhiteSpace(request.ResourceParamethers.SearchQuery))
 			{
 				query = query.Where(
 					x => x.TaskMainTopics.Contains(request.ResourceParamethers.SearchQuery) ||

@@ -15,12 +15,12 @@ namespace Application.Cqrs.UserAlgorithm.Query.GetAlgorithm
 {
 	public sealed class GetUserAlgorithmQueryHandler(
 		IUserRepository userRepository , 
-		IRepository<UserOwnAlgorithmTask> userOwnAlgorithmTaskRepository , 
+		IRepository<AlgorithmTask> userOwnAlgorithmTaskRepository , 
 		IMapper mapper
 		) : IRequestHandler<GetUserAlgorithmQuery, AlgorithmTaskDetailResponseDto>
 	{
 		private readonly IUserRepository _userRepository = userRepository;
-		private readonly IRepository<UserOwnAlgorithmTask> _userOwnAlgorithmTaskRepository = userOwnAlgorithmTaskRepository;
+		private readonly IRepository<AlgorithmTask> _algorithmTaskRepository = userOwnAlgorithmTaskRepository;
 		private readonly IMapper _mapper = mapper;
 
 		public async Task<AlgorithmTaskDetailResponseDto> Handle(GetUserAlgorithmQuery request, CancellationToken cancellationToken)
@@ -30,7 +30,7 @@ namespace Application.Cqrs.UserAlgorithm.Query.GetAlgorithm
 				throw new InvalidTokenClaimException();
 			}
 
-			var algorithm = await _userOwnAlgorithmTaskRepository
+			var algorithm = await _algorithmTaskRepository
 				.GetByIdQuery(request.AlgorithmId)
 				.Where(x => x.UserId == request.UserId)
 				.Include(x => x.Answers)

@@ -88,7 +88,7 @@ namespace IntegrationTests.Controllers
 
 			DbSeeder(db =>
 			{
-				db.UserOwnQuizzes.Add(new(quizId, "testTitle", "testTechnology", AdvanceNumber.Create(5)!, userId));
+				db.Quizzes.Add(new(quizId, "testTitle", "testTechnology", AdvanceNumber.Create(5)!, userId));
 			});
 
 			var request = await _httpClient.GetAsync($"api/user/quizes/{quizId}");
@@ -130,17 +130,17 @@ namespace IntegrationTests.Controllers
 
 			CreateUserWithId(userId);
 
-			List<UserOwnQuiz> quizzes = [
-				new UserOwnQuiz(Guid.NewGuid(), "", "Java", AdvanceNumber.Create(5)!, userId),
-				new UserOwnQuiz(Guid.NewGuid(), "", "C#", AdvanceNumber.Create(4)! , userId),
-				new UserOwnQuiz(Guid.NewGuid(), "", "JavaScript", AdvanceNumber.Create(7)! , userId),
-				new UserOwnQuiz(Guid.NewGuid(), "", "PHP", AdvanceNumber.Create(1)! , userId), 
-				new UserOwnQuiz(Guid.NewGuid(), "", "JavaFx", AdvanceNumber.Create(1)!, "Unkownuser") // Should not be included (diffrent userId)
+			List<Quiz> quizzes = [
+				new Quiz(Guid.NewGuid(), "", "Java", AdvanceNumber.Create(5)!, userId),
+				new Quiz(Guid.NewGuid(), "", "C#", AdvanceNumber.Create(4)! , userId),
+				new Quiz(Guid.NewGuid(), "", "JavaScript", AdvanceNumber.Create(7)! , userId),
+				new Quiz(Guid.NewGuid(), "", "PHP", AdvanceNumber.Create(1)! , userId), 
+				new Quiz(Guid.NewGuid(), "", "JavaFx", AdvanceNumber.Create(1)!, "Unkownuser") // Should not be included (diffrent userId)
 			];
 
 			DbSeeder(db =>
 			{
-				db.UserOwnQuizzes.AddRange(quizzes);
+				db.Quizzes.AddRange(quizzes);
 			});
 
 			var reqeust = await _httpClient.GetAsync("api/user/quizes?SortColumn=technologyName&sortOrder=asc&SearchQuery=Java");
@@ -195,11 +195,11 @@ namespace IntegrationTests.Controllers
 
 			CreateUserWithId(userId);
 
-			DbSeeder(db => db.UserOwnQuizzes.Add(new(quizId, "", "", AdvanceNumber.Create(5)!, userId)));
+			DbSeeder(db => db.Quizzes.Add(new(quizId, "", "", AdvanceNumber.Create(5)!, userId)));
 
 			var request = await _httpClient.DeleteAsync($"api/user/quizes/{quizId}");
 
-			var deletedQuiz = DbContextGetter().UserOwnQuizzes
+			var deletedQuiz = DbContextGetter().Quizzes
 				.Where(x => x.Id == quizId)
 				.FirstOrDefault();
 

@@ -16,7 +16,7 @@ namespace UnitTests.Application.Cqrs.UserQuizes
 {
 	public class DeleteAiQuizCommandHandlerTests
 	{
-		private readonly Mock<IRepository<UserOwnQuiz>> _userOwnQuizRepositoryMock;
+		private readonly Mock<IRepository<Quiz>> _userOwnQuizRepositoryMock;
 		private readonly Mock<IUserRepository> _userRepositoryMock;
         private readonly DeleteUserQuizCommandHandler _handler;
 
@@ -42,7 +42,7 @@ namespace UnitTests.Application.Cqrs.UserQuizes
         [Fact]
         public async Task Handler_Should_ThrowResourceAlreadyNotExistException_When_QuizToDeleteNotFound()
         {
-            IEnumerable<UserOwnQuiz> emptyUserOwnQuizEnum = new List<UserOwnQuiz>();
+            IEnumerable<Quiz> emptyUserOwnQuizEnum = new List<Quiz>();
 
 			_userRepositoryMock.Setup(x => x.UserExistAsync(It.IsAny<string>()))
 				.ReturnsAsync(true);
@@ -60,9 +60,9 @@ namespace UnitTests.Application.Cqrs.UserQuizes
         {
             var fakeUserId = "Fake";
 
-            IEnumerable<UserOwnQuiz> userOwnQuizEnum = new List<UserOwnQuiz>()
+            IEnumerable<Quiz> userOwnQuizEnum = new List<Quiz>()
             {
-                new UserOwnQuiz(Guid.NewGuid() , "" , "" , AdvanceNumber.Create(1)! , fakeUserId)
+                new Quiz(Guid.NewGuid() , "" , "" , AdvanceNumber.Create(1)! , fakeUserId)
             };
 
 			_userRepositoryMock.Setup(x => x.UserExistAsync(It.IsAny<string>()))
@@ -73,7 +73,7 @@ namespace UnitTests.Application.Cqrs.UserQuizes
 
             await _handler.Handle(new DeleteUserQuizCommand(Guid.NewGuid(), fakeUserId), default!);
 
-            _userOwnQuizRepositoryMock.Verify(x => x.DeleteEntity(It.IsAny<UserOwnQuiz>()));
+            _userOwnQuizRepositoryMock.Verify(x => x.DeleteEntity(It.IsAny<Quiz>()));
 			_userOwnQuizRepositoryMock.Verify(x => x.SaveChangesAsync());
 		}
     }

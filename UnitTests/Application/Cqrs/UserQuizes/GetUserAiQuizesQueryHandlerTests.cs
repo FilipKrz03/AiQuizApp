@@ -20,7 +20,7 @@ namespace UnitTests.Application.Cqrs.UserQuizes
 	public class GetUserAiQuizesQueryHandlerTests
 	{
 		private readonly Mock<IUserRepository> _userRepositoryMock;
-		private readonly Mock<IRepository<UserOwnQuiz>> _userOwnQuizRepositoryMock;
+		private readonly Mock<IRepository<Quiz>> _userOwnQuizRepositoryMock;
 		private readonly Mock<IMapper> _mapperMock;
 		private readonly GetUserQuizesQueryHandler _handler;
 
@@ -47,28 +47,30 @@ namespace UnitTests.Application.Cqrs.UserQuizes
 		[Fact]
 		public async Task Handler_Should_ReturnProperRecordsBaseOnSearchQuery()
 		{
-			List<UserOwnQuiz> userOwnQuizzes = new()
+			Guid userId = Guid.NewGuid();
+
+			List<Quiz> userOwnQuizzes = new()
 			{
-				new UserOwnQuiz(Guid.NewGuid() , "Java 6" , "JavaFX" , AdvanceNumber.Create(5)!) ,
-				new UserOwnQuiz(Guid.NewGuid() , "Aaa" , "aaa" , AdvanceNumber.Create(5)!) ,
-				new UserOwnQuiz(Guid.NewGuid() , "Java library tests" , "Spring" , AdvanceNumber.Create(5)!),
+				new Quiz(Guid.NewGuid() , "Java 6" , "JavaFX" , AdvanceNumber.Create(5)!, userId.ToString()) ,
+				new Quiz(Guid.NewGuid() , "Aaa" , "aaa" , AdvanceNumber.Create(5)!,userId.ToString()) ,
+				new Quiz(Guid.NewGuid() , "Java library tests" , "Spring" , AdvanceNumber.Create(5)!, userId.ToString()),
 			};
 
-			List<QuizBasicResponseDto> userOwnQuizzesResponse = new()
+			List<UserOwnQuizBasicResponseDto> userOwnQuizzesResponse = new()
 			{
-				new QuizBasicResponseDto()
+				new UserOwnQuizBasicResponseDto()
 				{
 					Id = Guid.NewGuid(),
 					Title = "Java 6"
 				},
-				new QuizBasicResponseDto()
+				new UserOwnQuizBasicResponseDto()
 				{
 					Id = Guid.NewGuid(),
 					Title = "Java library tests"
 				},
 			};
 
-			PagedList<QuizBasicResponseDto> userOwnQuizesPagedList = new(userOwnQuizzesResponse, 1, 1, 1);
+			PagedList<UserOwnQuizBasicResponseDto> userOwnQuizesPagedList = new(userOwnQuizzesResponse, 1, 1, 1);
 
 			_userRepositoryMock.Setup(x => x.UserExistAsync(It.IsAny<string>()))
 				.ReturnsAsync(true);
@@ -76,7 +78,7 @@ namespace UnitTests.Application.Cqrs.UserQuizes
 			_userOwnQuizRepositoryMock.Setup(x => x.Query())
 				.Returns(userOwnQuizzes.BuildMock());
 
-			_mapperMock.Setup(x => x.Map<PagedList<QuizBasicResponseDto>>(It.IsAny<PagedList<UserOwnQuiz>>()))
+			_mapperMock.Setup(x => x.Map<PagedList<UserOwnQuizBasicResponseDto>>(It.IsAny<PagedList<Quiz>>()))
 				.Returns(userOwnQuizesPagedList);	
 
 			ResourceParamethersWithCreationStatus resourceParamethers = new()
@@ -84,7 +86,7 @@ namespace UnitTests.Application.Cqrs.UserQuizes
 				SearchQuery = "Java"
 			};
 
-			var result = await _handler.Handle(new GetUserQuizesQuery("", resourceParamethers), default!);
+			var result = await _handler.Handle(new GetUserQuizesQuery(userId.ToString(), resourceParamethers), default!);
 
 			result.Count
 				.Should()

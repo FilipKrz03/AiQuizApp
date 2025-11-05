@@ -17,68 +17,68 @@ using System.Threading.Tasks;
 
 namespace Application.Cqrs.UserQuiz.Command.CreateAiQuiz
 {
-	public sealed class CreateUserQuizCommandHandler(
-		IServiceProvider serviceProvider,
-		IUserRepository userRepository  
-		)
-		: IRequestHandler<CreateUserQuizCommand, string>
-	{
-		private readonly IServiceProvider _serviceProvider = serviceProvider;
-		private readonly IUserRepository _userRepository = userRepository;
+    public sealed class CreateUserQuizCommandHandler(
+        IServiceProvider serviceProvider,
+        IUserRepository userRepository
+        )
+        : IRequestHandler<CreateUserQuizCommand, string>
+    {
+        private readonly IServiceProvider _serviceProvider = serviceProvider;
+        private readonly IUserRepository _userRepository = userRepository;
 
-		public async Task<string> Handle(CreateUserQuizCommand request, CancellationToken cancellationToken)
-		{
-			if(!await _userRepository.UserExistAsync(request.UserId))
-			{
-				throw new InvalidTokenClaimException();
-			}
+        public async Task<string> Handle(CreateUserQuizCommand request, CancellationToken cancellationToken)
+        {
+            if (!await _userRepository.UserExistAsync(request.UserId))
+            {
+                throw new InvalidTokenClaimException();
+            }
 
-			CreateQuizAsync(request); // This is bacground job
+            CreateQuizAsync(request); // This is bacground job
 
-			return ("Quiz creation queued");
-		}
+            return ("Quiz creation queued");
+        }
 
-		private async void CreateQuizAsync(CreateUserQuizCommand request)
-		{
-			var scope = _serviceProvider.CreateScope();
+        private async void CreateQuizAsync(CreateUserQuizCommand request)
+        {
+            var scope = _serviceProvider.CreateScope();
 
-			var quizesCreator = scope.ServiceProvider.GetRequiredService<IQuizesCreator>();
-			var userOwnQuizRepository = scope.ServiceProvider.GetRequiredService<IRepository<UserOwnQuiz>>();
-			var logger = scope.ServiceProvider.GetRequiredService<ILogger<CreateUserQuizCommandHandler>>();
-			var questionRepository = scope.ServiceProvider.GetRequiredService<IRepository<Question>>();
+            var quizesCreator = scope.ServiceProvider.GetRequiredService<IQuizesCreator>();
+            var quizRepository = scope.ServiceProvider.GetRequiredService<IRepository<Domain.Entities.Quiz>>();
+            var logger = scope.ServiceProvider.GetRequiredService<ILogger<CreateUserQuizCommandHandler>>();
+            var questionRepository = scope.ServiceProvider.GetRequiredService<IRepository<Question>>();
 
-			var quizId = Guid.NewGuid();
+            var quizId = Guid.NewGuid();
 
-			UserOwnQuiz userOwnQuiz =
-				new(quizId, request.QuizTitle, request.TechnologyName, AdvanceNumber.Create(request.AdvanceNumber)! , request.UserId);
+            Domain.Entities.Quiz quiz =
+                new(quizId, request.QuizTitle, request.TechnologyName, AdvanceNumber.Create(request.AdvanceNumber)!, request.UserId);
 
-			userOwnQuizRepository.Insert(userOwnQuiz);
-			await userOwnQuizRepository.SaveChangesAsync();
+            quizRepository.Insert(quiz);
+            await quizRepository.SaveChangesAsync();
 
-			var quizQuestions = await quizesCreator.GetQuizQuestionsAsync(
-			request.TechnologyName,
-			AdvanceNumber.Create(request.AdvanceNumber)!,
-			quizId
-			);
+            var quizQuestions = await quizesCreator.GetQuizQuestionsAsync(
+            request.TechnologyName,
+            AdvanceNumber.Create(request.AdvanceNumber)!,
+            quizId
+            );
 
-			if (quizQuestions == null)
-			{
-				logger.LogWarning(
-					"Failed to create quiz, quizTechnology : {t} , advanceNumber : {a}",
-					request.TechnologyName,
-					request.AdvanceNumber
-					);
+            if (quizQuestions == null)
+            {
+                logger.LogWarning(
+                    "Failed to create quiz, quizTechnology : {t} , advanceNumber : {a}",
+                    request.TechnologyName,
+                    request.AdvanceNumber
+                    );
 
-				userOwnQuiz.CreationStatus = CreationStatus.Failed;
-				await userOwnQuizRepository.SaveChangesAsync();
+                quiz.CreationStatus = CreationStatus.Failed;
+                await quizRepository.SaveChangesAsync();
 
-				return;
-			}
+                return;
+            }
 
-			userOwnQuiz.CreationStatus = CreationStatus.Succes;
-			questionRepository.AddRange(quizQuestions);
-			
-			await userOwnQuizRepository.SaveChangesAsync();
-		}
-	}
+            quiz.CreationStatus = CreationStatus.Succes;
+            questionRepository.AddRange(quizQuestions);
+
+            await quizRepository.SaveChangesAsync();
+        }
+    }
 }

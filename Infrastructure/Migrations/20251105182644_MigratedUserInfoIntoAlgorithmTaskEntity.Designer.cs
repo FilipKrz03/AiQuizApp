@@ -4,6 +4,7 @@ using Infrastructure.DbContexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(QuizApplicationDbContext))]
-    partial class QuizApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251105182644_MigratedUserInfoIntoAlgorithmTaskEntity")]
+    partial class MigratedUserInfoIntoAlgorithmTaskEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -135,9 +138,6 @@ namespace Infrastructure.Migrations
                     b.Property<int>("AdvanceNumber")
                         .HasColumnType("int");
 
-                    b.Property<int>("CreationStatus")
-                        .HasColumnType("int");
-
                     b.Property<string>("TechnologyName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -146,14 +146,11 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
-
                     b.ToTable("Quizzes", (string)null);
+
+                    b.UseTptMappingStrategy();
                 });
 
             modelBuilder.Entity("Domain.Entities.User", b =>
@@ -354,6 +351,22 @@ namespace Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Domain.Entities.UserOwnQuiz", b =>
+                {
+                    b.HasBaseType("Domain.Entities.Quiz");
+
+                    b.Property<int>("CreationStatus")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserOwnQuizzes", (string)null);
+                });
+
             modelBuilder.Entity("Domain.Entities.AlgorithmAnswer", b =>
                 {
                     b.HasOne("Domain.Entities.AlgorithmTask", "AlgorithmTask")
@@ -393,15 +406,6 @@ namespace Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Quiz");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Quiz", b =>
-                {
-                    b.HasOne("Domain.Entities.User", "User")
-                        .WithMany("UserQuizzes")
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -453,6 +457,23 @@ namespace Infrastructure.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.Entities.UserOwnQuiz", b =>
+                {
+                    b.HasOne("Domain.Entities.Quiz", null)
+                        .WithOne()
+                        .HasForeignKey("Domain.Entities.UserOwnQuiz", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.User", "User")
+                        .WithMany("UserQuizzes")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Domain.Entities.AlgorithmTask", b =>

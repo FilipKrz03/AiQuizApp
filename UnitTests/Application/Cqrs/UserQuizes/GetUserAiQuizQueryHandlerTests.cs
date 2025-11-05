@@ -19,7 +19,7 @@ namespace UnitTests.Application.Cqrs.UserQuizes
 	public class GetUserAiQuizQueryHandlerTests
 	{
 		private readonly Mock<IUserRepository> _userRepositoryMock;
-		private readonly Mock<IRepository<UserOwnQuiz>> _userOwnQuizRepositoryMock;
+		private readonly Mock<IRepository<Quiz>> _userOwnQuizRepositoryMock;
 		private readonly Mock<IMapper> _mapperMock;
 		private readonly GetUserQuizQueryHandler _handler;
 
@@ -47,12 +47,14 @@ namespace UnitTests.Application.Cqrs.UserQuizes
 		[Fact]
 		public async Task Handler_Should_ReturnQuizDetailResponse_WhenUserQuizFound()
 		{
+			Guid userId = Guid.NewGuid();
+
 			_userRepositoryMock.Setup(x => x.UserExistAsync(It.IsAny<string>()))
 				.ReturnsAsync(true);
 
-			IEnumerable<UserOwnQuiz> enumWithUserQuiz = new List<UserOwnQuiz>()
+			IEnumerable<Quiz> enumWithUserQuiz = new List<Quiz>()
 			{
-				new UserOwnQuiz(Guid.NewGuid(), "", "", AdvanceNumber.Create(1)!)
+				new Quiz(Guid.NewGuid(), "", "", AdvanceNumber.Create(1)!, userId.ToString())
 			};
 
 			QuizDetailResponseDto mappedQuiz = new()
@@ -65,10 +67,10 @@ namespace UnitTests.Application.Cqrs.UserQuizes
 			_userOwnQuizRepositoryMock.Setup(x => x.GetByIdQuery(It.IsAny<Guid>()))
 				.Returns(enumWithUserQuiz.BuildMock());
 
-			_mapperMock.Setup(x => x.Map<QuizDetailResponseDto>(It.IsAny<UserOwnQuiz>()))
+			_mapperMock.Setup(x => x.Map<QuizDetailResponseDto>(It.IsAny<Quiz>()))
 				.Returns(mappedQuiz);
 
-			var result = await _handler.Handle(new GetUserQuizQuery(Guid.NewGuid(), ""), default!);
+			var result = await _handler.Handle(new GetUserQuizQuery(Guid.NewGuid(), userId.ToString()), default!);
 
 			result
 				.Should()

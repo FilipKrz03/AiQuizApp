@@ -26,9 +26,10 @@ namespace Application.Cqrs.Quiz.Query.GetQuizes
 		{
 			var query = _quizRepository
 				.Query()
-				.Where(x => !(x is UserOwnQuiz));
+				.Where(x => string.IsNullOrWhiteSpace(x.UserId));
 
-			if (!string.IsNullOrWhiteSpace(request.ResourceParamethers.SearchQuery))
+
+            if (!string.IsNullOrWhiteSpace(request.ResourceParamethers.SearchQuery))
 			{
 				query = query.Where(x =>
 				x.Title.Contains(request.ResourceParamethers.SearchQuery) ||

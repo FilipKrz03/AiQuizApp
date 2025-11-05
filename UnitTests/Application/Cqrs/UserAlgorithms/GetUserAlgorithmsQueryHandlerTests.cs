@@ -21,18 +21,18 @@ namespace UnitTests.Application.Cqrs.UserAlgorithms
 {
 	public class GetUserAlgorithmsQueryHandlerTests
 	{
-		private readonly Mock<IRepository<UserOwnAlgorithmTask>> _userOwnAlgorithmTaskRepositoryMock;
+		private readonly Mock<IRepository<AlgorithmTask>> _algorithmTaskRepositoryMock;
 		private readonly Mock<IMapper> _mapperMock;
 		private readonly Mock<IUserRepository> _userRepositoryMock;
 
 		private readonly GetUserAlgorithmsQueryHandler _handler;
         public GetUserAlgorithmsQueryHandlerTests()
         {
-			_userOwnAlgorithmTaskRepositoryMock = new();
+			_algorithmTaskRepositoryMock = new();
 			_mapperMock = new();
 			_userRepositoryMock = new();
 
-			_handler = new(_userOwnAlgorithmTaskRepositoryMock.Object, _userRepositoryMock.Object, _mapperMock.Object);
+			_handler = new(_algorithmTaskRepositoryMock.Object, _userRepositoryMock.Object, _mapperMock.Object);
         }
 
 		[Fact]
@@ -51,7 +51,7 @@ namespace UnitTests.Application.Cqrs.UserAlgorithms
 		{
 			string userId = "testId";
 
-			List<UserOwnAlgorithmTask> resultsFromRepo =
+			List<AlgorithmTask> resultsFromRepo =
 			[
 				new(Guid.NewGuid() , "" , "" , "" , AdvanceNumber.Create(5)! , userId) ,
 				new(Guid.NewGuid() , "" , "" , "" , AdvanceNumber.Create(7)!, userId) ,
@@ -66,10 +66,10 @@ namespace UnitTests.Application.Cqrs.UserAlgorithms
 			_userRepositoryMock.Setup(x => x.UserExistAsync(It.IsAny<string>()))
 				.ReturnsAsync(true);
 
-			_userOwnAlgorithmTaskRepositoryMock.Setup(x => x.Query())
+			_algorithmTaskRepositoryMock.Setup(x => x.Query())
 				.Returns(resultsFromRepo.BuildMock());
 
-			_mapperMock.Setup(x => x.Map<PagedList<UserOwnAlgorithmTaskBasicResponseDto>>(It.IsAny<PagedList<UserOwnAlgorithmTask>>()))
+			_mapperMock.Setup(x => x.Map<PagedList<UserOwnAlgorithmTaskBasicResponseDto>>(It.IsAny<PagedList<AlgorithmTask>>()))
 				.Returns(new PagedList<UserOwnAlgorithmTaskBasicResponseDto>(mappedResults, 1, 1, 1));
 
 			var result = await _handler.Handle(new GetUserAlgorithmsQuery(userId, new ResourceParamethersWithCreationStatus()) , default);

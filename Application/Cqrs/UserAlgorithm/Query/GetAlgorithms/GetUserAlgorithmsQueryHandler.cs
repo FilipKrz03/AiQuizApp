@@ -16,12 +16,12 @@ using System.Threading.Tasks;
 namespace Application.Cqrs.UserAlgorithm.Query.GetAlgorithms
 {
 	public sealed class GetUserAlgorithmsQueryHandler(
-		IRepository<UserOwnAlgorithmTask> userOwnAlgorithmTaskRepository,
+		IRepository<AlgorithmTask> algorithmTaskRepository,
 		IUserRepository userRepository,
 		IMapper mapper
 		) : IRequestHandler<GetUserAlgorithmsQuery, PagedList<UserOwnAlgorithmTaskBasicResponseDto>>
 	{
-		private readonly IRepository<UserOwnAlgorithmTask> _userOwnAlgorithmTaskRepository = userOwnAlgorithmTaskRepository;
+		private readonly IRepository<AlgorithmTask> _algorithmTaskRepository = algorithmTaskRepository;
 		private readonly IUserRepository _userRepository = userRepository;
 		private readonly IMapper _mapper = mapper;
 
@@ -32,7 +32,7 @@ namespace Application.Cqrs.UserAlgorithm.Query.GetAlgorithms
 				throw new InvalidTokenClaimException();
 			}
 
-			var query = _userOwnAlgorithmTaskRepository
+			var query = _algorithmTaskRepository
 				.Query()
 				.Where(x => x.UserId == request.UserId);
 
@@ -63,7 +63,7 @@ namespace Application.Cqrs.UserAlgorithm.Query.GetAlgorithms
 				);
 			}
 
-			Expression<Func<UserOwnAlgorithmTask, object>> keySelector =
+			Expression<Func<AlgorithmTask, object>> keySelector =
 				request.ResourceParamethers.SortColumn switch
 				{
 					"taskMainTopics" => algorithm => algorithm.TaskMainTopics,
@@ -82,7 +82,7 @@ namespace Application.Cqrs.UserAlgorithm.Query.GetAlgorithms
 				query = query.OrderBy(keySelector);
 			}
 
-			var result = await PagedList<UserOwnAlgorithmTask>.CreateAsync(
+			var result = await PagedList<AlgorithmTask>.CreateAsync(
 				query,
 				request.ResourceParamethers.PageSize,
 				request.ResourceParamethers.PageNumber

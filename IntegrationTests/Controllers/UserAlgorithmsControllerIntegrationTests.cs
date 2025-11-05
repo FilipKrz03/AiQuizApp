@@ -77,7 +77,7 @@ namespace IntegrationTests.Controllers
 
 			CreateUserWithId(userId);
 
-			DbSeeder(db => db.UserOwnAlgorithms.Add(new(algorithmId , "taskTitle", "taskTopic", "", AdvanceNumber.Create(5)!, userId)));
+			DbSeeder(db => db.AlgorithmTasks.Add(new(algorithmId , "taskTitle", "taskTopic", "", AdvanceNumber.Create(5)!, userId)));
 
 			var request = await _httpClient.GetAsync($"api/user/algorithms/{algorithmId}");
 
@@ -116,11 +116,11 @@ namespace IntegrationTests.Controllers
 		{
 			string userId = "gas1";
 
-			List<UserOwnAlgorithmTask> algoritms = [
-				new UserOwnAlgorithmTask(Guid.NewGuid(), "BubbleSorting", "Test", "Test", AdvanceNumber.Create(5)! , userId),
-				new UserOwnAlgorithmTask(Guid.NewGuid(), "Numbers", "Test", "Test", AdvanceNumber.Create(5)! , userId),
-				new UserOwnAlgorithmTask(Guid.NewGuid(), "QuickSorting", "Test", "Test", AdvanceNumber.Create(5)! , userId),
-				new UserOwnAlgorithmTask(Guid.NewGuid(), "SuperSorting", "Test", "Test", AdvanceNumber.Create(5)!, "Unkown"), // should not be included
+			List<AlgorithmTask> algoritms = [
+				new AlgorithmTask(Guid.NewGuid(), "BubbleSorting", "Test", "Test", AdvanceNumber.Create(5)! , userId),
+				new AlgorithmTask(Guid.NewGuid(), "Numbers", "Test", "Test", AdvanceNumber.Create(5)! , userId),
+				new AlgorithmTask(Guid.NewGuid(), "QuickSorting", "Test", "Test", AdvanceNumber.Create(5)! , userId),
+				new AlgorithmTask(Guid.NewGuid(), "SuperSorting", "Test", "Test", AdvanceNumber.Create(5)!, "Unkown"), // should not be included
 			];
 
 			CreateUserWithId(userId);
@@ -128,7 +128,7 @@ namespace IntegrationTests.Controllers
 
 			var result = await _httpClient.GetAsync("api/user/algorithms?SearchQuery=Sorting&SortColumn=taskTitle&SortOrder=desc");
 
-			var content = JsonConvert.DeserializeObject<List<UserOwnAlgorithmTaskBasicResponseDto>>
+			var content = JsonConvert.DeserializeObject<List<AlgorithmTaskBasicResponseDto>>
 				(await result.Content.ReadAsStringAsync());
 
 			content!.Count
@@ -173,11 +173,11 @@ namespace IntegrationTests.Controllers
 			var algorithmId = Guid.NewGuid();
 
 			CreateUserWithId(userId);
-			DbSeeder(db => db.UserOwnAlgorithms.Add(new(algorithmId, "taskTitle", "taskTopic", "", AdvanceNumber.Create(5)!, userId)));
+			DbSeeder(db => db.AlgorithmTasks.Add(new(algorithmId, "taskTitle", "taskTopic", "", AdvanceNumber.Create(5)!, userId)));
 
 			var reqeust = await _httpClient.DeleteAsync($"api/user/algorithms/{algorithmId}");
 
-			var deletedAlgorithm = DbContextGetter().UserOwnAlgorithms
+			var deletedAlgorithm = DbContextGetter().AlgorithmTasks
 				.Where(x => x.Id == algorithmId)
 				.FirstOrDefault();
 

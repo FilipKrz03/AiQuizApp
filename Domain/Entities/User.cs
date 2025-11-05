@@ -9,7 +9,7 @@ namespace Domain.Entities
 {
 	public sealed class User : IdentityUser
 	{
-		public List<UserOwnQuiz> UserQuizzes { get; set; } = [];
-		public List<UserOwnAlgorithmTask> UserAlgorithms { get; set; } = [];
+		public List<Quiz> UserQuizzes { get; set; } = [];
+		public List<AlgorithmTask> UserAlgorithms { get; set; } = [];
 	}
 }

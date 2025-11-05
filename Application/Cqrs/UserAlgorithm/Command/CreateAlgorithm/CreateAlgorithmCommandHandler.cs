@@ -16,67 +16,67 @@ using System.Threading.Tasks;
 
 namespace Application.Cqrs.UserAlgorithm.Command.CreateAlgorithm
 {
-	public sealed class CreateAlgorithmCommandHandler(
-		IUserRepository userRepository , 
-		IServiceProvider serviceProvider
-		) : IRequestHandler<CreateAlgorithmCommand, string>
-	{
-		private readonly IUserRepository _userRepository = userRepository;
-		private readonly IServiceProvider _serviceProvider = serviceProvider;
+    public sealed class CreateAlgorithmCommandHandler(
+        IUserRepository userRepository,
+        IServiceProvider serviceProvider
+        ) : IRequestHandler<CreateAlgorithmCommand, string>
+    {
+        private readonly IUserRepository _userRepository = userRepository;
+        private readonly IServiceProvider _serviceProvider = serviceProvider;
 
-		public async Task<string> Handle(CreateAlgorithmCommand request, CancellationToken cancellationToken)
-		{
-			if (!await _userRepository.UserExistAsync(request.UserId))
-			{
-				throw new InvalidTokenClaimException();
-			}
+        public async Task<string> Handle(CreateAlgorithmCommand request, CancellationToken cancellationToken)
+        {
+            if (!await _userRepository.UserExistAsync(request.UserId))
+            {
+                throw new InvalidTokenClaimException();
+            }
 
-			CreateAlgorithmAsync(request); // This work in background
+            CreateAlgorithmAsync(request); // This work in background
 
-			return "Algorithm creation queued";
-		}
+            return "Algorithm creation queued";
+        }
 
-		private async void CreateAlgorithmAsync(CreateAlgorithmCommand request)
-		{
-			var scope = _serviceProvider.CreateScope();
+        private async void CreateAlgorithmAsync(CreateAlgorithmCommand request)
+        {
+            var scope = _serviceProvider.CreateScope();
 
-			var userOwnAlgorithmTaskRepository = scope.ServiceProvider.GetRequiredService<IRepository<UserOwnAlgorithmTask>>();
-			var algorithmsAnswersRepository = scope.ServiceProvider.GetRequiredService<IRepository<AlgorithmAnswer>>();
-			var algorithmsCreator = scope.ServiceProvider.GetRequiredService<IAlgorithmsCreator>();
-			var logger = scope.ServiceProvider.GetRequiredService<ILogger<CreateAlgorithmCommandHandler>>();
+            var algorithmRepository = scope.ServiceProvider.GetRequiredService<IRepository<AlgorithmTask>>();
+            var algorithmsAnswersRepository = scope.ServiceProvider.GetRequiredService<IRepository<AlgorithmAnswer>>();
+            var algorithmsCreator = scope.ServiceProvider.GetRequiredService<IAlgorithmsCreator>();
+            var logger = scope.ServiceProvider.GetRequiredService<ILogger<CreateAlgorithmCommandHandler>>();
 
-			var id = Guid.NewGuid();
+            var id = Guid.NewGuid();
 
-			UserOwnAlgorithmTask userOwnAlgorithmTask = 
-				new(id, request.TaskTitle, request.TaskMainTopics, "" , AdvanceNumber.Create(request.AdvanceNumber)! , request.UserId);
+            AlgorithmTask algorithmTask =
+                new(id, request.TaskTitle, request.TaskMainTopics, "", AdvanceNumber.Create(request.AdvanceNumber)!, request.UserId);
 
-			userOwnAlgorithmTaskRepository.Insert(userOwnAlgorithmTask);
-			await userOwnAlgorithmTaskRepository.SaveChangesAsync();
+            algorithmRepository.Insert(algorithmTask);
+            await algorithmRepository.SaveChangesAsync();
 
-			var createdAlgorithm = await algorithmsCreator.CreateAlgorithmContentAndAnswersAsync(
-				AdvanceNumber.Create(request.AdvanceNumber)!,
-				request.TaskMainTopics,
-				id
-				);
+            var createdAlgorithm = await algorithmsCreator.CreateAlgorithmContentAndAnswersAsync(
+                AdvanceNumber.Create(request.AdvanceNumber)!,
+                request.TaskMainTopics,
+                id
+                );
 
-			if(createdAlgorithm == null )
-			{
-				logger.LogWarning(
-				"Failed to create algorithm, mainTopics : {mt} , advanceNumber : {a}",
-				request.TaskMainTopics,
-				request.AdvanceNumber
-				);
+            if (createdAlgorithm == null)
+            {
+                logger.LogWarning(
+                "Failed to create algorithm, mainTopics : {mt} , advanceNumber : {a}",
+                request.TaskMainTopics,
+                request.AdvanceNumber
+                );
 
-				userOwnAlgorithmTask.CreationStatus = CreationStatus.Failed;
-				await userOwnAlgorithmTaskRepository.SaveChangesAsync();
-				return;
-			}
+                algorithmTask.CreationStatus = CreationStatus.Failed;
+                await algorithmRepository.SaveChangesAsync();
+                return;
+            }
 
-			userOwnAlgorithmTask.TaskContent = createdAlgorithm.Value.Item1;
-			algorithmsAnswersRepository.AddRange(createdAlgorithm.Value.Item2);
-			userOwnAlgorithmTask.CreationStatus = CreationStatus.Succes;
+            algorithmTask.TaskContent = createdAlgorithm.Value.Item1;
+            algorithmsAnswersRepository.AddRange(createdAlgorithm.Value.Item2);
+            algorithmTask.CreationStatus = CreationStatus.Succes;
 
-			await userOwnAlgorithmTaskRepository.SaveChangesAsync();
-		}
-	}
+            await algorithmRepository.SaveChangesAsync();
+        }
+    }
 }

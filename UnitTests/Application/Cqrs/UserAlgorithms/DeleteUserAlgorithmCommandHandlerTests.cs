@@ -16,17 +16,17 @@ namespace UnitTests.Application.Cqrs.UserAlgorithms
 {
 	public class DeleteUserAlgorithmCommandHandlerTests
 	{
-		private readonly Mock<IRepository<UserOwnAlgorithmTask>> _userOwnAlgorithmTaskRepository;
+		private readonly Mock<IRepository<AlgorithmTask>> _algorithmTaskRepository;
 		private readonly Mock<IUserRepository> _userRepositoryMock;
 
 		private readonly DeleteUserAlgorithmCommandHandler _handler;
 
 		public DeleteUserAlgorithmCommandHandlerTests()
 		{
-			_userOwnAlgorithmTaskRepository = new();
+			_algorithmTaskRepository = new();
 			_userRepositoryMock = new();
 
-			_handler = new(_userOwnAlgorithmTaskRepository.Object, _userRepositoryMock.Object);
+			_handler = new(_algorithmTaskRepository.Object, _userRepositoryMock.Object);
 		}
 
 		[Fact]
@@ -46,8 +46,8 @@ namespace UnitTests.Application.Cqrs.UserAlgorithms
 			_userRepositoryMock.Setup(x => x.UserExistAsync(It.IsAny<string>()))
 				.ReturnsAsync(true);
 
-			_userOwnAlgorithmTaskRepository.Setup(x => x.GetByIdQuery(It.IsAny<Guid>()))
-				.Returns(new List<UserOwnAlgorithmTask>().BuildMock());
+			_algorithmTaskRepository.Setup(x => x.GetByIdQuery(It.IsAny<Guid>()))
+				.Returns(new List<AlgorithmTask>().BuildMock());
 
 			await _handler.Invoking(x => x.Handle(new DeleteUserAlgorithmCommand("", Guid.NewGuid()), default))
 			.Should()
@@ -63,16 +63,16 @@ namespace UnitTests.Application.Cqrs.UserAlgorithms
 			_userRepositoryMock.Setup(x => x.UserExistAsync(It.IsAny<string>()))
 				.ReturnsAsync(true);
 
-			_userOwnAlgorithmTaskRepository.Setup(x => x.GetByIdQuery(It.IsAny<Guid>()))
-				.Returns(new List<UserOwnAlgorithmTask>()
+			_algorithmTaskRepository.Setup(x => x.GetByIdQuery(It.IsAny<Guid>()))
+				.Returns(new List<AlgorithmTask>()
 				{
 					new(algorthmId  , "" , "" , "" , AdvanceNumber.Create(5)! , userId)
 				}.BuildMock());
 
 			await _handler.Handle(new DeleteUserAlgorithmCommand(userId, algorthmId), default);
 
-			_userOwnAlgorithmTaskRepository.Verify(x => x.DeleteEntity(It.IsAny<UserOwnAlgorithmTask>()), Times.Once);
-			_userOwnAlgorithmTaskRepository.Verify(x => x.SaveChangesAsync(), Times.Once);
+			_algorithmTaskRepository.Verify(x => x.DeleteEntity(It.IsAny<AlgorithmTask>()), Times.Once);
+			_algorithmTaskRepository.Verify(x => x.SaveChangesAsync(), Times.Once);
 		}
 	}
 }

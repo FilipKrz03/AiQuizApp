@@ -19,12 +19,12 @@ namespace Application.Cqrs.UserQuiz.Query.GetUserAiQuizesQuery
 {
 	public sealed class GetUserQuizesQueryHandler(
 		IUserRepository userRepository,
-		IRepository<UserOwnQuiz> userOwnQuizRepository,
+		IRepository<Domain.Entities.Quiz>quizRepository,
 		IMapper mapper
 		) : IRequestHandler<GetUserQuizesQuery, PagedList<UserOwnQuizBasicResponseDto>>
 	{
 		private readonly IUserRepository _userRepository = userRepository;
-		private readonly IRepository<UserOwnQuiz> _userOwnQuizRepository = userOwnQuizRepository;
+		private readonly IRepository<Domain.Entities.Quiz> quizRepository =quizRepository;
 		private readonly IMapper _mapper = mapper;
 
 		public async Task<PagedList<UserOwnQuizBasicResponseDto>> Handle(GetUserQuizesQuery request, CancellationToken cancellationToken)
@@ -34,7 +34,7 @@ namespace Application.Cqrs.UserQuiz.Query.GetUserAiQuizesQuery
 				throw new InvalidTokenClaimException();
 			}
 
-			var query = _userOwnQuizRepository
+			var query = quizRepository
 				.Query()
 				.Where(x => x.UserId == request.UserId);
 
@@ -65,7 +65,7 @@ namespace Application.Cqrs.UserQuiz.Query.GetUserAiQuizesQuery
 						);
 			}
 
-			Expression<Func<UserOwnQuiz, object>> keySelector =
+			Expression<Func<Domain.Entities.Quiz, object>> keySelector =
 				request.ResourceParamethers.SortColumn switch
 				{
 					"title" => quiz => quiz.Title,
@@ -83,7 +83,7 @@ namespace Application.Cqrs.UserQuiz.Query.GetUserAiQuizesQuery
 				query = query.OrderBy(keySelector);
 			}
 		
-			var quizesFromDb = await PagedList<UserOwnQuiz>.CreateAsync(
+			var quizesFromDb = await PagedList<Domain.Entities.Quiz>.CreateAsync(
 				query,
 				request.ResourceParamethers.PageSize,
 				request.ResourceParamethers.PageNumber

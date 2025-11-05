@@ -19,7 +19,7 @@ namespace UnitTests.Application.Cqrs.UserAlgorithms
 	public class GetUserAlgorithmQueryHandlerTests
 	{
 		private readonly Mock<IUserRepository> _userRepositoryMock;
-		private readonly Mock<IRepository<UserOwnAlgorithmTask>> _userOwnAlgorithmTaskRepository;
+		private readonly Mock<IRepository<AlgorithmTask>> _algorithmTaskRepository;
 		private readonly Mock<IMapper> _mapperMock;
 
 		private readonly GetUserAlgorithmQueryHandler _handler;
@@ -27,10 +27,10 @@ namespace UnitTests.Application.Cqrs.UserAlgorithms
 		public GetUserAlgorithmQueryHandlerTests()
 		{
 			_userRepositoryMock = new();
-			_userOwnAlgorithmTaskRepository = new();
+			_algorithmTaskRepository = new();
 			_mapperMock = new();
 
-			_handler = new(_userRepositoryMock.Object, _userOwnAlgorithmTaskRepository.Object, _mapperMock.Object);
+			_handler = new(_userRepositoryMock.Object, _algorithmTaskRepository.Object, _mapperMock.Object);
 		}
 
 		[Fact]
@@ -50,8 +50,8 @@ namespace UnitTests.Application.Cqrs.UserAlgorithms
 			_userRepositoryMock.Setup(x => x.UserExistAsync(It.IsAny<string>()))
 			.ReturnsAsync(true);
 
-			_userOwnAlgorithmTaskRepository.Setup(x => x.GetByIdQuery(It.IsAny<Guid>()))
-				.Returns(new List<UserOwnAlgorithmTask>().BuildMock());
+			_algorithmTaskRepository.Setup(x => x.GetByIdQuery(It.IsAny<Guid>()))
+				.Returns(new List<AlgorithmTask>().BuildMock());
 
 			await _handler.Invoking(x => x.Handle(new GetUserAlgorithmQuery("", Guid.NewGuid()), default))
 				.Should()
@@ -67,13 +67,13 @@ namespace UnitTests.Application.Cqrs.UserAlgorithms
 			_userRepositoryMock.Setup(x => x.UserExistAsync(It.IsAny<string>()))
 				.ReturnsAsync(true);
 
-			_userOwnAlgorithmTaskRepository.Setup(x => x.GetByIdQuery(It.IsAny<Guid>()))
-				.Returns(new List<UserOwnAlgorithmTask>()
+			_algorithmTaskRepository.Setup(x => x.GetByIdQuery(It.IsAny<Guid>()))
+				.Returns(new List<AlgorithmTask>()
 				{
 					new(searchedAlgorithmId , "SimpleTaskTitle" , "" ,"" ,AdvanceNumber.Create(1)! , userId)
 				}.BuildMock());
 
-			_mapperMock.Setup(x => x.Map<AlgorithmTaskDetailResponseDto>(It.IsAny<UserOwnAlgorithmTask>()))
+			_mapperMock.Setup(x => x.Map<AlgorithmTaskDetailResponseDto>(It.IsAny<AlgorithmTask>()))
 				.Returns(new AlgorithmTaskDetailResponseDto()
 				{
 					TaskTitle = "SimpleTaskTitle"
