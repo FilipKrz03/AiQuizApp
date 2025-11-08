@@ -74,7 +74,7 @@ namespace Application.Cqrs.UserAlgorithm.Command.CreateAlgorithm
 
             algorithmTask.TaskContent = createdAlgorithm.Value.Item1;
             algorithmsAnswersRepository.AddRange(createdAlgorithm.Value.Item2);
-            algorithmTask.CreationStatus = CreationStatus.Succes;
+            algorithmTask.CreationStatus = CreationStatus.Success;
 
             await algorithmRepository.SaveChangesAsync();
         }

@@ -43,9 +43,8 @@ namespace Application.Services
 				{
 					var questionId = Guid.NewGuid();
 
-					yield return new Question(questionId, question.QuestionContent, properAnswerLetter)
+					yield return new Question(questionId, question.QuestionContent, properAnswerLetter, quizId)
 					{
-						QuizId = quizId,
 						Answers = GetAnswers(question.Answers, questionId).ToList()
 					};
 				}

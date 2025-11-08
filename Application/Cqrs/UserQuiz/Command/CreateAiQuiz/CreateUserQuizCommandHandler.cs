@@ -75,7 +75,7 @@ namespace Application.Cqrs.UserQuiz.Command.CreateAiQuiz
                 return;
             }
 
-            quiz.CreationStatus = CreationStatus.Succes;
+            quiz.CreationStatus = CreationStatus.Success;
             questionRepository.AddRange(quizQuestions);
 
             await quizRepository.SaveChangesAsync();

@@ -16,15 +16,16 @@ namespace Domain.Entities
         public List<Answer> Answers { get; set; } = [];
 
         [ForeignKey("QuizId")]
-        public Quiz? Quiz { get; set; } 
-        public Guid? QuizId { get; set; }
+        public Quiz Quiz { get; set; } = null!;
+        public Guid QuizId { get; set; }
 
 		public Question
-            (Guid id, string content, AnswerLetter properAnswerLetter)
+            (Guid id, string content, AnswerLetter properAnswerLetter, Guid quizId)
             : base(id)
         {
             Content = content;
             ProperAnswerLetter = properAnswerLetter;
+            QuizId = quizId;
         }
     }
 }

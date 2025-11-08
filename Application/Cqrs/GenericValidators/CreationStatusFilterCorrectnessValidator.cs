@@ -28,7 +28,7 @@ namespace Application.Cqrs.UserAlgorithm.Query.GetAlgorithms
 
 			List<string> craetionStatusesAsStrings = new()
 			{
-				CreationStatus.Succes.ToString() ,
+				CreationStatus.Success.ToString() ,
 				CreationStatus.Pending.ToString() ,
 				CreationStatus.Failed.ToString() ,
 			};

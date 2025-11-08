@@ -9,7 +9,7 @@ namespace Domain.Enum
 	public enum CreationStatus
 	{
 		Pending = 0 , 
-		Succes  = 1, 
+		Success  = 1, 
 		Failed = 2,
 	}
 }
