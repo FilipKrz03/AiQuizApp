@@ -11,16 +11,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Domain.Interfaces;
 
 namespace Application.Services
 {
 	public abstract class AiContentCreatorBase<TInput, TOutput, TConvertedOutput>
 	{
+		private readonly IAiService _aiService;
 		protected readonly ILogger<AiContentCreatorBase<TInput, TOutput, TConvertedOutput>> _logger;
 
-		protected AiContentCreatorBase(ILogger<AiContentCreatorBase<TInput, TOutput, TConvertedOutput>> logger)
+		protected AiContentCreatorBase(ILogger<AiContentCreatorBase<TInput, TOutput, TConvertedOutput>> logger, IAiService aiService)
 		{
 			_logger = logger;
+			_aiService = aiService;
 		}
 
 		public async Task<TConvertedOutput?> CreateAsync(TInput inputData)
@@ -47,51 +50,15 @@ namespace Application.Services
 		{
 			try
 			{
-                var openAiService = new OpenAIService(new OpenAiOptions()
-				{
-					ApiKey = Environment.GetEnvironmentVariable("OpenAiApiKey")!,
-					DefaultModelId = Models.Gpt_3_5_Turbo
-				});
-
-				var completionResult =
-					await openAiService.ChatCompletion.CreateCompletion(new ChatCompletionCreateRequest()
-					{
-						Messages = new List<ChatMessage>
-						{
-							ChatMessage.FromSystem(GetPrompt(input))
-						}
-					});
-
-				if (!completionResult.Successful)
-				{
-					await Task.Delay(20000); // It is realted to OpenAiApi limits
-
-					// retry
-					completionResult =
-						await openAiService.ChatCompletion.CreateCompletion(new ChatCompletionCreateRequest()
-						{
-							Messages = new List<ChatMessage>
-							{
-								ChatMessage.FromSystem(GetPrompt(input))
-							}
-						});
-				}
-
-				if (!completionResult.Successful)
-				{
-					_logger.LogWarning("AiContentCreatorBase - Ai response not succesfull {response}" , completionResult.Error?.Message ?? "Unkown");
-					return null;
-				}
-
-				var body = completionResult?.Choices?.FirstOrDefault()?.Message?.Content;
-
-				if (body == null)
+				var aiResponse = await _aiService.GenerateContentAsync(GetPrompt(input));
+              
+				if (aiResponse == null)
 				{
 					_logger.LogWarning("Content creator - body of Ai response is null !");
 					return null;
 				}
 
-				return body!;
+				return aiResponse;
 			}
 			catch (Exception ex)
 			{

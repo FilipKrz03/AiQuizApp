@@ -14,13 +14,15 @@ using Newtonsoft.Json;
 using Application.Dto;
 using Application.Interfaces;
 using Domain.Entities;
+using Domain.Interfaces;
 
 namespace Application.Services
 {
 	public class AlgorithmsCreator(
 		ILogger<AiContentCreatorBase<CreateAlgorithmInput, AlgorithmAiResponseDto, AlgorithmTask>> logger,
-		IAiAlgorithmsConverter aiAlgorithmsConverter
-		) : AiContentCreatorBase<CreateAlgorithmInput, AlgorithmAiResponseDto, AlgorithmTask>(logger), IAlgorithmsCreator
+		IAiAlgorithmsConverter aiAlgorithmsConverter,
+		IAiService aiService
+		) : AiContentCreatorBase<CreateAlgorithmInput, AlgorithmAiResponseDto, AlgorithmTask>(logger, aiService), IAlgorithmsCreator
 	{
 		private readonly IAiAlgorithmsConverter _aiAlgorithmsConverter = aiAlgorithmsConverter;
 

@@ -81,7 +81,7 @@ namespace Client.Services
 
 		public async Task<IEnumerable<QuizBasicResponseDto>> GetUserQuizesAsync()
 		{
-			var result = await _httpClient.GetAsync("api/user/quizes?CreationStatus=Succes");
+			var result = await _httpClient.GetAsync("api/user/quizes?CreationStatus=Success");
 
 			var data = JsonConvert.DeserializeObject<IEnumerable<QuizBasicResponseDto>>
 				(await result.Content.ReadAsStringAsync());
@@ -137,7 +137,7 @@ namespace Client.Services
 
 		public async Task<IEnumerable<AlgorithmTaskBasicResponseDto>> GetUserAlgorithmsAsync()
 		{
-			var result = await _httpClient.GetAsync("api/user/algorithms?CreationStatus=Succes");
+			var result = await _httpClient.GetAsync("api/user/algorithms?CreationStatus=Success");
 
 			var data = JsonConvert.DeserializeObject<IEnumerable<AlgorithmTaskBasicResponseDto>>
 				(await result.Content.ReadAsStringAsync());

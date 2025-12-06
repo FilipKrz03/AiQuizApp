@@ -14,13 +14,15 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Application.Dto;
 using Domain.Entities;
+using Domain.Interfaces;
 
 namespace Application.Services
 {
 	public class QuizesCreator(
 		ILogger<AiContentCreatorBase<CreateQuizInput, IEnumerable<QuestionAiResponseDto>, Quiz>> logger,
-		IAiQuestionsConverter aiQuestionConverter
-			) : AiContentCreatorBase<CreateQuizInput, IEnumerable<QuestionAiResponseDto>, Quiz>(logger), IQuizesCreator
+		IAiQuestionsConverter aiQuestionConverter,
+		IAiService aiService
+			) : AiContentCreatorBase<CreateQuizInput, IEnumerable<QuestionAiResponseDto>, Quiz>(logger, aiService), IQuizesCreator
 	{
 		private readonly IAiQuestionsConverter _aiQuestionConverter = aiQuestionConverter;
 

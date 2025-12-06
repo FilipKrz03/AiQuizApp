@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using Domain.Interfaces;
 using Infrastructure.DbContexts;
 using Infrastructure.Interfaces;
 using Infrastructure.Services;
@@ -26,6 +27,7 @@ namespace Infrastructure
 			services.AddTransient<IUserRepository, UserRepository>();
 			services.AddTransient<IRepository<AlgorithmTask>, Repository<AlgorithmTask>>();
 			services.AddTransient<IRepository<AlgorithmAnswer>, Repository<AlgorithmAnswer>>();
+			services.AddTransient<IAiService, OpenAiService>();
 
 			return services;
 		}
